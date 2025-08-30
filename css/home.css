@@ -1,15 +1,18 @@
 /* General reset and base styles */
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Fonts and Base Colors */
 body {
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Inter', 'Poppins', Arial, sans-serif;
   color: #f5f5fe;
   background: radial-gradient(ellipse 80% 60% at 50% 0%, #6e40c9 0%, #18182a 70%, #121221 100%);
   min-height: 100vh;
+  position: relative;
   overflow-x: hidden;
 }
 
