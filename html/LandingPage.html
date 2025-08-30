@@ -1,96 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cyber-Guardian</title>
-  <!-- Use font-display: swap in Google Fonts link -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="../css/LandingPage.css" />
-</head>
-<body>
-  <!-- Navigation -->
-
-  <nav class="navbar">
-    <div class="logo">
-      <span class="hexagon">
-        <svg width="32" height="32" viewBox="0 0 32 32">
-          <polygon points="16,3 29,11 29,25 16,31 3,25 3,11" fill="#a259ec" />
-        </svg>
-      </span>
-      <span class="logo-text">Cyber-Guardian</span>
-    </div>
-
-    <div>
-      <a href="#" class="contact-btn">Contact Us</a>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>
-        One Platform,<br />
-        <span class="gradient-text">Endless Possibilities</span>
-      </h1>
-      <p class="subtext">
-        From automation to collaboration, our solution empowers your team to work
-        smarter, not harder. Discover the endless possibilities waiting for you.
-      </p>
-      <div class="hero-actions">
-        <a href="./home.html" class="main-btn">Get Started Now</a>
-        <!-- <a href="#" class="outline-btn">Try Tutorial Now</a> -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cyberpunk Landing</title>
+    <link rel="stylesheet" href="../css/LandingPage.css" />
+  </head>
+  <body>
+    <!-- LOADER -->
+    <div id="loader">
+      <div class="loader">
+        <span><span></span><span></span><span></span><span></span></span>
+        <div class="base">
+          <span></span>
+          <div class="face"></div>
+        </div>
+      </div>
+      <div class="longfazers">
+        <span></span><span></span><span></span><span></span>
       </div>
     </div>
-    <canvas id="stars-bg"></canvas>
-  </section>
 
-  <!-- Logos Section -->
-  <section class="logos-section">
-    <p class="logos-text">Backed by 200+ Growing Businesses</p>
-    <div class="logos-row">
-      <img
-        src="../assets/icons8-notion.svg"
-        alt="Notion logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-slack-new.svg"
-        alt="Slack logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-shopify.svg"
-        alt="Shopify logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-chatgpt.svg"
-        alt="OpenAI logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-hp.svg"
-        alt="HP logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-netflix.svg"
-        alt="Netflix logo"
-        loading="lazy"
-      />
-      <img
-        src="../assets/icons8-chrome.svg"
-        alt="Chrome logo"
-        loading="lazy"
-      />
+    <!-- LANDING PAGE CONTENT -->
+    <div id="main-content">
+      <div id="code-container"></div>
+
+      <!-- Popup Overlay -->
+      <div id="popup-overlay">
+        <div class="button-wrapper">
+          <button class="spiderverse-button">HACKED</button>
+          <div class="glitch-layers">
+            <div class="glitch-layer layer-1">HACKED</div>
+            <div class="glitch-layer layer-2">HACKED</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="vignette"></div>
     </div>
-  </section>
 
-  <!-- Defer non-critical JS -->
-  <script src="../js/LandingPage.js" defer></script>
-</body>
+    <script src="../js/LandingPage.js"></script>
+  </body>
 </html>
