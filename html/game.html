@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cyber Training</title>
     <link rel="stylesheet" href="../css/game.css" />
-
 </head>
 <body>
     <section id="games" class="section">
@@ -13,7 +12,6 @@
             <div class="section-header">
                 <h2 class="section-title">Training Modules</h2>
             </div>
-            
             <div class="games-grid">
                 <div class="game-card cyber-panel" data-game="phishing">
                     <div class="game-icon">🎯</div>
@@ -24,7 +22,6 @@
                         <div class="btn-glow"></div>
                     </button>
                 </div>
-                
                 <div class="game-card cyber-panel" data-game="password">
                     <div class="game-icon">🔐</div>
                     <h3>Password Fortress</h3>
@@ -34,7 +31,6 @@
                         <div class="btn-glow"></div>
                     </button>
                 </div>
-                
                 <div class="game-card cyber-panel" data-game="network">
                     <div class="game-icon">🛡️</div>
                     <h3>Network Guardian</h3>
@@ -47,5 +43,145 @@
             </div>
         </div>
     </section>
+
+    <div id="phishingGame" class="game-modal hidden">
+        <div class="game-container">
+            <div class="game-header">
+                <h2>Phishing Detection Training</h2>
+                <div class="game-stats">
+                    <span>Score: <span id="phishingGameScore">0</span></span>
+                    <span>Question: <span id="currentQuestion">1</span>/5</span>
+                </div>
+                <button class="close-btn" data-close="phishingGame">×</button>
+            </div>
+            
+            <div class="game-content">
+                <div class="email-preview" id="emailPreview">
+                    <div class="email-header">
+                        <div class="email-field">
+                            <span class="field-label">From:</span>
+                            <span class="field-value" id="emailSender"></span>
+                        </div>
+                        <div class="email-field">
+                            <span class="field-label">Subject:</span>
+                            <span class="field-value" id="emailSubject"></span>
+                        </div>
+                    </div>
+                    <div class="email-body" id="emailBody"></div>
+                </div>
+                
+                <div class="game-actions">
+                    <button class="btn btn-success cyber-btn" id="markSafe">
+                        <span>LEGITIMATE</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="btn btn-danger cyber-btn" id="markPhishing">
+                        <span>PHISHING</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                
+                <div class="feedback-panel hidden" id="phishingFeedback">
+                    <div class="feedback-content"></div>
+                    <button class="btn btn-primary cyber-btn" id="nextPhishing">
+                        <span>NEXT EMAIL</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="passwordGame" class="game-modal hidden">
+        <div class="game-container">
+            <div class="game-header">
+                <h2>Password Fortress Challenge</h2>
+                <div class="game-stats">
+                    <span>Score: <span id="passwordGameScore">0</span></span>
+                    <span>Attempt: <span id="passwordAttempt">1</span>/5</span>
+                </div>
+                <button class="close-btn" data-close="passwordGame">×</button>
+            </div>
+            
+            <div class="game-content">
+                <div class="password-input-section">
+                    <label>Create a strong password:</label>
+                    <input type="password" id="passwordInput" class="form-control password-field" placeholder="Enter your password...">
+                    <div class="strength-meter">
+                        <div class="strength-bar" id="strengthBar"></div>
+                        <span class="strength-label" id="strengthLabel">Enter password</span>
+                    </div>
+                </div>
+                
+                <div class="password-requirements">
+                    <h4>Requirements:</h4>
+                    <div class="requirement-list" id="requirementList"></div>
+                </div>
+                
+                <div class="game-actions">
+                    <button class="btn btn-primary cyber-btn" id="submitPassword">
+                        <span>SUBMIT PASSWORD</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                
+                <div class="feedback-panel hidden" id="passwordFeedback">
+                    <div class="feedback-content"></div>
+                    <button class="btn btn-primary cyber-btn" id="nextPassword">
+                        <span>NEXT CHALLENGE</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Network Game Modal -->
+    <div id="networkGame" class="game-modal hidden">
+        <div class="game-container">
+            <div class="game-header">
+                <h2>Network Defense Simulator</h2>
+                <div class="game-stats">
+                    <span>Score: <span id="networkGameScore">0</span></span>
+                    <span>Threats: <span id="threatCount">5</span></span>
+                </div>
+                <button class="close-btn" data-close="networkGame">×</button>
+            </div>
+            
+            <div class="game-content">
+                <div class="network-grid" id="networkGrid">
+                    <div class="network-node server" data-type="server">
+                        <span>🖥️</span>
+                        <label>Server</label>
+                    </div>
+                    <div class="network-node workstation" data-type="workstation">
+                        <span>💻</span>
+                        <label>Workstation</label>
+                    </div>
+                    <div class="network-node router" data-type="router">
+                        <span>📡</span>
+                        <label>Router</label>
+                    </div>
+                    <div class="network-node database" data-type="database">
+                        <span>🗃️</span>
+                        <label>Database</label>
+                    </div>
+                </div>
+                
+                <div class="threat-queue">
+                    <h4>Incoming Threats:</h4>
+                    <div class="threat-items" id="threatItems"></div>
+                </div>
+                
+                <div class="game-actions">
+                    <button class="btn btn-primary cyber-btn" id="startNetworkGame">
+                        <span>START SIMULATION</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/game.js"></script>
 </body>
 </html>
