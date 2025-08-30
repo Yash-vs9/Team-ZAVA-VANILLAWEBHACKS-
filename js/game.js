@@ -229,6 +229,7 @@ nodes.forEach(node => {
         if(networkScore>bestNetworkScore){
             localStorage.setItem("bestNetworkScore",networkScore)
         }
+        localStorage.setItem("latestNetworkGame",networkScore)
         clearInterval(intervalId)
         time=30
         nodes.forEach(node => node.style.backgroundColor = '');
@@ -350,6 +351,7 @@ nodes.forEach(node => {
         if(phishingScore>bestPhishingScore){
             localStorage.setItem("bestPhishingScore",phishingScore)
         }
+        localStorage.setItem("latestPhishingScore",phishingScore)
         phishingIndex = 0;
         phishingScore = 0;
         phishingScoreEl.textContent = phishingScore;
