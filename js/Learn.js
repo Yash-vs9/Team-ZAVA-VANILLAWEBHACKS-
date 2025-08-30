@@ -194,7 +194,7 @@ class CyberTerminal {
 
     setupBootSequence() {
         const bootMessages = document.querySelectorAll('.boot-line');
-        let delay = 500;
+        let delay = 200;
         
         bootMessages.forEach((line, index) => {
             setTimeout(() => {
@@ -204,7 +204,7 @@ class CyberTerminal {
                         document.getElementById('boot-screen').classList.add('hidden');
                         document.getElementById('main-interface').classList.remove('hidden');
                         this.showWelcomeMessage();
-                    }, 1000);
+                    }, 100);
                 }
             }, delay * (index + 1));
         });
