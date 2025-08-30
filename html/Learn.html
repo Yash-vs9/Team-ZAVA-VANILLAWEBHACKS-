@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard Terminal - Learn CyberSec Commands</title>
+    <link rel="stylesheet" href="../css/Learn.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    
+    <!-- Boot Sequence -->
+    <div id="boot-screen">
+        <div class="boot-container">
+            <div class="boot-logo">
+                <pre class="ascii-art">
+ ██████╗██╗   ██╗██████╗ ███████╗██████╗ 
+██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗
+██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝
+██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗
+╚██████╗   ██║   ██████╔╝███████╗██║  ██║
+ ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝
+                </pre>
+                <div class="boot-subtitle">TERMINAL v2.1.337</div>
+            </div>
+            <div class="boot-messages">
+                <div class="boot-line">Initializing secure connection...</div>
+                <div class="boot-line">Loading cybersec modules...</div>
+                <div class="boot-line">Mounting virtual filesystem...</div>
+                <div class="boot-line">Starting network scanner...</div>
+                <div class="boot-line">Ready for cyber operations.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Terminal Interface -->
+    <div id="main-interface" class="hidden">
+        <!-- Header -->
+        <header class="terminal-header">
+            <div class="header-content">
+                <h1 class="glitch-title" data-text="CYBER TERMINAL">CYBER TERMINAL</h1>
+                <div class="system-info">
+                    <span class="info-item">USER: cyberguard</span>
+                    <span class="info-item">HOST: security-lab</span>
+                    <span class="info-item">MODE: learning</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Panel - Lessons -->
+            <aside class="lessons-panel">
+                <h3>🎯 Mission Briefings</h3>
+                <div class="lesson-list">
+                    <div class="lesson-item active" data-lesson="basics">
+                        <div class="lesson-icon">📁</div>
+                        <div class="lesson-info">
+                            <h4>Basic Commands</h4>
+                            <p>ls, cd, pwd, grep</p>
+                        </div>
+                    </div>
+                    <div class="lesson-item" data-lesson="network">
+                        <div class="lesson-icon">🌐</div>
+                        <div class="lesson-info">
+                            <h4>Network Recon</h4>
+                            <p>nmap, netstat, ping</p>
+                        </div>
+                    </div>
+                    <div class="lesson-item" data-lesson="processes">
+                        <div class="lesson-icon">⚙️</div>
+                        <div class="lesson-info">
+                            <h4>Process Analysis</h4>
+                            <p>ps, top, kill</p>
+                        </div>
+                    </div>
+                    <div class="lesson-item" data-lesson="logs">
+                        <div class="lesson-icon">📊</div>
+                        <div class="lesson-info">
+                            <h4>Log Analysis</h4>
+                            <p>tail, grep, awk</p>
+                        </div>
+                    </div>
+                    <div class="lesson-item" data-lesson="security">
+                        <div class="lesson-icon">🔒</div>
+                        <div class="lesson-info">
+                            <h4>Security Tools</h4>
+                            <p>chmod, ssh, iptables</p>
+                        </div>
+                    </div>
+                    <div class="lesson-item" data-lesson="forensics">
+                        <div class="lesson-icon">🔍</div>
+                        <div class="lesson-info">
+                            <h4>Digital Forensics</h4>
+                            <p>find, strings, hash</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Center - Terminal -->
+            <main class="terminal-container">
+                <div class="terminal-window">
+                    <div class="terminal-titlebar">
+                        <div class="titlebar-controls">
+                            <div class="control close"></div>
+                            <div class="control minimize"></div>
+                            <div class="control maximize"></div>
+                        </div>
+                        <div class="titlebar-title">cyberguard@security-lab:~</div>
+                    </div>
+                    
+                    <div class="terminal-content" id="terminal">
+                        <div class="terminal-output" id="output"></div>
+                        <div class="terminal-input-line">
+                            <span class="prompt">cyberguard@security-lab:~$ </span>
+                            <input type="text" id="command-input" class="command-input" autofocus autocomplete="off">
+                            <span class="cursor-blink">█</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Command Suggestions -->
+                <div class="suggestions-popup hidden" id="suggestions">
+                    <div class="suggestions-content"></div>
+                </div>
+            </main>
+
+            <!-- Right Panel - Info -->
+            <aside class="info-panel">
+                <!-- Current Lesson Info -->
+                <div class="current-lesson">
+                    <h3>📋 Current Mission</h3>
+                    <div id="lesson-content">
+                        <h4>Basic Commands</h4>
+                        <p>Learn essential Linux commands for cybersecurity.</p>
+                        <div class="objectives">
+                            <h5>Objectives:</h5>
+                            <ul id="objectives-list">
+                                <li>List files with <code>ls</code></li>
+                                <li>Navigate with <code>cd</code></li>
+                                <li>Find current directory with <code>pwd</code></li>
+                                <li>Search files with <code>grep</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracking -->
+                <div class="progress-section">
+                    <h3>🏆 Progress</h3>
+                    <div class="progress-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="commands-learned">0</div>
+                            <div class="stat-label">Commands Learned</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="missions-completed">0</div>
+                            <div class="stat-label">Missions Complete</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bars">
+                        <div class="progress-item">
+                            <span>Linux Basics</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-basics"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <span>Network Skills</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-network"></div>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <span>Security Tools</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-security"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Reference -->
+                <div class="quick-ref">
+                    <h3>⚡ Quick Reference</h3>
+                    <div class="ref-commands" id="quick-commands">
+                        <div class="ref-item">
+                            <code>help</code> - Show available commands
+                        </div>
+                        <div class="ref-item">
+                            <code>clear</code> - Clear terminal
+                        </div>
+                        <div class="ref-item">
+                            <code>hint</code> - Get a hint for current mission
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Achievement Popup -->
+        <div class="achievement-popup hidden" id="achievement-popup">
+            <div class="achievement-content">
+                <div class="achievement-icon">🏆</div>
+                <h3 id="achievement-title">Achievement Unlocked!</h3>
+                <p id="achievement-desc">You've mastered a new skill!</p>
+                <button class="achievement-close">Continue</button>
+            </div>
+        </div>
+
+        <!-- Help Modal -->
+        <div class="help-modal hidden" id="help-modal">
+            <div class="help-content">
+                <div class="help-header">
+                    <h2>Command Reference</h2>
+                    <button class="help-close">×</button>
+                </div>
+                <div class="help-body">
+                    <div class="command-category">
+                        <h3>Basic Commands</h3>
+                        <div class="command-list">
+                            <div class="command-item">
+                                <code>ls [options]</code>
+                                <span>List directory contents</span>
+                            </div>
+                            <div class="command-item">
+                                <code>cd &lt;directory&gt;</code>
+                                <span>Change directory</span>
+                            </div>
+                            <div class="command-item">
+                                <code>pwd</code>
+                                <span>Print working directory</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/Learn.js"></script>
+</body>
+</html>
