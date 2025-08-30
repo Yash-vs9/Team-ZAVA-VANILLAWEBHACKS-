@@ -95,6 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
       let networkScore = 0;
       const maxThreats = 4;
       let intervalId;
+      let bestNetworkScore=localStorage.getItem("networkBestScore") || 0
+      let bestPhishingScore=localStorage.getItem("phishingBestScore") || 0
       let time=30;
       let threats = [];
       
@@ -193,6 +195,7 @@ nodes.forEach(node => {
             if(networkScore==4){
                 clearInterval(intervalId); 
                 alert("You win!")
+                
                 hideModal(networkGameModal); 
                 resetNetworkGame(networkGameModal)
             }
@@ -223,6 +226,9 @@ nodes.forEach(node => {
       
       function resetNetworkGame(modal) {
         console.log(networkScore)
+        if(networkScore>bestNetworkScore){
+            localStorage.setItem("bestNetworkScore",networkScore)
+        }
         clearInterval(intervalId)
         time=30
         nodes.forEach(node => node.style.backgroundColor = '');
@@ -341,6 +347,9 @@ nodes.forEach(node => {
       });
       
       function resetPhishingGame() {
+        if(phishingScore>bestPhishingScore){
+            localStorage.setItem("bestPhishingScore",phishingScore)
+        }
         phishingIndex = 0;
         phishingScore = 0;
         phishingScoreEl.textContent = phishingScore;
