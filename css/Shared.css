@@ -1,0 +1,31 @@
+/* Basic resets and shared styles for fonts, neon glow, body, navigation, buttons, layout grid, etc. */
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  margin: 0;
+  background: linear-gradient(135deg, #090d23, #1b113a);
+  color: #fff;
+  /* more common styles */
+}
+
+.nav {
+  /* navigation styles */
+}
+
+/* Neon and glow effects for headings/buttons common to all pages */
+.neon-text {
+  text-shadow: 0 0 5px #09fbd3, 0 0 10px #09fbd3, 0 0 20px #9600ff;
+}
+
+/* General button styles */
+.cyber-btn {
+  /* shared button styles */
+}
+
+/* Layout grids and containers common to all pages */
+.container {
+  max-width: 960px;
+  margin: 2em auto;
+  padding: 2em;
+  /* shared layout styles */
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberGuard Academy - Dashboard</title>
+    <!-- <link rel="stylesheet" href="../css/Shared.css">
+    <link rel="stylesheet" href="../css/Dashboard.css"> -->
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">⚡</div>
+                <span class="brand-text">CyberGuard<span class="brand-accent">Elite</span></span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="dashboard.html" class="nav-item active">Command Center</a>
+                <a href="games.html" class="nav-item">Training Ops</a>
+                <a href="learn.html" class="nav-item">Intel Hub</a>
+                <a href="leaderboard.html" class="nav-item">Elite Board</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section class="section active">
+        <div class="container">
+            <div class="section-header">
+                <h1 class="section-title">Command Center</h1>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value" id="userLevel">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">XP</span>
+                        <span class="stat-value" id="userXP">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span class="stat-value" id="accuracy">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Streak</span>
+                        <span class="stat-value" id="streak">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Progress Panel -->
+                <div class="cyber-panel progress-panel">
+                    <h3>Training Progress</h3>
+                    <div class="progress-item">
+                        <span>Phishing Detection</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="phishingProgress" style="width: 0%"></div>
+                        </div>
+                        <span id="phishingScore">0/10</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Password Security</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="passwordProgress" style="width: 0%"></div>
+                        </div>
+                        <span id="passwordScore">0/5</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Network Defense</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="networkProgress" style="width: 0%"></div>
+                        </div>
+                        <span id="networkScore">0/20</span>
+                    </div>
+                </div>
+
+                <!-- Badges Panel -->
+                <div class="cyber-panel badges-panel">
+                    <h3>Achievements</h3>
+                    <div class="badges-grid" id="badgesGrid">
+                        <!-- Badges populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Stats Panel -->
+                <div class="cyber-panel stats-panel">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-number" id="totalGames">0</div>
+                            <div class="stat-name">Games Played</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-number" id="correctAnswers">0</div>
+                            <div class="stat-name">Correct Answers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-number" id="improvementRate">0%</div>
+                            <div class="stat-name">Improvement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/Shared.js"></script>
+    <script src="..js/Dashboard.js"></script>
+</body>
+</html>
