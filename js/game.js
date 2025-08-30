@@ -141,8 +141,7 @@ const phishingEmails = [
       if (modalId === 'networkGame') resetNetworkGame();
     });
   });
-  
-  // --- Phishing Game Logic ---
+
   
   function startPhishingGame() {
     phishingIndex = 0;
@@ -156,7 +155,6 @@ const phishingEmails = [
   
   function showPhishingQuestion() {
     if (phishingIndex >= phishingEmails.length) {
-      // Game finished
       emailSenderEl.textContent = '';
       emailSubjectEl.textContent = '';
       emailBodyEl.textContent = '';
@@ -204,7 +202,6 @@ const phishingEmails = [
     showPhishingQuestion();
   });
   
-  // Reset when modal closed
   function resetPhishingGame() {
     phishingIndex = 0;
     phishingScore = 0;
@@ -216,7 +213,6 @@ const phishingEmails = [
     nextBtnPhishing.disabled = true;
   }
   
-  // --- Password Fortress Logic ---
   
   function startPasswordGame() {
     passwordScore = 0;

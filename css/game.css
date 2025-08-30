@@ -317,7 +317,14 @@ body::after {
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
 }
-
+#passwordInput {
+  border-radius: 7px;
+  background-color: #202545;
+  border: none;          
+  outline: none;         
+  color: #fff;
+  padding: 8px 12px;     
+}
 .btn-primary {
   background-color: #00cccccc;
   color: #0a0a1a;
