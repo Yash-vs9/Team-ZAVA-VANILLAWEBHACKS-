@@ -1,0 +1,176 @@
+:root {
+  --cyber-primary: #00ffff;
+  --cyber-secondary: #ff00ff;
+  --cyber-accent: #ffff00;
+  --cyber-danger: #ff0040;
+  --cyber-success: #00ff40;
+  --cyber-background: #0a0a0f;
+  --cyber-surface: #151520;
+  --cyber-border: #2a2a3f;
+  --cyber-text-primary: #e0e0ff;
+  --cyber-text-secondary: #a0a0c0;
+  --cyber-radius: 14px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+}
+
+
+body {
+  background: var(--cyber-background);
+  color: var(--cyber-text-primary);
+  font-family: 'Orbitron', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(0,255,255,0.08) 0%, transparent 64%),
+    radial-gradient(circle at 80% 20%, rgba(255,0,255,0.06) 0%, transparent 64%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.015) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+
+.container {
+  max-width: 1100px;
+  margin: 3em auto;
+  background: rgba(21,21,32,0.96);
+  border-radius: var(--cyber-radius);
+  box-shadow: 0 0 20px 4px rgba(0,255,255,0.15);
+  padding: 2em;
+}
+
+
+.section-header {
+  text-align: center;
+  margin-bottom: var(--space-32);
+}
+
+.section-title {
+  font-size: 2em;
+  font-family: 'Orbitron', Arial, sans-serif;
+  color: var(--cyber-primary);
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 8px #00ffc3;
+  margin-bottom: var(--space-16);
+  text-transform: uppercase;
+}
+
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-24);
+}
+
+.game-card {
+  background: linear-gradient(120deg, #17182c 75%, #2a1a36 100%);
+  border-radius: var(--cyber-radius);
+  box-shadow: 0 4px 18px rgba(0,255,255,0.12);
+  border: 1px solid var(--cyber-border);
+  padding: var(--space-32) var(--space-20);
+  text-align: center;
+  transition: transform 0.25s, box-shadow 0.25s, border 0.15s;
+  cursor: pointer;
+}
+
+.game-card:hover, .game-card:focus-within {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 6px 28px rgba(0,255,255,0.25), 0 0 18px rgba(255,0,255,0.15);
+  border: 1.5px solid var(--cyber-primary);
+}
+
+.game-icon {
+  font-size: 2.8rem;
+  margin-bottom: var(--space-20);
+  text-shadow: 0 0 6px var(--cyber-primary);
+}
+
+.game-card h3 {
+  font-family: 'Orbitron', Arial, sans-serif;
+  font-size: 1.2em;
+  color: var(--cyber-primary);
+  margin-bottom: var(--space-12);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px #00ffd3;
+}
+
+.game-card p {
+  color: var(--cyber-text-secondary);
+  margin-bottom: var(--space-20);
+  font-size: 0.95em;
+}
+
+
+.cyber-panel {
+  backdrop-filter: blur(1px);
+  border: 1px solid rgba(0,255,224,0.4);
+  box-shadow: 0 0 12px rgba(0,255,224,0.2);
+}
+
+
+.cyber-btn {
+  background: #231942;
+  color: #00ffff;
+  border: none;
+  padding: 0.9em 2em;
+  font-size: 1em;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(255,0,255,0.4), 0 0 14px rgba(0,255,211,0.4);
+  cursor: pointer;
+  font-family: 'Orbitron', Arial, sans-serif;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.cyber-btn:hover, .cyber-btn:focus {
+  background: #ff00a6;
+  color: #231942;
+  box-shadow: 0 0 18px rgba(0,255,211,0.4), 0 0 18px rgba(255,0,255,0.4);
+}
+
+
+.btn-glow {
+  position: absolute;
+  left: 10%;
+  bottom: -4px;
+  width: 80%;
+  height: 5px;
+  background: linear-gradient(90deg, #00fff5 10%, #ff00ff 90%);
+  filter: blur(6px);
+  opacity: 0.4;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .container {padding: 0.6em;}
+  .games-grid {grid-template-columns: 1fr;}
+  .game-card {margin-bottom: 1.5em;}
+}
+
+@media (max-width: 500px) {
+  .game-card {padding: var(--space-24) var(--space-12);}
+  .section-title {font-size: 1.2em;}
+  .game-icon {font-size: 2em;}
+}
