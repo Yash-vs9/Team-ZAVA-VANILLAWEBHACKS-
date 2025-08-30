@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDoS Defense Command Center</title>
+    <link rel="stylesheet" href="../css/ddos-defense.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loading-screen">
+
+        <div class="loading-content">
+            <div class="loading-logo">🛡️</div>
+            <div class="loading-text">INITIALIZING DEFENSE SYSTEMS...</div>
+            <button>STOP</button>
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <div id="main-interface" class="hidden">
+        <!-- Header -->
+        <header class="control-header">
+            <div class="header-left">
+                <h1>🛡️ DDoS Defense Command Center</h1>
+                <div class="system-status">
+                    <span class="status-indicator" id="system-status">READY</span>
+                    <span class="uptime">Uptime: <span id="uptime">00:00:00</span></span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="alert-level">
+                    <span>Threat Level:</span>
+                    <div class="threat-indicator" id="threat-level">LOW</div>
+                </div>
+                <button class="emergency-btn" id="emergency-mode">🚨 EMERGENCY MODE</button>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <div class="dashboard">
+            <!-- Left Panel - Attack Monitoring -->
+            <section class="monitoring-panel">
+                <h2>🔍 Attack Monitoring</h2>
+                
+                <!-- Real-time Traffic Graph -->
+                <div class="traffic-monitor">
+                    <h3>Network Traffic & Performance</h3>
+                    <canvas id="traffic-chart" width="400" height="200"></canvas>
+                    <div class="traffic-stats">
+                        <div class="stat">
+                            <span class="stat-label">Current RPS:</span>
+                            <span class="stat-value" id="current-rps">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Peak RPS:</span>
+                            <span class="stat-value" id="peak-rps">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Avg Latency:</span>
+                            <span class="stat-value" id="avg-latency">0ms</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Blocked:</span>
+                            <span class="stat-value" id="blocked-requests">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">Allowed:</span>
+                            <span class="stat-value" id="allowed-requests">0</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-label">False Positives:</span>
+                            <span class="stat-value" id="false-positives">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attack Types Detection -->
+                <div class="attack-detection">
+                    <h3>Attack Type Analysis</h3>
+                    <div class="attack-types" id="attack-types">
+                        <div class="attack-type">
+                            <span class="attack-name">Volumetric</span>
+                            <div class="attack-bar">
+                                <div class="attack-fill" data-type="volumetric"></div>
+                            </div>
+                            <span class="attack-percentage">0%</span>
+                        </div>
+                        <div class="attack-type">
+                            <span class="attack-name">Protocol</span>
+                            <div class="attack-bar">
+                                <div class="attack-fill" data-type="protocol"></div>
+                            </div>
+                            <span class="attack-percentage">0%</span>
+                        </div>
+                        <div class="attack-type">
+                            <span class="attack-name">Application</span>
+                            <div class="attack-bar">
+                                <div class="attack-fill" data-type="application"></div>
+                            </div>
+                            <span class="attack-percentage">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geographic Attack Map -->
+                <div class="geo-attacks">
+                    <h3>Attack Sources</h3>
+                    <div class="world-map" id="attack-map">
+                        <div class="attack-point" style="top: 30%; left: 20%;" data-country="US"></div>
+                        <div class="attack-point" style="top: 25%; left: 60%;" data-country="RU"></div>
+                        <div class="attack-point" style="top: 45%; left: 70%;" data-country="CN"></div>
+                        <div class="attack-point" style="top: 55%; left: 15%;" data-country="BR"></div>
+                    </div>
+                    <div class="attack-sources" id="attack-sources">
+                        <div class="source-item">🇺🇸 United States: <span>0 attacks</span></div>
+                        <div class="source-item">🇷🇺 Russia: <span>0 attacks</span></div>
+                        <div class="source-item">🇨🇳 China: <span>0 attacks</span></div>
+                        <div class="source-item">🇧🇷 Brazil: <span>0 attacks</span></div>
+                    </div>
+                </div>
+
+                <!-- Live Attack Log -->
+                <div class="attack-log">
+                    <h3>Live Attack Log</h3>
+                    <div class="log-container" id="attack-log">
+                        <!-- Attack logs will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel - Defense Configuration -->
+            <section class="defense-panel">
+                <h2>⚙️ Defense Configuration</h2>
+
+                <!-- Firewall Settings -->
+                <div class="defense-module">
+                    <div class="module-header">
+                        <h3>🔥 Firewall & Rate Limiting</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="firewall-enabled" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-content">
+                        <div class="setting-group">
+                            <label>Rate Limit (requests/sec):</label>
+                            <input type="range" id="rate-limit" min="10" max="1000" value="100">
+                            <span class="setting-value" id="rate-limit-value">100</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Timeout Duration (seconds):</label>
+                            <input type="range" id="timeout-duration" min="1" max="300" value="60">
+                            <span class="setting-value" id="timeout-value">60</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Geo-blocking:</label>
+                            <select id="geo-blocking" multiple>
+                                <option value="CN">China</option>
+                                <option value="RU">Russia</option>
+                                <option value="KP">North Korea</option>
+                                <option value="IR">Iran</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DDoS Protection -->
+                <div class="defense-module">
+                    <div class="module-header">
+                        <h3>🛡️ DDoS Protection</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ddos-protection">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-content">
+                        <div class="setting-group">
+                            <label>Detection Sensitivity:</label>
+                            <input type="range" id="detection-sensitivity" min="1" max="10" value="5">
+                            <span class="setting-value" id="detection-sensitivity-value">5</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Blackhole Routing:</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="blackhole-routing">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="setting-group">
+                            <label>SYN Flood Protection:</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="syn-flood-protection">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load Balancer -->
+                <div class="defense-module">
+                    <div class="module-header">
+                        <h3>⚖️ Load Balancer</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="loadbalancer-enabled">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-content">
+                        <div class="setting-group">
+                            <label>Number of Servers:</label>
+                            <input type="range" id="server-count" min="1" max="10" value="3">
+                            <span class="setting-value" id="server-count-value">3</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Load Distribution:</label>
+                            <select id="load-distribution">
+                                <option value="round-robin">Round Robin</option>
+                                <option value="least-connections">Least Connections</option>
+                                <option value="weighted">Weighted</option>
+                            </select>
+                        </div>
+                        <div class="server-health" id="server-health">
+                            <!-- Server health indicators -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CDN & Caching -->
+                <div class="defense-module">
+                    <div class="module-header">
+                        <h3>🌐 CDN & Caching</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="cdn-enabled">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-content">
+                        <div class="setting-group">
+                            <label>Cache TTL (minutes):</label>
+                            <input type="range" id="cache-ttl" min="1" max="1440" value="60">
+                            <span class="setting-value" id="cache-ttl-value">60</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Edge Locations:</label>
+                            <input type="range" id="edge-locations" min="1" max="20" value="5">
+                            <span class="setting-value" id="edge-locations-value">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Filtering -->
+                <div class="defense-module">
+                    <div class="module-header">
+                        <h3>🔍 Advanced Filtering</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="advanced-filtering">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="module-content">
+                        <div class="setting-group">
+                            <label>Bot Detection Sensitivity:</label>
+                            <input type="range" id="bot-detection" min="1" max="10" value="5">
+                            <span class="setting-value" id="bot-detection-value">5</span>
+                        </div>
+                        <div class="setting-group">
+                            <label>Captcha Threshold:</label>
+                            <input type="range" id="captcha-threshold" min="10" max="100" value="50">
+                            <span class="setting-value" id="captcha-threshold-value">50</span>
+                        </div>
+                        <div class="filter-rules">
+                            <h4>Custom Rules:</h4>
+                            <textarea id="custom-rules" placeholder="Enter custom filtering rules..."># Block suspicious user agents
+User-Agent: *bot*
+# Block rapid requests from same IP
+Rate: >100/min</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="control-buttons">
+                    <button class="btn btn-primary" id="apply-config">Apply Configuration</button>
+                    <button class="btn btn-secondary" id="reset-config">Reset to Default</button>
+                    <button class="btn btn-warning" id="test-defense">Test Defense</button>
+                </div>
+            </section>
+
+            <!-- Right Panel - System Status -->
+            <section class="status-panel">
+                <h2>📊 System Status</h2>
+
+                <!-- Defense Effectiveness -->
+                <div class="effectiveness-meter">
+                    <h3>Defense Effectiveness</h3>
+                    <div class="effectiveness-circle">
+                        <svg viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#333" stroke-width="8"/>
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff00" stroke-width="8" 
+                                    stroke-dasharray="283" stroke-dashoffset="283" id="effectiveness-circle"/>
+                        </svg>
+                        <div class="effectiveness-text">
+                            <span class="effectiveness-value" id="effectiveness-value">0</span>
+                            <span class="effectiveness-label">%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resource Usage -->
+                <div class="resource-usage">
+                    <h3>Resource Usage</h3>
+                    <div class="resource-item">
+                        <span>CPU Usage:</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="cpu-usage"></div>
+                        </div>
+                        <span class="resource-value" id="cpu-value">0%</span>
+                    </div>
+                    <div class="resource-item">
+                        <span>Memory Usage:</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="memory-usage"></div>
+                        </div>
+                        <span class="resource-value" id="memory-value">0%</span>
+                    </div>
+                    <div class="resource-item">
+                        <span>Bandwidth:</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="bandwidth-usage"></div>
+                        </div>
+                        <span class="resource-value" id="bandwidth-value">0%</span>
+                    </div>
+                    <div class="resource-item">
+                        <span>Connections:</span>
+                        <div class="resource-bar">
+                            <div class="resource-fill" id="connection-usage"></div>
+                        </div>
+                        <span class="resource-value" id="connection-value">0</span>
+                    </div>
+                </div>
+
+                <!-- Active Defenses -->
+                <div class="active-defenses">
+                    <h3>Active Defenses</h3>
+                    <div class="defense-list" id="defense-list">
+                        <div class="defense-item" data-defense="firewall">
+                            <span class="defense-icon">🔥</span>
+                            <span class="defense-name">Firewall</span>
+                            <span class="defense-status">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Attack Scenarios -->
+                <div class="attack-scenarios">
+                    <h3>🎯 Training Scenarios</h3>
+                    <div class="scenario-buttons">
+                        <button class="scenario-btn" data-scenario="light">Light Attack</button>
+                        <button class="scenario-btn" data-scenario="moderate">Moderate Attack</button>
+                        <button class="scenario-btn" data-scenario="severe">Severe Attack</button>
+                        <button class="scenario-btn" data-scenario="advanced">Advanced Persistent</button>
+                    </div>
+                </div>
+
+                <!-- Score & Achievements -->
+                <div class="score-section">
+                    <h3>🏆 Performance Score</h3>
+                    <div class="score-display">
+                        <div class="score-value" id="total-score">0</div>
+                        <div class="score-label">Total Score</div>
+                    </div>
+                    <div class="achievements" id="achievements">
+                        <div class="achievement locked" data-achievement="first-defense">
+                            <span class="achievement-icon">🛡️</span>
+                            <span class="achievement-name">First Defense</span>
+                        </div>
+                        <div class="achievement locked" data-achievement="perfect-defense">
+                            <span class="achievement-icon">💯</span>
+                            <span class="achievement-name">Perfect Defense</span>
+                        </div>
+                        <div class="achievement locked" data-achievement="master-defender">
+                            <span class="achievement-icon">👑</span>
+                            <span class="achievement-name">Master Defender</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Attack Alert Modal -->
+        <div class="alert-modal hidden" id="attack-alert">
+            <div class="alert-content">
+                <div class="alert-header">
+                    <span class="alert-icon">🚨</span>
+                    <h3>DDoS Attack Detected!</h3>
+                </div>
+                <div class="alert-body">
+                    <p id="alert-message">High volume attack detected from multiple sources.</p>
+                    <div class="alert-stats">
+                        <div class="alert-stat">
+                            <span>Attack Volume:</span>
+                            <span id="alert-volume">0 RPS</span>
+                        </div>
+                        <div class="alert-stat">
+                            <span>Sources:</span>
+                            <span id="alert-sources">0</span>
+                        </div>
+                        <div class="alert-stat">
+                            <span>Type:</span>
+                            <span id="alert-type">Unknown</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert-actions">
+                    <button class="btn btn-danger" id="activate-emergency">Activate Emergency Mode</button>
+                    <button class="btn btn-secondary" id="dismiss-alert">Dismiss</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Tooltips -->
+        <div class="tooltip hidden" id="tooltip">
+            <div class="tooltip-content"></div>
+        </div>
+    </div>
+
+    <script src="../js/ddos-defense.js"></script>
+</body>
+</html>
