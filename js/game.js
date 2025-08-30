@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const nodes = document.querySelectorAll(".network-node");
       const networkScoreEl = document.getElementById('networkGameScore');
       let networkScore = 0;
-      const maxThreats = 5;
+      const maxThreats = 4;
       let time=30;
       let threats = [];
       
@@ -137,9 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // --- Network Defense Simulator Logic ---
       const threatTypes = [
-        {type: "malware", label: "Malware", icon: "🐛", severity: "high"},
         {type: "unauthorized", label: "Unauthorized Access", icon: "👤", severity: "medium"},
-        {type: "data_exfiltration", label: "Data Exfiltration", icon: "📤", severity: "critical"},
         {type: "phishing", label: "Phishing", icon: "🎣", severity: "medium"},
         {type: "hacking", label: "Hacking", icon: "💀", severity: "high"},
         {type: "ddos", label: "DDoS", icon: "🌐", severity: "high"},
@@ -164,7 +162,9 @@ nodes.forEach(node => {
         node.classList.remove("drag-over");
 
         const threatType = e.dataTransfer.getData("type").toLowerCase();
+        const validThreatIndex = threats.findIndex(t => t.type.toLowerCase() === threatType);
 
+        if (validThreatIndex === -1) return;
         // Check if this threat exists in threatTypes array
         const validThreat = threatTypes.find(t => t.type.toLowerCase() === threatType);
 
@@ -179,6 +179,16 @@ nodes.forEach(node => {
         if (accepted.includes(threatType)) {
             node.style.backgroundColor = "#00ff40";
             alert(`Successfully blocked ${validThreat.label} on ${node.querySelector("label").innerText}`);
+            // Remove from array
+
+
+        // Re-render threats
+
+            networkScore+=1;
+            if(networkScore==4){
+                alert("You win!")
+                resetNetworkGame()
+            }
         } else {
             node.style.backgroundColor = "#ff0040";
             alert(`Failed! ${validThreat.label} cannot be dropped on ${node.querySelector("label").innerText}`);
@@ -205,6 +215,7 @@ nodes.forEach(node => {
       }
       
       function resetNetworkGame() {
+        console.log(networkScore)
         time=30
         networkScore = 0;
         networkScoreEl.textContent = networkScore;
@@ -240,7 +251,7 @@ nodes.forEach(node => {
       function generateThreats(count) {
         const arr = [];
         for (let i = 0; i < count; i++) {
-          const threat = threatTypes[Math.floor(Math.random() * threatTypes.length)];
+          const threat = threatTypes[i];
           arr.push(Object.assign({}, threat));
         }
         return arr;
