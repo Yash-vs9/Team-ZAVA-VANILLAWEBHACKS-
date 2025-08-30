@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cyber-Guardian</title>
-  <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/LandingPage.css">
+  <!-- Use font-display: swap in Google Fonts link -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../css/LandingPage.css" />
 </head>
 <body>
   <!-- Navigation -->
@@ -13,11 +17,13 @@
   <nav class="navbar">
     <div class="logo">
       <span class="hexagon">
-        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,3 29,11 29,25 16,31 3,25 3,11" fill="#a259ec"/></svg>
+        <svg width="32" height="32" viewBox="0 0 32 32">
+          <polygon points="16,3 29,11 29,25 16,31 3,25 3,11" fill="#a259ec" />
+        </svg>
       </span>
       <span class="logo-text">Cyber-Guardian</span>
     </div>
-   
+
     <div>
       <a href="#" class="contact-btn">Contact Us</a>
     </div>
@@ -27,11 +33,12 @@
   <section class="hero">
     <div class="hero-content">
       <h1>
-        One Platform,<br>
+        One Platform,<br />
         <span class="gradient-text">Endless Possibilities</span>
       </h1>
       <p class="subtext">
-        From automation to collaboration, our solution empowers your team to work smarter, not harder. Discover the endless possibilities waiting for you.
+        From automation to collaboration, our solution empowers your team to work
+        smarter, not harder. Discover the endless possibilities waiting for you.
       </p>
       <div class="hero-actions">
         <a href="./home.html" class="main-btn">Get Started Now</a>
@@ -45,16 +52,45 @@
   <section class="logos-section">
     <p class="logos-text">Backed by 200+ Growing Businesses</p>
     <div class="logos-row">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/notion/notion-original.svg" alt="Notion logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/slack/slack-original.svg" alt="Slack logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/shopify/shopify-original.svg" alt="Shopify logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg" alt="OpenAI logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hp/hp-original.svg" alt="HP logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/netflix/netflix-original.svg" alt="Netflix logo"/>
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Chrome logo"/>
+      <img
+        src="../assets/icons8-notion.svg"
+        alt="Notion logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-slack-new.svg"
+        alt="Slack logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-shopify.svg"
+        alt="Shopify logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-chatgpt.svg"
+        alt="OpenAI logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-hp.svg"
+        alt="HP logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-netflix.svg"
+        alt="Netflix logo"
+        loading="lazy"
+      />
+      <img
+        src="../assets/icons8-chrome.svg"
+        alt="Chrome logo"
+        loading="lazy"
+      />
     </div>
   </section>
 
-  <script src="../js/LandingPage.js"></script>
+  <!-- Defer non-critical JS -->
+  <script src="../js/LandingPage.js" defer></script>
 </body>
 </html>
