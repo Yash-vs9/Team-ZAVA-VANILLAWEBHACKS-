@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let passwordScore = 0;
       let passwordAttempt = 1;
       const maxPasswordAttempts = 5;
+
       
       // --- Network Defense Simulator Setup ---
       const networkGameModal = document.getElementById('networkGame');
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const networkScoreEl = document.getElementById('networkGameScore');
       let networkScore = 0;
       const maxThreats = 4;
+      let intervalId;
       let time=30;
       let threats = [];
       
@@ -125,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Close buttons for all modals
       document.querySelectorAll('.close-btn').forEach(btn => {
+
         btn.addEventListener('click', function() {
           const modalId = btn.getAttribute('data-close');
           const modal = document.getElementById(modalId);
@@ -185,9 +188,13 @@ nodes.forEach(node => {
         // Re-render threats
 
             networkScore+=1;
+            networkScoreEl.innerHTML=networkScore
+            threatCountEl.innerHTML=4-networkScore
             if(networkScore==4){
+                clearInterval(intervalId); 
                 alert("You win!")
-                resetNetworkGame()
+                hideModal(networkGameModal); 
+                resetNetworkGame(networkGameModal)
             }
         } else {
             node.style.backgroundColor = "#ff0040";
@@ -195,7 +202,7 @@ nodes.forEach(node => {
         }
     });
 });
-        const intervalId = setInterval(() => {
+            intervalId = setInterval(() => {
             time-=1;
 
             timer.innerHTML=time;
@@ -214,11 +221,14 @@ nodes.forEach(node => {
         startNetworkGameBtn.disabled = true;
       }
       
-      function resetNetworkGame() {
+      function resetNetworkGame(modal) {
         console.log(networkScore)
+        clearInterval(intervalId)
         time=30
+        nodes.forEach(node => node.style.backgroundColor = '');
         networkScore = 0;
         networkScoreEl.textContent = networkScore;
+        hideModal(modal)
         threatCountEl.textContent = maxThreats;
         threatItemsEl.innerHTML = '';
         startNetworkGameBtn.disabled = false;
