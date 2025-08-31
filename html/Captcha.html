@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSec CAPTCHA - Bot Detection System</title>
+    <link rel="stylesheet" href="../css/Captcha.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="header-title">
+                    <span class="cyber-icon">🛡️</span>
+                    CyberSec CAPTCHA
+                </h1>
+                <p class="header-subtitle">Advanced Bot Detection System</p>
+            </div>
+            <div class="header-controls">
+                <button class="btn btn--outline btn--sm" id="demoBtn">Demo Mode</button>
+                <button class="btn btn--outline btn--sm" id="settingsBtn">Settings</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Instructions -->
+            <div class="instructions card">
+                <div class="card__body">
+                    <h2>🎯 Mission Instructions</h2>
+                    <p>Draw a straight line from <strong class="text-success">START</strong> to <strong class="text-danger">END</strong> to prove you're human. Our advanced behavioral analysis will detect bot-like movements.</p>
+                    <div class="instruction-steps">
+                        <span class="step">1. Click and hold on START</span>
+                        <span class="step">2. Draw toward END</span>
+                        <span class="step">3. Release at END</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="canvas-container">
+                <div class="canvas-header">
+                    <h3>Drawing Area</h3>
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Ready to draw</span>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="drawingCanvas" width="800" height="400"></canvas>
+                    <div class="canvas-overlay" id="canvasOverlay">
+                        <div class="start-indicator">START</div>
+                        <div class="end-indicator">END</div>
+                    </div>
+                </div>
+                <div class="canvas-controls">
+                    <button class="btn btn--secondary" id="resetBtn">Reset</button>
+                    <button class="btn btn--primary" id="analyzeBtn" disabled>Analyze Results</button>
+                </div>
+            </div>
+
+            <!-- Real-time Metrics -->
+            <div class="metrics-panel">
+                <h3>Real-time Analysis</h3>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Deviation</div>
+                        <div class="metric-value" id="deviationMetric">0px</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="deviationBar"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Speed Variance</div>
+                        <div class="metric-value" id="speedMetric">0.0</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="speedBar"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Jitter</div>
+                        <div class="metric-value" id="jitterMetric">0</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="jitterBar"></div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Efficiency</div>
+                        <div class="metric-value" id="efficiencyMetric">100%</div>
+                        <div class="metric-bar">
+                            <div class="metric-fill" id="efficiencyBar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Panel -->
+            <div class="results-panel hidden" id="resultsPanel">
+                <div class="results-header">
+                    <div class="result-icon" id="resultIcon">❓</div>
+                    <div class="result-text">
+                        <h3 id="resultTitle">Analysis Complete</h3>
+                        <p id="resultSubtitle">Analyzing behavioral patterns...</p>
+                    </div>
+                    <div class="confidence-score">
+                        <div class="score-label">Human Score</div>
+                        <div class="score-value" id="confidenceScore">--</div>
+                    </div>
+                </div>
+                <div class="results-details">
+                    <div class="detail-section">
+                        <h4>Movement Analysis</h4>
+                        <div class="analysis-grid">
+                            <div class="analysis-item">
+                                <span class="analysis-label">Path Deviation:</span>
+                                <span class="analysis-value" id="finalDeviation">--</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Speed Consistency:</span>
+                                <span class="analysis-value" id="finalSpeed">--</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Natural Tremor:</span>
+                                <span class="analysis-value" id="finalTremor">--</span>
+                            </div>
+                            <div class="analysis-item">
+                                <span class="analysis-label">Path Efficiency:</span>
+                                <span class="analysis-value" id="finalEfficiency">--</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>Detection Factors</h4>
+                        <div id="detectionFactors"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Demo Modal -->
+        <div class="modal hidden" id="demoModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Demo: Human vs Bot Behavior</h3>
+                    <button class="modal-close" id="closeDemoModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <p>Watch how human and bot movements differ in our detection system:</p>
+                    <div class="demo-controls">
+                        <button class="btn btn--primary" id="playHumanDemo">Play Human Demo</button>
+                        <button class="btn btn--secondary" id="playBotDemo">Play Bot Demo</button>
+                    </div>
+                    <div class="demo-canvas-wrapper">
+                        <canvas id="demoCanvas" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal hidden" id="settingsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Detection Settings</h3>
+                    <button class="modal-close" id="closeSettingsModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label">Deviation Threshold (pixels)</label>
+                        <input type="range" class="form-control" id="deviationThreshold" min="1" max="50" value="20">
+                        <span class="range-value" id="deviationValue">20</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Speed Variance Threshold</label>
+                        <input type="range" class="form-control" id="speedThreshold" min="0.1" max="1" step="0.1" value="0.5">
+                        <span class="range-value" id="speedValue">0.5</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jitter Sensitivity</label>
+                        <input type="range" class="form-control" id="jitterThreshold" min="1" max="20" value="8">
+                        <span class="range-value" id="jitterValue">8</span>
+                    </div>
+                    <button class="btn btn--primary" id="saveSettings">Save Settings</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Backdrop -->
+        <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+    </div>
+
+    <script src="../js/Captcha.js"></script>
+</body>
+</html>
