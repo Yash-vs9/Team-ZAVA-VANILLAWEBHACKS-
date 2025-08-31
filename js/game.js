@@ -3,42 +3,79 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Phishing Detection Game Setup ---
     const phishingEmails = [
-        {
-          sender: "security@yourbank-ver1fy.com",
-          subject: "URGENT: Account Suspension Notice",
-          body: "Your account will be suspended in 24 hours. Click now to verify your credentials.",
-          phishing: true,
-          feedback: "Domain is misspelled and message uses urgent language."
-        },
-        {
-          sender: "info@company.com",
-          subject: "Team meeting update",
-          body: "Reminder: Meeting at 2pm in HQ. Please attend on time.",
-          phishing: false,
-          feedback: "Legitimate internal message."
-        },
-        {
-          sender: "admin@paypal-secure.net",
-          subject: "Unusual Activity Detected",
-          body: "Please confirm your credentials to avoid being locked out.",
-          phishing: true,
-          feedback: "Fake domain and threatening message."
-        },
-        {
-          sender: "hr@company.com",
-          subject: "Annual Leave Policy",
-          body: "Read the updated leave policy. Let us know if you have questions.",
-          phishing: false,
-          feedback: "Typical HR communication."
-        },
-        {
-          sender: "amazon-secure@amaz0n.com",
-          subject: "Refund processed",
-          body: "We've processed your refund. Click here to see transaction details.",
-          phishing: true,
-          feedback: "Domain uses zero instead of 'o' (amaz0n)."
-        }
-      ];
+      {
+        sender: "security@yourbank-ver1fy.com",
+        subject: "URGENT: Account Suspension Notice",
+        body: "Your account will be suspended in 24 hours. Click now to verify your credentials.",
+        phishing: true,
+        feedback: "Domain is misspelled and message uses urgent language."
+      },
+      {
+        sender: "info@company.com",
+        subject: "Team meeting update",
+        body: "Reminder: Meeting at 2pm in HQ. Please attend on time.",
+        phishing: false,
+        feedback: "Legitimate internal message."
+      },
+      {
+        sender: "admin@paypal-secure.net",
+        subject: "Unusual Activity Detected",
+        body: "Please confirm your credentials to avoid being locked out.",
+        phishing: true,
+        feedback: "Fake domain and threatening message."
+      },
+      {
+        sender: "hr@company.com",
+        subject: "Annual Leave Policy",
+        body: "Read the updated leave policy. Let us know if you have questions.",
+        phishing: false,
+        feedback: "Typical HR communication."
+      },
+      {
+        sender: "amazon-secure@amaz0n.com",
+        subject: "Refund processed",
+        body: "We've processed your refund. Click here to see transaction details.",
+        phishing: true,
+        feedback: "Domain uses zero instead of 'o' (amaz0n)."
+      },
+      // Additional examples
+      {
+        sender: "support@faceb00k.com",
+        subject: "Your account has been locked",
+        body: "We detected suspicious activity. Login now to secure your account.",
+        phishing: true,
+        feedback: "Fake domain uses zeros in 'facebook'."
+      },
+      {
+        sender: "newsletter@company.com",
+        subject: "Monthly Newsletter - October Edition",
+        body: "Here's what's new this month at the company.",
+        phishing: false,
+        feedback: "Standard newsletter email."
+      },
+      {
+        sender: "security-alert@apple.com",
+        subject: "Important: Verify Your Apple ID",
+        body: "Your Apple ID has suspicious activity. Verify your account immediately.",
+        phishing: true,
+        feedback: "Official company domain misused with alarming language."
+      },
+      {
+        sender: "service@netflix.com",
+        subject: "Subscription renewal confirmation",
+        body: "Your subscription has been renewed successfully.",
+        phishing: false,
+        feedback: "Genuine subscription confirmation email."
+      },
+      {
+        sender: "updates@goog1e.com",
+        subject: "Password reset required",
+        body: "Your password expired. Click link to reset password.",
+        phishing: true,
+        feedback: "Fake Google domain with number '1' instead of letter 'l'."
+      }
+    ];
+    
       
       let phishingIndex = 0;
       let phishingScore = 0;
@@ -290,7 +327,19 @@ nodes.forEach(node => {
       startNetworkGameBtn.addEventListener('click', startNetworkGame);
       
       // --- Phishing Game Functions ---
+      let selectedPhishingEmails = [];
+
+      function getRandomEmails(arr, n) {
+        const shuffled = arr.slice();  // copy array
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, n);
+      }
+      
       function startPhishingGame() {
+        selectedPhishingEmails = getRandomEmails(phishingEmails, 5);
         phishingIndex = 0;
         phishingScore = 0;
         phishingScoreEl.textContent = phishingScore;
@@ -299,21 +348,51 @@ nodes.forEach(node => {
         markSafeBtn.disabled = false;
         markPhishingBtn.disabled = false;
       }
+      function showNotification(title, message) {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <h4>${title}</h4>
+                <p>${message}</p>
+            </div>
+        `;
+        notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+  background: rgba(41, 37, 80, 0.85); /* Dark semi-transparent background */
+        color: var(--text-primary);
+        border-left: 6px solid var(--accent-green);
+        border-radius: 6px;
+        padding: 1rem 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        max-width: 300px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        z-index: 10000;
+        animation: slideIn 0.4s ease forwards, fadeOut 0.3s ease 2.7s forwards;
+      `;
       
+
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
       function showPhishingQuestion() {
-        if (phishingIndex >= phishingEmails.length) {
-          emailSenderEl.textContent = '';
-          emailSubjectEl.textContent = '';
-          emailBodyEl.textContent = '';
-          feedbackPanelPhishing.classList.remove('hidden');
-          feedbackContentPhishing.innerHTML = `<h3>Training Complete!</h3>
-            <p>Your final score: <strong style="color:#00ffff">${phishingScore}</strong> out of ${phishingEmails.length}</p>`;
-          markSafeBtn.disabled = true;
-          markPhishingBtn.disabled = true;
-          nextBtnPhishing.disabled = true;
-          return;
+        if (phishingIndex >= selectedPhishingEmails.length) {
+          showNotification("Phishing Game Completed","You scored "+phishingScore+"/5")
+          hideModal(phishingGameModal)
+          return
         }
-        const email = phishingEmails[phishingIndex];
+        const email = selectedPhishingEmails[phishingIndex];
         emailSenderEl.textContent = email.sender;
         emailSubjectEl.textContent = email.subject;
         emailBodyEl.textContent = email.body;
@@ -323,6 +402,7 @@ nodes.forEach(node => {
         markPhishingBtn.disabled = false;
         nextBtnPhishing.disabled = true;
       }
+      
       
       function handlePhishingAnswer(isPhishing) {
         const email = phishingEmails[phishingIndex];
