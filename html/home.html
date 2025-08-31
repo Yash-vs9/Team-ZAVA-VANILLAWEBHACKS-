@@ -1,95 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cyber-Guardian Home</title>
-  <link href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/home.css" />
-</head>
-<body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="logo">
-      <span class="hexagon">
-        <svg width="32" height="32" viewBox="0 0 32 32"><polygon points="16,3 29,11 29,25 16,31 3,25 3,11" fill="#a259ec"/></svg>
-      </span>
-      <span class="logo-text">Cyber-Guardian</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="#" class="active">Home</a></li>
-      <li><a href="./Dashboard.html">DashBoard</a></li>
-      <li><a href="./game.html">Games</a></li>
-      <li><a href="./Learn.html">Learn</a></li>
-       <li><a href="leaderboard.html" class="nav-item">Elite Board</a></li>
-    </ul>
-    <div>
-      <a href="#" class="contact-btn">Contact Us</a>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>
-       Don't Panic <br />
-        <span class="gradient-text">Take Control</span>
-      </h1>
-      <p class="subtext">
-        Cyberattacks are real , but you can defend yourself.<br/>
-        Learn how to protect your System with Cyber-Guardian.<br/>
-        Protecting your digital world with cutting-edge cybersecurity solutions. Stay secure, stay confident.
-      </p>
-      <div class="hero-actions">
-        <a href="./game.html" class="main-btn">Get Started With Games</a>
-        <a href="./Learn.html" class="outline-btn">Learn More</a>
-      </div>
-    </div>
-    <canvas id="stars-bg"></canvas>
-  </section>
-
-  <!-- Features Section -->
-  <section class="features-section">
-    <h2 class="section-title">Our Features</h2>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="icon-circle gradient-bg">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l9 4.9v9.8L12 22"></path>
-            <path d="M12 2L3 6.9v9.8L12 22z"></path>
-            <path d="M12 12v10"></path>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cyber-Guardian Home</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter:400,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/home.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="logo">
+        <span class="hexagon">
+          <svg width="32" height="32" viewBox="0 0 32 32">
+            <polygon points="16,3 29,11 29,25 16,31 3,25 3,11" fill="#00cfff" />
           </svg>
-        </div>
-        <h3>Advanced Security</h3>
-        <p>Keep your data safe with our state-of-the-art encryption and threat detection systems.</p>
+        </span>
+        <span class="logo-text">Cyber-Guardian</span>
       </div>
-      <div class="feature-card">
-        <div class="icon-circle gradient-bg">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
-          </svg>
-        </div>
-        <h3>Real-time Monitoring</h3>
-        <p>Receive instant alerts and insights to keep you ahead of potential threats.</p>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="./Dashboard.html">DashBoard</a></li>
+        <li><a href="./game.html">Games</a></li>
+        <li><a href="./Learn.html">Learn</a></li>
+        <li><a href="leaderboard.html">Elite Board</a></li>
+        <li><a href="./ddos-defence.html">DDOS</a></li>
+      </ul>
+      <div>
+        <a href="#" class="contact-btn">Contact Us</a>
       </div>
-      <div class="feature-card">
-        <div class="icon-circle gradient-bg">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 9l6 6 6-6"></path>
-          </svg>
-        </div>
-        <h3>Easy Integration</h3>
-        <p>Seamlessly connect with your existing tools and platforms for smooth workflows.</p>
-      </div>
-    </div>
-  </section>
+    </nav>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2025 Cyber-Guardian. All rights reserved.</p>
-  </footer>
+    <!-- Hero Section -->
+    <section class="hero">
+      <!-- Stars background -->
+      <canvas id="stars-bg"></canvas>
 
-  <script src="../js/LandingPage.js"></script>
-</body>
+      <div class="hero-content">
+        <h1>
+          Don't Panic
+          <span class="gradient-text">Take Control</span>
+        </h1>
+        <p class="subtext">
+          Cyberattacks are real, but you can defend yourself.<br />
+          Learn how to protect your System with Cyber-Guardian.<br />
+          Protecting your digital world with cutting-edge cybersecurity
+          solutions. Stay secure, stay confident.
+        </p>
+        <div class="hero-actions">
+          <a href="./game.html" class="main-btn">Get Started With Games</a>
+          <a href="./Learn.html" class="outline-btn">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+      <h2 class="section-title">Our Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon-circle gradient-bg">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 2l9 4.9v9.8L12 22"></path>
+              <path d="M12 2L3 6.9v9.8L12 22z"></path>
+              <path d="M12 12v10"></path>
+            </svg>
+          </div>
+          <h3>Advanced Security</h3>
+          <p>
+            Keep your data safe with our state-of-the-art encryption and threat
+            detection systems.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-circle gradient-bg">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+          </div>
+          <h3>Real-time Monitoring</h3>
+          <p>
+            Receive instant alerts and insights to keep you ahead of potential
+            threats.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-circle gradient-bg">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#fff"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </div>
+          <h3>Easy Integration</h3>
+          <p>
+            Seamlessly connect with your existing tools and platforms for smooth
+            workflows.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2025 Cyber-Guardian. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/home.js"></script>
+  </body>
 </html>

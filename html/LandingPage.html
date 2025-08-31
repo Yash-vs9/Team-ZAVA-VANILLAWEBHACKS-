@@ -19,6 +19,7 @@
       <div class="longfazers">
         <span></span><span></span><span></span><span></span>
       </div>
+      <div id="loading">Initializing...</div>
     </div>
 
     <!-- LANDING PAGE CONTENT -->
@@ -27,18 +28,59 @@
 
       <!-- Popup Overlay -->
       <div id="popup-overlay">
-        <div class="button-wrapper">
-          <button class="spiderverse-button">HACKED</button>
-          <div class="glitch-layers">
-            <div class="glitch-layer layer-1">HACKED</div>
-            <div class="glitch-layer layer-2">HACKED</div>
-          </div>
-        </div>
+       
       </div>
 
       <div id="vignette"></div>
     </div>
 
-    <script src="../js/LandingPage.js"></script>
-  </body>
+   
+
+
+    <!-- Panels -->
+      <div class="panel hacked">
+        <h3>ACCESS GRANTED</h3>
+        <pre>
+STATUS: SYSTEM BREACH
+OVERRIDE SUCCESSFUL
+NODE UNLOCKED: ROOT
+        </pre>
+      </div>
+
+      <div class="panel network">
+        <h3>NETWORK PROTOCOL ANALYZER</h3>
+        <pre>
+function scanPackets() {
+  let ip = "192.168.1.1";
+  console.log("Sniffing:", ip);
+}
+        </pre>
+      </div>
+
+      <div class="panel hardware">
+        <h3>SYSTEM HARDWARE ANALYZER</h3>
+        <pre>
+CPU: Intel i7 4.0GHz
+RAM: 16 GB
+GPU: NVIDIA RTX 3080
+TEMP: 67°C
+        </pre>
+      </div>
+
+      <div class="panel source">
+        <h3>SOURCE CODE ANALYZER</h3>
+        <pre>
+var net = require('net');
+server.on('connection', function(socket) {
+   socket.write("Hacked!\n");
+});
+        </pre>
+      </div>
+  <!-- Final Warning Panel -->
+    <div class="panel warning">
+      <h2>⚠ SYSTEM HACKED ⚠</h2>
+      <p>Critical Security Breach Detected</p>
+    </div>
+     <script src="../js/LandingPage.js"></script>
+</body>
 </html>
