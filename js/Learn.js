@@ -301,6 +301,9 @@ Type <span class="output-success">clear</span> to clear the terminal
             this.updateProgress();
             this.checkObjectiveCompletion(command);
             this.updateStats();
+            const completedArray = Array.from(this.completedCommands);
+            localStorage.setItem('cyberguard_completed_commands', JSON.stringify(completedArray));
+            console.log(`💻 Command completed: ${command}`);
         }
     }
 

@@ -99,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
       let bestPhishingScore=localStorage.getItem("phishingBestScore") || 0
       let time=30;
       let threats = [];
-      let correctAnswers = localStorage.getItem("correctAnswers") || 0;
       
       function showModal(modal) {
         modal.classList.remove('hidden');
@@ -228,10 +227,13 @@ nodes.forEach(node => {
       
       function resetNetworkGame(modal) {
         console.log(networkScore)
-        if(networkScore>bestNetworkScore){
-            localStorage.setItem("bestNetworkScore",networkScore)
+        if(networkScore > bestNetworkScore) {
+            localStorage.setItem("bestNetworkScore", networkScore);
+            bestNetworkScore = networkScore;
         }
-        localStorage.setItem("latestNetworkGame",networkScore)
+        localStorage.setItem("latestNetworkGame", networkScore);
+        console.log(`🛡️ Network completed: ${networkScore}/4`);
+        cyberDashboard.recordGameSession('network', networkScore);
         clearInterval(intervalId)
         time=30
         nodes.forEach(node => node.style.backgroundColor = '');
@@ -357,6 +359,7 @@ nodes.forEach(node => {
             localStorage.setItem("bestPhishingScore",phishingScore)
         }
         localStorage.setItem("latestPhishingScore",phishingScore)
+        window.cyberDashboard.recordGameSession('phishing', phishingScore);
         phishingIndex = 0;
         phishingScore = 0;
         phishingScoreEl.textContent = phishingScore;
@@ -365,6 +368,13 @@ nodes.forEach(node => {
         markSafeBtn.disabled = false;
         markPhishingBtn.disabled = false;
         nextBtnPhishing.disabled = true;
+        
+        localStorage.setItem("latestPhishingGame", phishingScore);
+        const currentBest = parseInt(localStorage.getItem("phishingBestScore")) || 0;
+        if(phishingScore > currentBest) {
+            localStorage.setItem("phishingBestScore", phishingScore);
+        }
+        console.log(`📧 Phishing completed: ${phishingScore}/5`);
       }
       
       // --- Password Fortress Functions ---
@@ -464,6 +474,13 @@ nodes.forEach(node => {
       });
       
       function resetPasswordGame() {
+        localStorage.setItem("latestPasswordGame", passwordScore);
+        const currentPasswordBest = parseInt(localStorage.getItem("passwordBestScore")) || 0;
+        if(passwordScore > currentPasswordBest) {
+            localStorage.setItem("passwordBestScore", passwordScore);
+        }
+        console.log(`🔐 Password completed: ${passwordScore}/5`);
+        cyberDashboard.recordGameSession('password', passwordScore);
         passwordScore = 0;
         passwordAttempt = 1;
         passwordScoreEl.textContent = passwordScore;
@@ -473,6 +490,6 @@ nodes.forEach(node => {
         submitPasswordBtn.disabled = false;
         nextPasswordBtn.disabled = true;
         updatePasswordStrength('');
-      }
+        }
   });
   
