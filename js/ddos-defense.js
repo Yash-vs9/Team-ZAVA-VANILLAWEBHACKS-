@@ -315,7 +315,6 @@ class DDoSDefenseSimulator {
             this.optimizeDefenses();
         }, 2000);
     }
-
     updateRealisticTrafficData() {
         const now = Date.now();
         
@@ -856,49 +855,51 @@ class DDoSDefenseSimulator {
             }
         }
     }
-
     startAttackScenario(scenario) {
+        // Clear existing timer if any
+        if (this.attackTimerInterval) {
+            clearInterval(this.attackTimerInterval);
+        }
+        
+        const timerElement = document.getElementById('attack-timer');
+        
         this.isAttackActive = true;
-        this.attackStartTime = Date.now();
         
+        // Define attack config
         let attackConfig;
-        
         switch (scenario) {
             case 'light':
                 attackConfig = {
                     type: 'volumetric',
                     intensity: 150 + Math.random() * 100,
-                    duration: 20 + Math.random() * 40,
+                    duration: 20,
                     sources: 50 + Math.random() * 100,
                     pattern: 'sustained'
                 };
                 break;
-                
             case 'moderate':
                 attackConfig = {
                     type: Math.random() < 0.6 ? 'volumetric' : 'protocol',
                     intensity: 400 + Math.random() * 300,
-                    duration: 45 + Math.random() * 90,
+                    duration: 45,
                     sources: 200 + Math.random() * 500,
                     pattern: Math.random() < 0.5 ? 'sustained' : 'burst'
                 };
                 break;
-                
             case 'severe':
                 attackConfig = {
                     type: ['volumetric', 'protocol'][Math.floor(Math.random() * 2)],
                     intensity: 800 + Math.random() * 700,
-                    duration: 90 + Math.random() * 180,
+                    duration: 90,
                     sources: 1000 + Math.random() * 2000,
                     pattern: 'adaptive'
                 };
                 break;
-                
             case 'advanced':
                 attackConfig = {
                     type: 'application',
                     intensity: 1200 + Math.random() * 800,
-                    duration: 180 + Math.random() * 300,
+                    duration: 180,
                     sources: 50 + Math.random() * 200,
                     pattern: 'adaptive'
                 };
@@ -907,22 +908,27 @@ class DDoSDefenseSimulator {
         
         this.currentAttackType = attackConfig.type;
         this.attackIntensity = attackConfig.intensity;
-        this.attackPattern = attackConfig.pattern;
         
         this.generateAttackSources(attackConfig.sources);
         
-        const attackType = this.attackTypes[attackConfig.type];
-        this.addLogEntry(`${attackType.name} detected - Intensity: ${Math.floor(attackConfig.intensity)} RPS`, 'blocked');
+        timerElement.innerHTML = attackConfig.duration;
         
-        if (scenario === 'severe' || scenario === 'advanced') {
-            setTimeout(() => this.showAttackAlert(), 2000);
-        }
+        let remaining = attackConfig.duration;
         
-        // Attack duration
-        setTimeout(() => {
-            this.endAttack(scenario);
-        }, attackConfig.duration * 1000);
+        this.attackTimerInterval = setInterval(() => {
+            remaining -= 1;
+            if (remaining >= 0) {
+                timerElement.innerHTML = remaining;
+            }
+            if (remaining <= 0) {
+                clearInterval(this.attackTimerInterval);
+                this.attackTimerInterval = null;
+                this.endAttack(scenario);
+                this.stopAttack();
+            }
+        }, 1000);
     }
+    
 
     generateAttackSources(count) {
         this.attackSources = [];
@@ -970,22 +976,22 @@ class DDoSDefenseSimulator {
     }
 
     updateGeoAttackDisplay() {
-        const attackSources = document.getElementById('attack-sources');
-        const countryCounts = {};
+        // const attackSources = document.getElementById('attack-sources');
+        // const countryCounts = {};
         
-        // Count attacks by country
-        this.attackSources.forEach(source => {
-            countryCounts[source.country] = (countryCounts[source.country] || 0) + 1;
-        });
+        // // Count attacks by country
+        // this.attackSources.forEach(source => {
+        //     countryCounts[source.country] = (countryCounts[source.country] || 0) + 1;
+        // });
         
-        // Update display
-        let html = '';
-        for (const [country, data] of Object.entries(this.geoSources)) {
-            const count = countryCounts[country] || 0;
-            html += `<div class="source-item">${data.flag} ${data.name}: <span>${count} attacks</span></div>`;
-        }
+        // // Update display
+        // let html = '';
+        // for (const [country, data] of Object.entries(this.geoSources)) {
+        //     const count = countryCounts[country] || 0;
+        //     html += `<div class="source-item">${data.flag} ${data.name}: <span>${count} attacks</span></div>`;
+        // }
         
-        attackSources.innerHTML = html;
+        // attackSources.innerHTML = html;
     }
 
     endAttack(scenario) {
@@ -1043,13 +1049,13 @@ class DDoSDefenseSimulator {
         defenseList.innerHTML = '';
         
         const defenses = [
-            { key: 'firewall', name: 'Firewall', icon: '🔥' },
-            { key: 'ddosProtection', name: 'DDoS Protection', icon: '🛡️' },
-            { key: 'loadBalancer', name: 'Load Balancer', icon: '⚖️' },
-            { key: 'cdn', name: 'CDN', icon: '🌐' },
-            { key: 'advancedFiltering', name: 'Advanced Filtering', icon: '🔍' },
-            { key: 'blackholRouting', name: 'Blackhole Routing', icon: '🕳️' },
-            { key: 'synFloodProtection', name: 'SYN Flood Protection', icon: '🚫' }
+            { key: 'firewall', name: 'Firewall', icon: '' },
+            { key: 'ddosProtection', name: 'DDoS Protection', icon: '' },
+            { key: 'loadBalancer', name: 'Load Balancer', icon: '' },
+            { key: 'cdn', name: 'CDN', icon: '' },
+            { key: 'advancedFiltering', name: 'Advanced Filtering', icon: '' },
+            { key: 'blackholRouting', name: 'Blackhole Routing', icon: '' },
+            { key: 'synFloodProtection', name: 'SYN Flood Protection', icon: '' }
         ];
         
         defenses.forEach(defense => {
@@ -1163,21 +1169,79 @@ class DDoSDefenseSimulator {
 
     testDefense() {
         this.addLogEntry('Running defense test...', 'allowed');
-        
+    
         const originalIntensity = this.attackIntensity;
         const originalAttackState = this.isAttackActive;
-        
         this.isAttackActive = true;
         this.attackIntensity = 300;
         this.currentAttackType = 'volumetric';
-        
-        setTimeout(() => {
-            this.isAttackActive = originalAttackState;
-            this.attackIntensity = originalIntensity;
-            this.addLogEntry('Defense test completed successfully', 'allowed');
-            this.stats.score += 5;
-        }, 5000);
+    
+        const timerElement = document.getElementById('attack-timer');
+        let remaining = 10; // test duration in seconds
+        timerElement.innerHTML = remaining;
+    
+        // Clear any existing timer interval if used elsewhere
+        if (this.attackTimerInterval) {
+            clearInterval(this.attackTimerInterval);
+        }
+    
+        this.attackTimerInterval = setInterval(() => {
+            remaining -= 1;
+            if (remaining >= 0) {
+                timerElement.innerHTML = remaining;
+            }
+            if (remaining <= 0) {
+                clearInterval(this.attackTimerInterval);
+                this.attackTimerInterval = null;
+    
+                // Restore original attack values and stop
+                this.isAttackActive = originalAttackState;
+                this.attackIntensity = originalIntensity;
+                this.addLogEntry('Defense test completed successfully', 'allowed');
+                this.stats.score += 5;
+    
+                this.stopAttack();
+            }
+        }, 1000);
     }
+    testDefense() {
+        this.addLogEntry('Running defense test...', 'allowed');
+    
+        const originalIntensity = this.attackIntensity;
+        const originalAttackState = this.isAttackActive;
+        this.isAttackActive = true;
+        this.attackIntensity = 300;
+        this.currentAttackType = 'volumetric';
+    
+        const timerElement = document.getElementById('attack-timer');
+        let remaining = 10; // test duration in seconds
+        timerElement.innerHTML = remaining;
+    
+        // Clear any existing timer interval if used elsewhere
+        if (this.attackTimerInterval) {
+            clearInterval(this.attackTimerInterval);
+        }
+    
+        this.attackTimerInterval = setInterval(() => {
+            remaining -= 1;
+            if (remaining >= 0) {
+                timerElement.innerHTML = remaining;
+            }
+            if (remaining <= 0) {
+                clearInterval(this.attackTimerInterval);
+                this.attackTimerInterval = null;
+    
+                // Restore original attack values and stop
+                this.isAttackActive = originalAttackState;
+                this.attackIntensity = originalIntensity;
+                this.addLogEntry('Defense test completed successfully', 'allowed');
+                this.stats.score += 5;
+    
+                this.stopAttack();
+            }
+        }, 1000);
+    }
+        
 
     activateEmergencyMode() {
         this.emergencyMode = !this.emergencyMode;
@@ -1285,7 +1349,6 @@ class DDoSDefenseSimulator {
         this.updateDefenseList();
     }
 
-    // Utility function for Gaussian random numbers
     gaussianRandom(mean = 0, stdev = 1) {
         let u = 0, v = 0;
         while(u === 0) u = Math.random();
