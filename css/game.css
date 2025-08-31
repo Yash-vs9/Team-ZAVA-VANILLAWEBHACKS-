@@ -511,7 +511,7 @@ body::after {
   font-weight: 700;
   font-size: 1.4rem;
   padding: 0.7em 1.3em;
-
+  
   border-radius: 12px;
   margin: 0.5em auto 1em auto;
   width: max-content;
@@ -522,6 +522,13 @@ body::after {
   transition: box-shadow 0.3s ease;
   user-select: none;
 }
+#startNetworkGame {
+  display: none !important;
+}
+#control-timer{
+  color: red;
+}
+
 
 .threat-item:active {
   cursor: grabbing;

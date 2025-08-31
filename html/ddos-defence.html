@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DDoS Defense Command Center</title>
     <link rel="stylesheet" href="../css/ddos-defense.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div id="loading-screen">
@@ -13,7 +13,7 @@
         <div class="loading-content">
             <div class="loading-logo">🛡️</div>
             <div class="loading-text">INITIALIZING DEFENSE SYSTEMS...</div>
-            <button>STOP</button>
+
             <div class="loading-progress"></div>
         </div>
     </div>
@@ -23,9 +23,12 @@
         <header class="control-header">
             <div class="header-left">
                 <h1>🛡️ DDoS Defense Command Center</h1>
-                <div class="system-status">
+                <div class="system-status" style="display: flex; gap: 20px; align-items: center;">
                     <span class="status-indicator" id="system-status">READY</span>
                     <span class="uptime">Uptime: <span id="uptime">00:00:00</span></span>
+                    <span id="control-timer" style="color: red;">
+                        Attack Duration : <span id="attack-timer">0</span>
+                    </span>
                 </div>
             </div>
             <div class="header-right">
@@ -112,12 +115,12 @@
                         <div class="attack-point" style="top: 45%; left: 70%;" data-country="CN"></div>
                         <div class="attack-point" style="top: 55%; left: 15%;" data-country="BR"></div>
                     </div>
-                    <div class="attack-sources" id="attack-sources">
+                    <!-- <div class="attack-sources" id="attack-sources">
                         <div class="source-item">🇺🇸 United States: <span>0 attacks</span></div>
                         <div class="source-item">🇷🇺 Russia: <span>0 attacks</span></div>
                         <div class="source-item">🇨🇳 China: <span>0 attacks</span></div>
                         <div class="source-item">🇧🇷 Brazil: <span>0 attacks</span></div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Live Attack Log -->
@@ -153,7 +156,7 @@
                             <input type="range" id="timeout-duration" min="1" max="300" value="60">
                             <span class="setting-value" id="timeout-value">60</span>
                         </div>
-                        <div class="setting-group">
+                        <!-- <div class="setting-group">
                             <label>Geo-blocking:</label>
                             <select id="geo-blocking" multiple>
                                 <option value="CN">China</option>
@@ -161,7 +164,7 @@
                                 <option value="KP">North Korea</option>
                                 <option value="IR">Iran</option>
                             </select>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -289,7 +292,7 @@ Rate: >100/min</textarea>
 
             <!-- Right Panel - System Status -->
             <section class="status-panel">
-                <h2>📊 System Status</h2>
+                <h2> System Status</h2>
 
                 <!-- Defense Effectiveness -->
                 <div class="effectiveness-meter">
@@ -343,9 +346,10 @@ Rate: >100/min</textarea>
                 <!-- Active Defenses -->
                 <div class="active-defenses">
                     <h3>Active Defenses</h3>
+                    <br>
                     <div class="defense-list" id="defense-list">
                         <div class="defense-item" data-defense="firewall">
-                            <span class="defense-icon">🔥</span>
+                            <span class="defense-icon"></span>
                             <span class="defense-name">Firewall</span>
                             <span class="defense-status">ACTIVE</span>
                         </div>
@@ -353,8 +357,10 @@ Rate: >100/min</textarea>
                 </div>
 
                 <!-- Attack Scenarios -->
+                 <br>
                 <div class="attack-scenarios">
-                    <h3>🎯 Training Scenarios</h3>
+                    <h3> Training Scenarios</h3>
+                    <br>
                     <div class="scenario-buttons">
                         <button class="scenario-btn" data-scenario="light">Light Attack</button>
                         <button class="scenario-btn" data-scenario="moderate">Moderate Attack</button>
@@ -365,12 +371,13 @@ Rate: >100/min</textarea>
 
                 <!-- Score & Achievements -->
                 <div class="score-section">
-                    <h3>🏆 Performance Score</h3>
+                    <br>
+                    <h3> Performance Score</h3>
                     <div class="score-display">
                         <div class="score-value" id="total-score">0</div>
                         <div class="score-label">Total Score</div>
                     </div>
-                    <div class="achievements" id="achievements">
+                    <!-- <div class="achievements" id="achievements">
                         <div class="achievement locked" data-achievement="first-defense">
                             <span class="achievement-icon">🛡️</span>
                             <span class="achievement-name">First Defense</span>
@@ -383,7 +390,7 @@ Rate: >100/min</textarea>
                             <span class="achievement-icon">👑</span>
                             <span class="achievement-name">Master Defender</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </section>
         </div>
