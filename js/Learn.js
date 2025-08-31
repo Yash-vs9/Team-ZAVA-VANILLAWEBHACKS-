@@ -854,7 +854,7 @@ Aug 30 19:18:33 security-lab fail2ban.actions: WARNING [sshd] Ban 192.168.1.100
 
     handleChmod(args) {
         if (args.length < 2) {
-            this.addOutput('Usage: chmod [permissions] [file]', 'error');
+            this.addOutput('Usage: chmod [permissions] [file] , sample permissions:[u+x,g-w,o+r]', 'error');
             return;
         }
         

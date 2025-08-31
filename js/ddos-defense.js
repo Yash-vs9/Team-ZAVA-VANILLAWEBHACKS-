@@ -1313,6 +1313,7 @@ class DDoSDefenseSimulator {
 
     unlockAchievement(id, name, description) {
         this.achievements.add(id);
+        
         const achievement = document.querySelector(`[data-achievement="${id}"]`);
         if (achievement) {
             achievement.classList.remove('locked');
@@ -1320,8 +1321,16 @@ class DDoSDefenseSimulator {
         }
         
         this.showNotification(`🏆 Achievement Unlocked: ${name}`, description);
+        
+        // Save achievements set to localStorage as array
+        localStorage.setItem(
+          "achievements",
+          JSON.stringify(Array.from(this.achievements))
+        );
+        
         this.stats.score += 100;
     }
+    
 
     showNotification(title, message) {
         console.log("HELLOO")
