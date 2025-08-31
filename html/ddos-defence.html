@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DDoS Defense Command Center</title>
     <link rel="stylesheet" href="../css/ddos-defense.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <div id="loading-screen">
@@ -292,7 +292,7 @@ Rate: >100/min</textarea>
 
             <!-- Right Panel - System Status -->
             <section class="status-panel">
-                <h2>📊 System Status</h2>
+                <h2> System Status</h2>
 
                 <!-- Defense Effectiveness -->
                 <div class="effectiveness-meter">
@@ -346,9 +346,10 @@ Rate: >100/min</textarea>
                 <!-- Active Defenses -->
                 <div class="active-defenses">
                     <h3>Active Defenses</h3>
+                    <br>
                     <div class="defense-list" id="defense-list">
                         <div class="defense-item" data-defense="firewall">
-                            <span class="defense-icon">🔥</span>
+                            <span class="defense-icon"></span>
                             <span class="defense-name">Firewall</span>
                             <span class="defense-status">ACTIVE</span>
                         </div>
@@ -356,8 +357,10 @@ Rate: >100/min</textarea>
                 </div>
 
                 <!-- Attack Scenarios -->
+                 <br>
                 <div class="attack-scenarios">
-                    <h3>🎯 Training Scenarios</h3>
+                    <h3> Training Scenarios</h3>
+                    <br>
                     <div class="scenario-buttons">
                         <button class="scenario-btn" data-scenario="light">Light Attack</button>
                         <button class="scenario-btn" data-scenario="moderate">Moderate Attack</button>
@@ -368,12 +371,13 @@ Rate: >100/min</textarea>
 
                 <!-- Score & Achievements -->
                 <div class="score-section">
-                    <h3>🏆 Performance Score</h3>
+                    <br>
+                    <h3> Performance Score</h3>
                     <div class="score-display">
                         <div class="score-value" id="total-score">0</div>
                         <div class="score-label">Total Score</div>
                     </div>
-                    <div class="achievements" id="achievements">
+                    <!-- <div class="achievements" id="achievements">
                         <div class="achievement locked" data-achievement="first-defense">
                             <span class="achievement-icon">🛡️</span>
                             <span class="achievement-name">First Defense</span>
@@ -386,7 +390,7 @@ Rate: >100/min</textarea>
                             <span class="achievement-icon">👑</span>
                             <span class="achievement-name">Master Defender</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </section>
         </div>

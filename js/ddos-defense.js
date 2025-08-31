@@ -471,14 +471,14 @@ class DDoSDefenseSimulator {
         this.attackPattern = null;
         this.currentAttackType = null;
         this.attackStartTime = null;
-      
+
         // Log the mitigation event
         this.addLogEntry("DDoS attack mitigated successfully.", "success");
       
         // Update UI elements
         this.hideAlert();
         this.updateGeoAttackDisplay();
-        this.updateUI();
+
       
         // Evaluate performance and achievements
         this.checkAchievements();
@@ -594,6 +594,7 @@ class DDoSDefenseSimulator {
             const falsePositivePenalty = Math.max(0, 1 - this.stats.falsePositives / 1000);
             
             this.stats.score += Math.floor(blockingEfficiency * latencyPenalty * falsePositivePenalty * 10);
+
         }
     }
 
@@ -668,7 +669,9 @@ class DDoSDefenseSimulator {
         document.getElementById('connection-value').textContent = this.stats.connectionCount;
         
         // Update score
+
         document.getElementById('total-score').textContent = this.stats.score.toLocaleString();
+        
         
         // Update attack analysis
         if (this.isAttackActive) {
@@ -920,9 +923,12 @@ class DDoSDefenseSimulator {
             if (remaining >= 0) {
                 timerElement.innerHTML = remaining;
             }
+
             if (remaining <= 0) {
                 clearInterval(this.attackTimerInterval);
                 this.attackTimerInterval = null;
+
+                this.showNotification(scenario+" attack","Completed")
                 this.endAttack(scenario);
                 this.stopAttack();
             }
@@ -993,28 +999,27 @@ class DDoSDefenseSimulator {
         
         // attackSources.innerHTML = html;
     }
-
     endAttack(scenario) {
-        this.isAttackActive = false;
-        this.attackIntensity = 0;
-        this.attackStartTime = null;
-        this.currentAttackType = null;
+
+
+        
+        
         
         const duration = Math.floor((Date.now() - (this.attackStartTime || Date.now())) / 1000);
-        this.addLogEntry(`Attack mitigated successfully - Duration: ${duration}s`, 'allowed');
+        this.addLogEntry(`Attack mitigated successfully - Duration: ${duration}s`, "allowed");
         
         const effectiveness = this.stats.effectiveness;
         const avgLatency = this.stats.latency;
         const falsePositives = this.stats.falsePositives;
         
-        this.addLogEntry(`Performance - Effectiveness: ${Math.floor(effectiveness)}%, Latency: ${Math.floor(avgLatency)}ms`, 'allowed');
+        this.addLogEntry(`Performance - Effectiveness: ${Math.floor(effectiveness)}%, Latency: ${Math.floor(avgLatency)}ms`, "allowed");
         
         this.checkAchievements(scenario);
         this.hideAlert();
         
-        // Reset geo display
-        setTimeout(() => this.updateGeoAttackDisplay(), 5000);
+
     }
+    
 
     showAttackAlert() {
         const alert = document.getElementById('attack-alert');
@@ -1230,7 +1235,7 @@ class DDoSDefenseSimulator {
             if (remaining <= 0) {
                 clearInterval(this.attackTimerInterval);
                 this.attackTimerInterval = null;
-    
+                this.showNotification("Test Defence","Successful!")
                 // Restore original attack values and stop
                 this.isAttackActive = originalAttackState;
                 this.attackIntensity = originalIntensity;
@@ -1241,6 +1246,7 @@ class DDoSDefenseSimulator {
             }
         }, 1000);
     }
+    
         
 
     activateEmergencyMode() {
@@ -1303,6 +1309,11 @@ class DDoSDefenseSimulator {
     }
 
     showNotification(title, message) {
+        console.log("HELLOO")
+        const score=Number(localStorage.getItem("ddos-score")||0)
+        if(this.stats.score>score){
+            localStorage.setItem("ddos-score",this.stats.score)
+        }
         const notification = document.createElement('div');
         notification.className = 'achievement-notification';
         notification.innerHTML = `

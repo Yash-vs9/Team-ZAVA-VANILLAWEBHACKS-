@@ -418,6 +418,7 @@ body {
 .slider {
     position: absolute;
     cursor: pointer;
+    width: 50px;
     top: 0;
     left: 0;
     right: 0;
