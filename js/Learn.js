@@ -674,6 +674,10 @@ Type any command to learn more!
     }
 
     updateStats() {
+        const commandsLearned=localStorage.getItem("commands-learned")||0
+        if(commandsLearned<this.completedCommands.size){
+            localStorage.setItem("commands-learned",this.completedCommands.size)
+        }
         document.getElementById('commands-learned').textContent = this.completedCommands.size;
         document.getElementById('missions-completed').textContent = this.achievements.size;
     }
@@ -789,6 +793,7 @@ Type any command to learn more!
         const data = {
             commands: Array.from(this.completedCommands),
             achievements: Array.from(this.achievements)
+
         };
         localStorage.setItem('cyberTerminalProgress', JSON.stringify(data));
     }

@@ -197,6 +197,7 @@ nodes.forEach(node => {
                 clearInterval(intervalId); 
                 alert("You win!")
                 localStorage.setItem("networkScore",networkScore)
+                
                 hideModal(networkGameModal); 
                 resetNetworkGame(networkGameModal)
             }
