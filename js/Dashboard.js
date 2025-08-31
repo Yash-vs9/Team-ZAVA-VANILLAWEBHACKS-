@@ -1,24 +1,44 @@
 /**
- * ENHANCED CYBERSECURITY DASHBOARD 
- * 
- * This dashboard connects all games, tracks comprehensive user data,
- * includes heatmap visualization, best scores tracking, and full data management.
- * All data is persisted in localStorage for offline functionality.
+ * CyberGuard Dashboard - Complete JavaScript Implementation
+ * Uses specified localStorage keys for score management
  */
 
-class EnhancedCyberSecurityDashboard {
+class CyberGuardDashboard {
     constructor() {
-        // Storage keys for different data types
-        this.STORAGE_KEYS = {
-            USER_DATA: 'cyberguard_user_data',
-            ACTIVITY_DATA: 'cyberguard_activity_data',
-            GAME_SESSIONS: 'cyberguard_game_sessions',
-            LEARNING_DATA: 'cyberguard_learning_data',
-            SETTINGS: 'cyberguard_settings'
+        // localStorage keys as specified
+        this.storageKeys = {
+            phishingScore: 'latestPhishingScore',
+            networkScore: 'latestNetworkScore',
+            ddosScore: 'latest-ddos-score',
+            phishingBestScore: 'bestPhishingScore',
+            networkBestScore: 'bestNetworkScore',
+            ddosBestScore: 'ddos-score',
+            commandsLearned:'commands-learned',
+            userData: 'cyberguard_user_data',
+            activityData: 'cyberguard_activity_data'
         };
 
-        // Default user data structure
-        this.defaultUserData = {
+        // Initialize user data structure
+        this.initializeUserData();
+        
+        // Badge definitions
+        this.badges = [
+            { id: 'first_steps', name: 'First Steps', icon: '🌟', condition: () => this.userData.stats.totalGames >= 1 },
+            { id: 'phishing_master', name: 'Phishing Master', icon: '🎣', condition: () => this.getScore('phishingScore') >= 10 },
+            { id: 'network_defender', name: 'Network Defender', icon: '🛡️', condition: () => this.getScore('networkScore') >= 20 },
+            { id: 'ddos_expert', name: 'DDoS Expert', icon: '⚡', condition: () => this.getScore('ddosScore') >= 15 },
+            { id: 'streak_warrior', name: 'Streak Warrior', icon: '🔥', condition: () => this.userData.stats.currentStreak >= 7 },
+            { id: 'accuracy_ace', name: 'Accuracy Ace', icon: '🎯', condition: () => this.getUserAccuracy() >= 90 },
+            { id: 'cyber_veteran', name: 'Cyber Veteran', icon: '🏆', condition: () => this.userData.stats.totalGames >= 50 },
+            { id: 'level_master', name: 'Level Master', icon: '⭐', condition: () => this.userData.stats.level >= 10 }
+        ];
+
+        this.init();
+    }
+
+    // Initialize user data
+    initializeUserData() {
+        const defaultData = {
             profile: {
                 username: 'Cyber Agent',
                 joinDate: new Date().toISOString(),
@@ -32,196 +52,197 @@ class EnhancedCyberSecurityDashboard {
                 totalGames: 0,
                 correctAnswers: 0,
                 currentStreak: 0,
-                longestStreak: 0,
-                totalPlayTime: 0
-            },
-            progress: {
-                phishingScore: 0,
-                passwordScore: 0,
-                networkScore: localStorage.getItem("networkScore") || 0
-            },
-            bestScores: {
-                phishing: { score: localStorage.getItem("networkBestScore"), date: null, accuracy: 0 },
-                password: { score: 0, date: null, attempts: 0 },
-                network: { score: localStorage.getItem("networkBestScore"), date: null, time: 0 }
+                longestStreak: 0
             },
             badges: [],
             gameHistory: [],
-            weeklyPerformance: Array(7).fill(0)
+            weeklyPerformance: Array(7).fill(0),
+            learningProgress: {
+                terminalCommands: 0,
+                lessonsCompleted: 0
+            }
         };
 
-        // Badge definitions with unlock conditions
-        this.badgeDefinitions = [
-            {
-                id: 'first_steps',
-                name: 'First Steps',
-                description: 'Complete your first training session',
-                icon: '🌟',
-                condition: (userData) => userData.stats.totalGames >= 1
-            },
-            {
-                id: 'phishing_detective',
-                name: 'Phishing Detective',
-                description: 'Master phishing detection (10/10)',
-                icon: '🕵️',
-                condition: (userData) => userData.progress.phishingScore >= 10
-            },
-            {
-                id: 'password_guardian',
-                name: 'Password Guardian',
-                description: 'Master password security (5/5)',
-                icon: '🔐',
-                condition: (userData) => userData.progress.passwordScore >= 5
-            },
-            {
-                id: 'network_defender',
-                name: 'Network Defender',
-                description: 'Master network defense (20/20)',
-                icon: '🛡️',
-                condition: (userData) => userData.progress.networkScore >= 20
-            },
-            {
-                id: 'streak_warrior',
-                name: 'Streak Warrior',
-                description: 'Maintain a 7-day training streak',
-                icon: '🔥',
-                condition: (userData) => userData.stats.currentStreak >= 7
-            },
-            {
-                id: 'accuracy_ace',
-                name: 'Accuracy Ace',
-                description: 'Achieve 90%+ accuracy rate',
-                icon: '🎯',
-                condition: (userData) => {
-                    if (userData.stats.totalGames < 10) return false;
-                    return (userData.stats.correctAnswers / userData.stats.totalGames) >= 0.9;
-                }
-            },
-            {
-                id: 'cyber_veteran',
-                name: 'Cyber Veteran',
-                description: 'Complete 50 training sessions',
-                icon: '🏆',
-                condition: (userData) => userData.stats.totalGames >= 50
-            },
-            {
-                id: 'level_master',
-                name: 'Level Master',
-                description: 'Reach experience level 10',
-                icon: '⭐',
-                condition: (userData) => userData.stats.level >= 10
-            }
-        ];
-
-        // Initialize the dashboard
-        this.init();
-    }
-
-    /**
-     * INITIALIZATION
-     */
-    init() {
-        console.log('🚀 Initializing Enhanced CyberGuard Dashboard...');
+        const stored = localStorage.getItem(this.storageKeys.userData);
+        this.userData = stored ? { ...defaultData, ...JSON.parse(stored) } : defaultData;
         
-        this.loadAllData();
-        this.setupEventListeners();
-        this.updateAllUI();
-        this.generateHeatmap();
-        this.setupGameResultListener();
-        this.startSessionTracking();
-        
-        console.log('✅ Enhanced Dashboard initialized successfully!');
+        // Load activity data
+        const activityStored = localStorage.getItem(this.storageKeys.activityData);
+        this.activityData = activityStored ? JSON.parse(activityStored) : {};
     }
-
-    /**
-     * DATA MANAGEMENT
-     */
-    loadAllData() {
+    fetchActivityData() {
         try {
-            const storedData = localStorage.getItem(this.STORAGE_KEYS.USER_DATA);
-            if (storedData) {
-                this.userData = { ...this.defaultUserData, ...JSON.parse(storedData) };
-                this.userData.profile.lastLogin = new Date().toISOString();
-                this.userData.profile.sessionsCount++;
-            } else {
-                this.userData = { ...this.defaultUserData };
-            }
-            
-            // Load activity data for heatmap
-            this.activityData = this.loadActivityData();
-            
-            console.log('📊 User data loaded:', this.userData);
-        } catch (error) {
-            console.error('❌ Error loading data:', error);
-            this.userData = { ...this.defaultUserData };
-            this.activityData = {};
-        }
-    }
-
-    saveUserData() {
-        try {
-            localStorage.setItem(this.STORAGE_KEYS.USER_DATA, JSON.stringify(this.userData));
-            console.log('💾 User data saved successfully');
-        } catch (error) {
-            console.error('❌ Error saving data:', error);
-        }
-    }
-
-    loadActivityData() {
-        try {
-            const activityData = localStorage.getItem(this.STORAGE_KEYS.ACTIVITY_DATA);
-            return activityData ? JSON.parse(activityData) : {};
-        } catch (error) {
-            console.error('❌ Error loading activity data:', error);
+            const data = localStorage.getItem('cyberguard_activity_data');
+            return data ? JSON.parse(data) : {};
+        } catch (e) {
+            console.error('Error fetching activity data:', e);
             return {};
         }
     }
-
-    saveActivityData() {
+    generateHeatmap(activityData) {
+        const container = document.getElementById('heatmapContainer');
+        if (!container) return;
+    
+        container.innerHTML = '';
+    
+        const today = new Date();
+        const days = 180;
+    
+        for (let i = days - 1; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dayStr = date.toDateString();
+    
+            const count = activityData[dayStr] || 0;
+    
+            const cell = document.createElement('div');
+            cell.className = 'heatmap-cell';
+    
+            if (count > 0) {
+                let level = 1;
+                if (count >= 8) level = 4;
+                else if (count >= 5) level = 3;
+                else if (count >= 2) level = 2;
+                cell.classList.add(`level-${level}`);
+            } else {
+                cell.classList.add('level-0');
+            }
+    
+            cell.title = `${dayStr}: ${count} activities`;
+            container.appendChild(cell);
+        }
+    }
+    
+    // Initialize dashboard
+    init() {
+        console.log('🚀 Initializing CyberGuard Dashboard...');
+      
+        this.activityData = this.fetchActivityData();
+    
+        this.setUserLoggedIn();
+    
+        this.generateHeatmap(this.activityData);
+    
+        this.updateUserData();
+    
+        this.setupEventListeners();
+    
+        this.updateAllUI();
+    
+        this.startSessionTracking();
+    
+        console.log('Dashboard initialized successfully!');
+    }
+    
+    setUserLoggedIn() {
+        const today = new Date().toDateString();
+        localStorage.setItem('user_logged_in', 'true');
+        localStorage.setItem('last_login_date', today);
+    
+        // Increment activity count for today
+        this.activityData[today] = (this.activityData[today] || 0) + 1;
+        
+        // Save updated activity data to storage
+        this.saveActivityData();
+    }
+    
+    fetchActivityData() {
         try {
-            localStorage.setItem(this.STORAGE_KEYS.ACTIVITY_DATA, JSON.stringify(this.activityData));
+          const data = localStorage.getItem('cyberguard_activity_data');
+          return data ? JSON.parse(data) : {};
         } catch (error) {
-            console.error('❌ Error saving activity data:', error);
+          console.error('Error fetching activity data:', error);
+          return {};
+        }
+      }
+      
+    // Get score from localStorage
+    getScore(key) {
+        const value = localStorage.getItem(key);
+        return value ? Number(value) : 0;
+    }
+
+    // Set score in localStorage
+    setScore(key, value) {
+        localStorage.setItem(key, value.toString());
+        this.updateAllUI();
+    }
+
+    // Get best score from localStorage
+    getBestScore(key) {
+        const value = localStorage.getItem(key);
+        return value ? Number(value) : 0;
+    }
+
+    // Update best score if new score is higher
+    updateBestScore(key, newScore) {
+        const currentBest = this.getBestScore(key);
+        if (newScore > currentBest) {
+            localStorage.setItem(key, newScore.toString());
+            this.showNotification('🏆', 'New Best Score!', `New record in ${key.replace('BestScore', '')}!`);
         }
     }
 
-    /**
-     * EVENT LISTENERS
-     */
+    // Calculate user accuracy
+    getUserAccuracy() {
+        if (this.userData.stats.totalGames === 0) return 0;
+        return Math.round((this.userData.stats.correctAnswers / this.userData.stats.totalGames) * 100);
+    }
+
+    // Update user data
+    updateUserData() {
+        this.userData.profile.lastLogin = new Date().toISOString();
+        this.userData.profile.sessionsCount++;
+        this.saveUserData();
+    }
+
+    // Save user data to localStorage
+    saveUserData() {
+        localStorage.setItem(this.storageKeys.userData, JSON.stringify(this.userData));
+    }
+
+    // Save activity data
+    saveActivityData() {
+        localStorage.setItem(this.storageKeys.activityData, JSON.stringify(this.activityData));
+    }
+
+    // Setup event listeners
     setupEventListeners() {
-        // XP tooltip
-        const xpStat = document.getElementById('xpStat');
-        const xpTooltip = document.getElementById('xpTooltip');
-        
-        if (xpStat && xpTooltip) {
-            xpStat.addEventListener('mouseenter', (e) => {
-                this.showXPTooltip(e);
+        // Demo controls
+        document.querySelectorAll('.demo-btn[data-game]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const game = btn.dataset.game;
+                const result = btn.dataset.result;
+                this.simulateGameResult(game, result === 'win');
             });
-            
-            xpStat.addEventListener('mouseleave', () => {
-                this.hideXPTooltip();
+        });
+
+        // Hide demo controls
+        const hideBtn = document.getElementById('hideDemoControls');
+        if (hideBtn) {
+            hideBtn.addEventListener('click', () => {
+                document.querySelector('.demo-controls').style.display = 'none';
             });
         }
 
-        // Export data button
+        // Export data
         const exportBtn = document.getElementById('exportDataBtn');
         if (exportBtn) {
             exportBtn.addEventListener('click', () => this.showExportModal());
         }
 
-        // Reset data button
+        // Reset data
         const resetBtn = document.getElementById('resetDataBtn');
         if (resetBtn) {
-            resetBtn.addEventListener('click', () => this.resetUserData());
+            resetBtn.addEventListener('click', () => this.resetData());
         }
 
-        // Modal close buttons
-        const closeExportModal = document.getElementById('closeExportModal');
-        if (closeExportModal) {
-            closeExportModal.addEventListener('click', () => this.hideExportModal());
+        // Modal controls
+        const closeModal = document.getElementById('closeExportModal');
+        if (closeModal) {
+            closeModal.addEventListener('click', () => this.hideExportModal());
         }
 
-        // Export format buttons
         const exportJsonBtn = document.getElementById('exportJsonBtn');
         const exportCsvBtn = document.getElementById('exportCsvBtn');
         
@@ -233,118 +254,69 @@ class EnhancedCyberSecurityDashboard {
             exportCsvBtn.addEventListener('click', () => this.exportData('csv'));
         }
 
-        // Demo controls for testing
-        this.setupDemoControls();
-
-        // Hide demo controls button
-        const hideDemoBtn = document.getElementById('hideDemoControls');
-        if (hideDemoBtn) {
-            hideDemoBtn.addEventListener('click', () => {
-                document.querySelector('.demo-controls').style.display = 'none';
-            });
+        // XP tooltip
+        const xpStat = document.getElementById('xpStat');
+        if (xpStat) {
+            xpStat.addEventListener('mouseenter', (e) => this.showXPTooltip(e));
+            xpStat.addEventListener('mouseleave', () => this.hideXPTooltip());
         }
     }
 
-    setupDemoControls() {
-        const demoBtns = document.querySelectorAll('.demo-btn[data-game]');
-        demoBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const gameType = btn.dataset.game;
-                const result = btn.dataset.result;
-                
-                // Simulate game completion with random score
-                let gameData = {};
-                
-                if (gameType === 'phishing') {
-                    gameData = {
-                        score: result === 'win' ? Math.floor(Math.random() * 2) + 4 : Math.floor(Math.random() * 3) + 1,
-                        totalQuestions: 5,
-                        accuracy: result === 'win' ? 80 + Math.random() * 20 : 20 + Math.random() * 60
-                    };
-                } else if (gameType === 'password') {
-                    gameData = {
-                        score: result === 'win' ? Math.floor(Math.random() * 2) + 4 : Math.floor(Math.random() * 3) + 1,
-                        totalAttempts: 5,
-                        strengthLevel: result === 'win' ? 'Strong' : 'Weak'
-                    };
-                } else if (gameType === 'network') {
-                    gameData = {
-                        threatsBlocked: result === 'win' ? Math.floor(Math.random() * 3) + 8 : Math.floor(Math.random() * 5) + 2,
-                        totalThreats: 10,
-                        timeSpent: 30 + Math.random() * 60
-                    };
-                }
-                
-                this.recordGameResult(gameType, result === 'win', gameData);
-            });
-        });
-    }
+    // Simulate game result for demo
+    simulateGameResult(gameType, isWin) {
+        console.log(`🎮 Simulating ${gameType} game: ${isWin ? 'WIN' : 'LOSE'}`);
+        
+        let score = 0;
+        let xpGained = 0;
 
-    /**
-     * GAME RESULT HANDLING
-     */
-    setupGameResultListener() {
-        // Listen for game completion events from other pages
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'cyberguard_game_result') {
-                const gameResult = JSON.parse(e.newValue);
-                this.recordGameResult(gameResult.type, gameResult.success, gameResult.data);
-                localStorage.removeItem('cyberguard_game_result');
+        if (isWin) {
+            switch (gameType) {
+                case 'phishing':
+                    score = Math.floor(Math.random() * 3) + 8; // 8-10
+                    xpGained = 50 + score * 5;
+                    this.setScore(this.storageKeys.phishingScore, Math.min(10, this.getScore(this.storageKeys.phishingScore) + 1));
+                    this.updateBestScore(this.storageKeys.phishingBestScore, score);
+                    break;
+                case 'password':
+                    score = Math.floor(Math.random() * 2) + 4; // 4-5
+                    xpGained = 40 + score * 8;
+                    // Password uses network score for now (can be changed)
+                    this.setScore(this.storageKeys.networkScore, Math.min(20, this.getScore(this.storageKeys.networkScore) + 1));
+                    break;
+                case 'network':
+                    score = Math.floor(Math.random() * 5) + 15; // 15-19
+                    xpGained = 60 + score * 3;
+                    this.setScore(this.storageKeys.networkScore, Math.min(20, this.getScore(this.storageKeys.networkScore) + 1));
+                    this.updateBestScore(this.storageKeys.networkBestScore, score);
+                    break;
             }
-        });
-        
-        // Check for game results on page load
-        const gameResult = localStorage.getItem('cyberguard_game_result');
-        if (gameResult) {
-            const result = JSON.parse(gameResult);
-            this.recordGameResult(result.type, result.success, result.data);
-            localStorage.removeItem('cyberguard_game_result');
+            this.userData.stats.correctAnswers++;
+        } else {
+            xpGained = 10; // Small consolation XP
         }
-    }
-
-    recordGameResult(gameType, isSuccess, gameData) {
-        console.log(`🎮 Recording game result: ${gameType}, Success: ${isSuccess}`, gameData);
-        
-        const xpEarned = isSuccess ? this.calculateXPReward(gameType, gameData) : 5;
-        
-        const gameRecord = {
-            id: Date.now(),
-            type: gameType,
-            success: isSuccess,
-            timestamp: new Date().toISOString(),
-            xpEarned: xpEarned,
-            data: gameData
-        };
 
         // Update stats
         this.userData.stats.totalGames++;
-        if (isSuccess) {
-            this.userData.stats.correctAnswers++;
-            this.userData.stats.xp += xpEarned;
-            this.updateGameProgress(gameType, gameData);
-            this.updateBestScore(gameType, gameData);
-        }
-
+        this.userData.stats.xp += xpGained;
+        
         // Update level
         this.updateLevel();
+        
+        // Update streak
+        this.updateStreak(isWin);
         
         // Update daily activity
         this.updateDailyActivity();
         
         // Update weekly performance
-        this.updateWeeklyPerformance(isSuccess);
+        this.updateWeeklyPerformance(isWin);
         
         // Check badges
-        this.checkAndAwardBadges();
+        this.checkBadges();
         
         // Add to history
-        this.userData.gameHistory.push(gameRecord);
+        this.addToHistory(gameType, isWin, score, xpGained);
         
-        // Keep only last 100 games
-        if (this.userData.gameHistory.length > 100) {
-            this.userData.gameHistory = this.userData.gameHistory.slice(-100);
-        }
-
         // Save data
         this.saveUserData();
         this.saveActivityData();
@@ -354,260 +326,184 @@ class EnhancedCyberSecurityDashboard {
         this.generateHeatmap();
         
         // Show notification
-        if (isSuccess) {
-            this.showNotification('🎉', 'Training Complete!', `Great job! You earned ${xpEarned} XP`);
+        if (isWin) {
+            this.showNotification('🎉', 'Training Complete!', `Great job! You earned ${xpGained} XP`);
         }
     }
 
-    calculateXPReward(gameType, gameData) {
-        const baseRewards = {
-            'phishing': 25,
-            'password': 30,
-            'network': 35
-        };
-        
-        let baseXP = baseRewards[gameType] || 20;
-        
-        // Performance bonus
-        if (gameType === 'phishing' && gameData.accuracy) {
-            baseXP += Math.floor(gameData.accuracy / 10);
-        }
-        
-        if (gameType === 'network' && gameData.threatsBlocked) {
-            baseXP += gameData.threatsBlocked;
-        }
-        
-        // Streak bonus
-        const streakBonus = Math.min(this.userData.stats.currentStreak * 2, 20);
-        
-        return baseXP + streakBonus;
-    }
-
-    updateGameProgress(gameType, gameData) {
-        const progressMaps = {
-            'phishing': { max: 10, current: this.userData.progress.phishingScore },
-            'password': { max: 5, current: this.userData.progress.passwordScore },
-            'network': { max: 20, current: this.userData.progress.networkScore }
-        };
-        
-        const progress = progressMaps[gameType];
-        if (progress && progress.current < progress.max) {
-            this.userData.progress[gameType + 'Score']++;
-        }
-    }
-
-    updateBestScore(gameType, gameData) {
-        const currentBest = this.userData.bestScores[gameType];
-        let isNewBest = false;
-        
-        if (gameType === 'phishing') {
-            if (gameData.score > currentBest.score || 
-                (gameData.score === currentBest.score && gameData.accuracy > currentBest.accuracy)) {
-                currentBest.score = gameData.score;
-                currentBest.accuracy = gameData.accuracy;
-                isNewBest = true;
-            }
-        } else if (gameType === 'password') {
-            if (gameData.score > currentBest.score) {
-                currentBest.score = gameData.score;
-                currentBest.attempts = gameData.totalAttempts;
-                isNewBest = true;
-            }
-        } else if (gameType === 'network') {
-            if (gameData.threatsBlocked > currentBest.score) {
-                currentBest.score = gameData.threatsBlocked;
-                currentBest.time = gameData.timeSpent;
-                isNewBest = true;
-            }
-        }
-        
-        if (isNewBest) {
-            currentBest.date = new Date().toISOString();
-            this.showNotification('🏆', 'New Best Score!', `Amazing performance in ${gameType}!`);
-        }
-    }
-
+    // Update level based on XP
     updateLevel() {
         const newLevel = Math.floor(this.userData.stats.xp / 500) + 1;
         if (newLevel > this.userData.stats.level) {
-            const oldLevel = this.userData.stats.level;
             this.userData.stats.level = newLevel;
-            
             this.showNotification('🎉', 'Level Up!', `Welcome to level ${newLevel}!`);
-            console.log(`📈 Level up: ${oldLevel} → ${newLevel}`);
         }
     }
 
-    updateDailyActivity() {
-        const today = new Date().toDateString();
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        
-        // Initialize or increment today's activity
-        if (!this.activityData[today]) {
-            this.activityData[today] = 1;
-            
-            // Check streak
-            if (this.activityData[yesterday.toDateString()]) {
-                this.userData.stats.currentStreak++;
-            } else {
-                this.userData.stats.currentStreak = 1;
-            }
-            
-            // Update longest streak
+    // Update streak
+    updateStreak(isWin) {
+        if (isWin) {
+            this.userData.stats.currentStreak++;
             if (this.userData.stats.currentStreak > this.userData.stats.longestStreak) {
                 this.userData.stats.longestStreak = this.userData.stats.currentStreak;
             }
         } else {
-            this.activityData[today]++;
+            this.userData.stats.currentStreak = 0;
         }
     }
 
-    updateWeeklyPerformance(isSuccess) {
-        const today = new Date().getDay(); // 0 = Sunday, 6 = Saturday
-        const todayPerformance = this.userData.weeklyPerformance[today];
-        
-        // Update today's performance (running average)
-        if (todayPerformance === 0) {
-            this.userData.weeklyPerformance[today] = isSuccess ? 100 : 0;
-        } else {
-            const weight = 0.3; // How much new result affects average
-            this.userData.weeklyPerformance[today] = 
-                todayPerformance * (1 - weight) + (isSuccess ? 100 : 0) * weight;
-        }
+    // Update daily activity
+    updateDailyActivity() {
+        const today = new Date().toDateString();
+        this.activityData[today] = (this.activityData[today] || 0) + 1;
     }
 
-    checkAndAwardBadges() {
-        let newBadges = [];
+    // Update weekly performance
+    updateWeeklyPerformance(isWin) {
+        const dayIndex = new Date().getDay();
+        const currentPerf = this.userData.weeklyPerformance[dayIndex];
+        const newPerf = isWin ? 100 : 0;
         
-        this.badgeDefinitions.forEach(badge => {
-            if (!this.userData.badges.includes(badge.id) && badge.condition(this.userData)) {
+        // Weighted average
+        this.userData.weeklyPerformance[dayIndex] = currentPerf === 0 ? newPerf : (currentPerf * 0.7 + newPerf * 0.3);
+    }
+
+    // Check and award badges
+    checkBadges() {
+        let newBadges = 0;
+        this.badges.forEach(badge => {
+            if (!this.userData.badges.includes(badge.id) && badge.condition()) {
                 this.userData.badges.push(badge.id);
-                newBadges.push(badge);
+                this.userData.stats.xp += 100; // Badge bonus
+                newBadges++;
                 
-                // Award bonus XP for badge
-                this.userData.stats.xp += 100;
-                
-                console.log(`🏆 New badge earned: ${badge.name}`);
+                setTimeout(() => {
+                    this.showNotification(badge.icon, 'Badge Earned!', `"${badge.name}" unlocked!`);
+                }, newBadges * 1000);
             }
         });
+    }
+
+    // Add game to history
+    addToHistory(gameType, isWin, score, xpGained) {
+        this.userData.gameHistory.unshift({
+            timestamp: new Date().toISOString(),
+            type: gameType,
+            success: isWin,
+            score: score,
+            xpGained: xpGained
+        });
         
-        if (newBadges.length > 0) {
-            const badge = newBadges[0];
-            this.showNotification(badge.icon, 'Badge Earned!', `"${badge.name}" unlocked!`);
+        // Keep only last 50 games
+        if (this.userData.gameHistory.length > 50) {
+            this.userData.gameHistory = this.userData.gameHistory.slice(0, 50);
         }
     }
 
-    /**
-     * UI UPDATES
-     */
+    // Update all UI elements
     updateAllUI() {
         this.updateUserStats();
         this.updateProgressBars();
         this.updateBestScores();
         this.updateBadges();
+        this.updatePerformanceStats();
         this.updateActivityFeed();
-        this.updateWeeklyChart();
+        this.updateLearningProgress();
         this.updateDataInfo();
+        this.updateWeeklyChart();
         this.updateLevelProgress();
-        
-        console.log('🔄 UI updated');
     }
 
+    // Update user stats in header
     updateUserStats() {
-        // Main stats
         this.updateElement('userLevel', this.userData.stats.level);
         this.updateElement('userXP', this.userData.stats.xp.toLocaleString());
-        
-        const accuracy = this.userData.stats.totalGames > 0 
-            ? Math.round((this.userData.stats.correctAnswers / this.userData.stats.totalGames) * 100) 
-            : 0;
-        this.updateElement('userAccuracy', accuracy + '%');
+        this.updateElement('userAccuracy', this.getUserAccuracy() + '%');
         this.updateElement('userStreak', this.userData.stats.currentStreak);
         this.updateElement('streakDisplay', this.userData.stats.currentStreak);
-        
-        // Performance stats
-        this.updateElement('totalGames', this.userData.stats.totalGames);
-        this.updateElement('correctAnswers', this.userData.stats.correctAnswers);
-        this.updateElement('longestStreak', this.userData.stats.longestStreak);
-        this.updateElement('totalBadges', this.userData.badges.length);
     }
 
+    // Update level progress bar
     updateLevelProgress() {
-        const currentLevel = this.userData.stats.level;
-        const currentXP = this.userData.stats.xp;
-        const levelXP = (currentLevel - 1) * 500;
-        const nextLevelXP = currentLevel * 500;
-        const progressXP = currentXP - levelXP;
-        const neededXP = nextLevelXP - levelXP;
-        const progressPercent = (progressXP / neededXP) * 100;
+        const level = this.userData.stats.level;
+        const xp = this.userData.stats.xp;
+        const levelXP = (level - 1) * 500;
+        const nextLevelXP = level * 500;
+        const progress = ((xp - levelXP) / 500) * 100;
         
-        this.updateElement('currentLevel', currentLevel);
-        this.updateElement('nextLevel', currentLevel + 1);
-        this.updateElement('currentXP', currentXP);
+        this.updateElement('currentLevel', level);
+        this.updateElement('nextLevel', level + 1);
+        this.updateElement('currentXP', xp);
         this.updateElement('nextLevelXP', nextLevelXP);
-        this.updateElement('xpToNext', nextLevelXP - currentXP);
+        this.updateElement('xpToNext', nextLevelXP - xp);
         
         const progressFill = document.getElementById('levelProgressFill');
         if (progressFill) {
-            progressFill.style.width = progressPercent + '%';
+            progressFill.style.width = Math.min(100, progress) + '%';
         }
     }
 
+    // Update progress bars
     updateProgressBars() {
-        // Training progress bars
-        const progressData = [
-            { id: 'phishing', current: this.userData.progress.phishingScore, max: 10 },
-            { id: 'password', current: this.userData.progress.passwordScore, max: 5 },
-            { id: 'network', current: this.userData.progress.networkScore, max: 20 }
-        ];
+        const phishingScore = this.getScore(this.storageKeys.phishingScore);
+        const networkScore = this.getScore(this.storageKeys.networkScore);
+        const ddosScore = this.getScore(this.storageKeys.ddosScore);
         
-        progressData.forEach(({ id, current, max }) => {
-            const percent = (current / max) * 100;
-            this.updateElement(`${id}Score`, `${current}/${max}`);
-            
-            const progressEl = document.getElementById(`${id}Progress`);
-            if (progressEl) {
-                progressEl.style.width = percent + '%';
-            }
-        });
+        // Update phishing progress
+        this.updateElement('phishingScore', `${phishingScore}/10`);
+        this.updateProgressBar('phishingProgress', phishingScore, 10);
+        
+        // Update password progress (using network score for now)
+        this.updateElement('passwordScore', `${Math.min(networkScore, 5)}/5`);
+        this.updateProgressBar('passwordProgress', Math.min(networkScore, 5), 5);
+        
+        // Update network progress
+        this.updateElement('networkScore', `${networkScore}/20`);
+        this.updateProgressBar('networkProgress', networkScore, 20);
+        
+        // Update learning progress
+        this.updateProgressBar('learningProgress', phishingScore + networkScore, 30);
     }
 
+    // Update best scores
     updateBestScores() {
-        const bestScores = this.userData.bestScores;
+        const phishingBest = this.getBestScore(this.storageKeys.phishingBestScore);
+        const networkBest = this.getBestScore(this.storageKeys.networkBestScore);
+        const ddosBest = this.getBestScore(this.storageKeys.ddosBestScore);
+        const commandsLearned = this.getBestScore(this.storageKeys.commandsLearned);
+
         
-        // Phishing best score
-        this.updateElement('bestPhishingScore', 
-            bestScores.phishing.score > 0 ? `${bestScores.phishing.score}/5` : '0/5');
-        this.updateElement('bestPhishingDate', 
-            bestScores.phishing.date ? this.formatDate(bestScores.phishing.date) : 'Never played');
+        this.updateElement('bestPhishingScore', phishingBest > 0 ? `${phishingBest}/5` : '0/5');
+        this.updateElement('bestPhishingDate', phishingBest > 0 ? 'Recently' : 'Never played');
         
-        // Password best score
-        this.updateElement('bestPasswordScore', 
-            bestScores.password.score > 0 ? `${bestScores.password.score}/5` : '0/5');
-        this.updateElement('bestPasswordDate', 
-            bestScores.password.date ? this.formatDate(bestScores.password.date) : 'Never played');
+        this.updateElement('ddos-score', ddosBest );
+        this.updateElement('bestPasswordDate', networkBest > 0 ? 'Recently' : 'Never played');
         
-        // Network best score
-        this.updateElement('bestNetworkScore', bestScores.network.score);
-        this.updateElement('bestNetworkDate', 
-            bestScores.network.date ? this.formatDate(bestScores.network.date) : 'Never played');
+        this.updateElement('bestNetworkScore', networkBest+"/4");
+        this.updateElement('bestNetworkDate', networkBest > 0 ? 'Recently' : 'Never played');
+
+        this.updateElement('commands-learned', commandsLearned);
+        this.updateElement('commands-learned-date', commandsLearned > 0 ? 'Recently' : 'Never played');
+        
+
     }
 
+    // Update badges display
     updateBadges() {
         const container = document.getElementById('badgesContainer');
         if (!container) return;
         
         container.innerHTML = '';
         
-        this.badgeDefinitions.forEach(badge => {
-            const isEarned = this.userData.badges.includes(badge.id);
+        this.badges.forEach(badge => {
             const badgeEl = document.createElement('div');
             badgeEl.className = 'badge';
-            badgeEl.title = badge.description;
+            badgeEl.title = badge.name;
             
-            if (isEarned) {
+            if (this.userData.badges.includes(badge.id)) {
                 badgeEl.classList.add('earned');
+                badgeEl.style.opacity = '1';
+                badgeEl.style.filter = 'none';
             } else {
                 badgeEl.style.opacity = '0.3';
                 badgeEl.style.filter = 'grayscale(100%)';
@@ -618,60 +514,84 @@ class EnhancedCyberSecurityDashboard {
         });
         
         // Update badge progress
-        const earnedBadges = this.userData.badges.length;
-        const totalBadges = this.badgeDefinitions.length;
-        this.updateElement('badgeProgress', `${earnedBadges}/${totalBadges}`);
-        
-        const badgeProgressFill = document.getElementById('badgeProgressFill');
-        if (badgeProgressFill) {
-            badgeProgressFill.style.width = ((earnedBadges / totalBadges) * 100) + '%';
-        }
+        const earnedCount = this.userData.badges.length;
+        const totalCount = this.badges.length;
+        this.updateElement('badgeProgress', `${earnedCount}/${totalCount}`);
+        this.updateProgressBar('badgeProgressFill', earnedCount, totalCount);
     }
 
+    // Update performance stats
+    updatePerformanceStats() {
+        this.updateElement('totalGames', this.userData.stats.totalGames);
+        this.updateElement('correctAnswers', this.userData.stats.correctAnswers);
+        this.updateElement('longestStreak', this.userData.stats.longestStreak);
+        this.updateElement('totalBadges', this.userData.badges.length);
+    }
+
+    // Update activity feed
     updateActivityFeed() {
         const activityList = document.getElementById('activityList');
         if (!activityList) return;
         
-        const recentGames = this.userData.gameHistory.slice(-10).reverse();
-        
-        if (recentGames.length === 0) {
+        if (this.userData.gameHistory.length === 0) {
             activityList.innerHTML = '<div class="activity-placeholder">Complete your first training to see activity here!</div>';
             return;
         }
         
         activityList.innerHTML = '';
         
-        recentGames.forEach(game => {
-            const activityItem = document.createElement('div');
-            activityItem.className = 'activity-item';
+        this.userData.gameHistory.slice(0, 10).forEach(game => {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
             
             const gameIcons = { phishing: '🎣', password: '🔐', network: '🛡️' };
-            const icon = game.success ? '✅' : '❌';
+            const statusIcon = game.success ? '✅' : '❌';
             
-            activityItem.innerHTML = `
-                <div class="activity-icon">${icon}</div>
+            item.innerHTML = `
+                <div class="activity-icon">${statusIcon}</div>
                 <div class="activity-content">
                     <div class="activity-title">${gameIcons[game.type]} ${this.capitalize(game.type)} Training</div>
-                    <div class="activity-desc">${game.success ? `Completed successfully (+${game.xpEarned} XP)` : 'Failed - Keep practicing!'}</div>
+                    <div class="activity-desc">${game.success ? `Completed (+${game.xpGained} XP)` : 'Try again!'}</div>
                 </div>
                 <div class="activity-time">${this.getTimeAgo(game.timestamp)}</div>
             `;
             
-            activityList.appendChild(activityItem);
+            activityList.appendChild(item);
         });
     }
 
+    // Update learning progress
+    updateLearningProgress() {
+        const terminal = this.userData.learningProgress.terminalCommands;
+        const lessons = this.userData.learningProgress.lessonsCompleted;
+        
+        this.updateElement('terminalProgress', `${terminal}/30`);
+        this.updateElement('lessonsProgress', `${lessons}/6`);
+        
+        this.updateProgressBar('terminalProgressFill', terminal, 30);
+        this.updateProgressBar('lessonsProgressFill', lessons, 6);
+    }
+
+    // Update data info
+    updateDataInfo() {
+        this.updateElement('joinDate', this.formatDate(this.userData.profile.joinDate));
+        this.updateElement('totalTime', Math.floor(this.userData.profile.totalSessionTime / 60) + ' minutes');
+        this.updateElement('totalSessions', this.userData.profile.sessionsCount);
+        
+        const dataSize = JSON.stringify(this.userData).length + JSON.stringify(this.activityData).length;
+        this.updateElement('dataSize', this.formatBytes(dataSize));
+    }
+
+    // Update weekly chart
     updateWeeklyChart() {
-        const chartContainer = document.getElementById('weeklyChart');
-        if (!chartContainer) return;
+        const container = document.getElementById('weeklyChart');
+        if (!container) return;
         
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const performance = this.userData.weeklyPerformance;
         
-        chartContainer.innerHTML = '';
+        container.innerHTML = '';
         
-        // Create bars
-        performance.forEach((accuracy, index) => {
+        this.userData.weeklyPerformance.forEach((perf, index) => {
             const barContainer = document.createElement('div');
             barContainer.style.display = 'flex';
             barContainer.style.flexDirection = 'column';
@@ -680,8 +600,11 @@ class EnhancedCyberSecurityDashboard {
             
             const bar = document.createElement('div');
             bar.className = 'chart-bar';
-            bar.style.height = Math.max(accuracy, 5) + '%';
-            bar.setAttribute('data-value', Math.round(accuracy) + '%');
+            bar.style.height = Math.max(perf, 2) + '%';
+            bar.style.background = `hsl(${perf > 50 ? '120' : '0'}, 70%, 50%)`;
+            bar.style.borderRadius = '4px 4px 0 0';
+            bar.style.minHeight = '4px';
+            bar.title = `${days[index]}: ${Math.round(perf)}%`;
             
             const label = document.createElement('div');
             label.textContent = days[index];
@@ -691,28 +614,14 @@ class EnhancedCyberSecurityDashboard {
             
             barContainer.appendChild(bar);
             barContainer.appendChild(label);
-            chartContainer.appendChild(barContainer);
+            container.appendChild(barContainer);
         });
         
-        // Update average accuracy
-        const avgAccuracy = Math.round(performance.reduce((a, b) => a + b, 0) / performance.length);
-        this.updateElement('avgAccuracy', avgAccuracy + '%');
+        const avgAccuracy = this.userData.weeklyPerformance.reduce((a, b) => a + b, 0) / 7;
+        this.updateElement('avgAccuracy', Math.round(avgAccuracy) + '%');
     }
 
-    updateDataInfo() {
-        const joinDate = new Date(this.userData.profile.joinDate);
-        const totalTime = Math.floor(this.userData.profile.totalSessionTime / 60);
-        const dataSize = new Blob([JSON.stringify(this.userData)]).size;
-        
-        this.updateElement('joinDate', this.formatDate(this.userData.profile.joinDate));
-        this.updateElement('totalTime', totalTime + ' minutes');
-        this.updateElement('dataSize', this.formatBytes(dataSize));
-        this.updateElement('totalSessions', this.userData.profile.sessionsCount);
-    }
-
-    /**
-     * HEATMAP GENERATION
-     */
+    // Generate activity heatmap
     generateHeatmap() {
         const container = document.getElementById('heatmapContainer');
         if (!container) return;
@@ -720,13 +629,12 @@ class EnhancedCyberSecurityDashboard {
         container.innerHTML = '';
         
         const today = new Date();
-        const startDate = new Date(today);
-        startDate.setDate(today.getDate() - 179); // 180 days ago
+        const days = 180;
         
-        for (let i = 0; i < 180; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
-            const dateString = currentDate.toDateString();
+        for (let i = days - 1; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dateString = date.toDateString();
             
             const cell = document.createElement('div');
             cell.className = 'heatmap-cell';
@@ -736,6 +644,8 @@ class EnhancedCyberSecurityDashboard {
             if (activity > 0) {
                 const level = Math.min(Math.floor(activity / 2) + 1, 4);
                 cell.classList.add(`level-${level}`);
+            } else {
+                cell.classList.add('level-0');
             }
             
             cell.title = `${dateString}: ${activity} activities`;
@@ -743,50 +653,43 @@ class EnhancedCyberSecurityDashboard {
         }
     }
 
-    /**
-     * SESSION TRACKING
-     */
+    // Start session tracking
     startSessionTracking() {
-        this.sessionStartTime = Date.now();
+        this.sessionStart = Date.now();
         
-        // Update session time every minute
         setInterval(() => {
-            const sessionTime = Math.floor((Date.now() - this.sessionStartTime) / 1000);
             this.userData.profile.totalSessionTime += 60; // Add 1 minute
             this.saveUserData();
         }, 60000);
         
-        // Save session time before page unload
         window.addEventListener('beforeunload', () => {
-            const sessionTime = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+            const sessionTime = Math.floor((Date.now() - this.sessionStart) / 1000);
             this.userData.profile.totalSessionTime += sessionTime;
             this.saveUserData();
         });
     }
 
-    /**
-     * XP TOOLTIP
-     */
+    // Show/hide XP tooltip
     showXPTooltip(event) {
         const tooltip = document.getElementById('xpTooltip');
         if (!tooltip) return;
         
-        const currentLevel = this.userData.stats.level;
-        const currentXP = this.userData.stats.xp;
-        const levelXP = (currentLevel - 1) * 500;
-        const nextLevelXP = currentLevel * 500;
-        const progressXP = currentXP - levelXP;
-        const neededXP = nextLevelXP - levelXP;
-        const progressPercent = (progressXP / neededXP) * 100;
+        const level = this.userData.stats.level;
+        const xp = this.userData.stats.xp;
+        const levelXP = (level - 1) * 500;
+        const nextLevelXP = level * 500;
+        const progressXP = xp - levelXP;
+        const neededXP = 500;
+        const progress = (progressXP / neededXP) * 100;
         
-        this.updateElement('tooltipLevel', currentLevel);
+        this.updateElement('tooltipLevel', level);
         this.updateElement('tooltipXP', progressXP);
         this.updateElement('tooltipMaxXP', neededXP);
-        this.updateElement('tooltipRemaining', `${nextLevelXP - currentXP} XP to next level`);
+        this.updateElement('tooltipRemaining', `${nextLevelXP - xp} XP to next level`);
         
-        const tooltipFill = document.getElementById('tooltipFill');
-        if (tooltipFill) {
-            tooltipFill.style.width = progressPercent + '%';
+        const fill = document.getElementById('tooltipFill');
+        if (fill) {
+            fill.style.width = Math.min(100, progress) + '%';
         }
         
         tooltip.style.left = event.pageX + 10 + 'px';
@@ -801,9 +704,7 @@ class EnhancedCyberSecurityDashboard {
         }
     }
 
-    /**
-     * NOTIFICATIONS
-     */
+    // Show notification
     showNotification(icon, title, description) {
         const notification = document.getElementById('achievementNotification');
         if (!notification) return;
@@ -814,15 +715,12 @@ class EnhancedCyberSecurityDashboard {
         
         notification.classList.remove('hidden');
         
-        // Auto hide after 3 seconds
         setTimeout(() => {
             notification.classList.add('hidden');
         }, 3000);
     }
 
-    /**
-     * DATA EXPORT/IMPORT
-     */
+    // Export modal
     showExportModal() {
         const modal = document.getElementById('exportModal');
         if (modal) {
@@ -837,69 +735,86 @@ class EnhancedCyberSecurityDashboard {
         }
     }
 
+    // Export data
     exportData(format) {
-        const exportTextarea = document.getElementById('exportData');
-        if (!exportTextarea) return;
+        const textarea = document.getElementById('exportData');
+        if (!textarea) return;
+        
+        const data = {
+            userData: this.userData,
+            activityData: this.activityData,
+            scores: {
+                phishing: this.getScore(this.storageKeys.phishingScore),
+                network: this.getScore(this.storageKeys.networkScore),
+                ddos: this.getScore(this.storageKeys.ddosScore),
+                phishingBest: this.getBestScore(this.storageKeys.phishingBestScore),
+                networkBest: this.getBestScore(this.storageKeys.networkBestScore),
+                ddosBest: this.getBestScore(this.storageKeys.ddosBestScore)
+            },
+            exportDate: new Date().toISOString()
+        };
         
         if (format === 'json') {
-            exportTextarea.value = JSON.stringify({
-                userData: this.userData,
-                activityData: this.activityData,
-                exportDate: new Date().toISOString()
-            }, null, 2);
+            textarea.value = JSON.stringify(data, null, 2);
         } else if (format === 'csv') {
-            const csvData = this.convertToCSV();
-            exportTextarea.value = csvData;
+            textarea.value = this.convertToCSV();
         }
         
-        // Auto select the text for easy copying
-        exportTextarea.select();
+        textarea.select();
     }
 
+    // Convert to CSV
     convertToCSV() {
-        const headers = ['Date', 'Game Type', 'Success', 'XP Earned', 'Score'];
+        const headers = ['Date', 'Game', 'Result', 'Score', 'XP'];
         const rows = [headers.join(',')];
         
         this.userData.gameHistory.forEach(game => {
-            const row = [
+            rows.push([
                 new Date(game.timestamp).toISOString().split('T')[0],
                 game.type,
-                game.success,
-                game.xpEarned,
-                game.data?.score || 'N/A'
-            ];
-            rows.push(row.join(','));
+                game.success ? 'Win' : 'Loss',
+                game.score || 0,
+                game.xpGained || 0
+            ].join(','));
         });
         
         return rows.join('\n');
     }
 
-    resetUserData() {
-        if (confirm('Are you sure you want to reset all your progress? This action cannot be undone.')) {
-            // Clear all data
-            Object.keys(this.STORAGE_KEYS).forEach(key => {
-                localStorage.removeItem(this.STORAGE_KEYS[key]);
-            });
-            
-            // Reset in-memory data
-            this.userData = { ...this.defaultUserData };
-            this.activityData = {};
-            
-            // Update UI
-            this.updateAllUI();
-            this.generateHeatmap();
-            
-            this.showNotification('🔄', 'Data Reset', 'All progress has been reset successfully');
+    // Reset all data
+    resetData() {
+        if (!confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+            return;
         }
+        
+        // Clear localStorage
+        Object.values(this.storageKeys).forEach(key => {
+            localStorage.removeItem(key);
+        });
+        
+        // Reset data
+        this.initializeUserData();
+        
+        // Update UI
+        this.updateAllUI();
+        this.generateHeatmap();
+        
+        this.showNotification('🔄', 'Data Reset', 'All progress has been reset');
     }
 
-    /**
-     * UTILITY FUNCTIONS
-     */
+    // Utility functions
     updateElement(id, content) {
         const element = document.getElementById(id);
         if (element) {
             element.textContent = content;
+        }
+    }
+
+    updateProgressBar(id, current, max) {
+        const element = document.getElementById(id);
+        if (element) {
+            const percentage = Math.min(100, (current / max) * 100);
+            element.style.width = percentage + '%';
         }
     }
 
@@ -914,29 +829,29 @@ class EnhancedCyberSecurityDashboard {
     formatBytes(bytes) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const sizes = ['Bytes', 'KB', 'MB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     }
 
     getTimeAgo(timestamp) {
         const now = new Date();
-        const gameTime = new Date(timestamp);
-        const diffInMinutes = Math.floor((now - gameTime) / 60000);
+        const time = new Date(timestamp);
+        const diffMinutes = Math.floor((now - time) / 60000);
         
-        if (diffInMinutes < 1) return 'Just now';
-        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-        return `${Math.floor(diffInMinutes / 1440)}d ago`;
+        if (diffMinutes < 1) return 'Just now';
+        if (diffMinutes < 60) return `${diffMinutes}m ago`;
+        if (diffMinutes < 1440) return `${Math.floor(diffMinutes / 60)}h ago`;
+        return `${Math.floor(diffMinutes / 1440)}d ago`;
     }
 }
 
-// Initialize the enhanced dashboard when DOM is loaded
+// Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.cyberDashboard = new EnhancedCyberSecurityDashboard();
+    window.cyberDashboard = new CyberGuardDashboard();
 });
 
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = EnhancedCyberSecurityDashboard;
+    module.exports = CyberGuardDashboard;
 }
