@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cyber Security Lab — Animated Learning (HTML/CSS/JS)</title>
+<style>
+  :root{
+    --bg:#0b0f14;
+    --panel:#111723;
+    --panel-2:#0f1520;
+    --text:#e6efff;
+    --muted:#9db2ce;
+    --accent:#4be477;
+    --red:#ff4d6d;
+    --amber:#ffd166;
+    --blue:#5ac8fa;
+    --purple:#a78bfa;
+    --card:#0d1420;
+    --ok:#23c55e;
+    --warn:#f59e0b;
+    --bad:#ef4444;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 500px at 20% -10%, #132138 0%, transparent 60%),
+      radial-gradient(1200px 500px at 120% 10%, #141e30 0%, transparent 60%),
+      var(--bg);
+  }
+
+  header{
+    position:sticky; top:0; z-index:10;
+    background:linear-gradient(180deg, rgba(9,13,20,.85), rgba(9,13,20,.6));
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid #1a2435;
+  }
+  .wrap{max-width:1180px; margin:0 auto; padding:18px 20px;}
+  .title{display:flex; gap:12px; align-items:center}
+  .logo{
+    width:36px; height:36px; border-radius:12px;
+    display:grid; place-items:center; font-weight:700;
+    color:#07120b; background:linear-gradient(135deg,#7bffb1,#42e2ff);
+    box-shadow:0 0 18px rgba(66,226,255,.45);
+  }
+  h1{font-size:20px; margin:0}
+  .subtitle{color:var(--muted); font-size:13px}
+
+  .grid{
+    display:grid; gap:16px; padding:22px 20px; max-width:1180px; margin:0 auto;
+    grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+  }
+  .card{
+    position:relative;
+    background:linear-gradient(180deg, #0b1220, #0a0f18);
+    border:1px solid #1a2435;
+    border-radius:16px; padding:16px; overflow:hidden; min-height:220px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .card:hover{ transform: translateY(-3px); box-shadow:0 14px 40px rgba(0,0,0,.35); border-color:#263553; }
+  .card h3{margin:0 0 6px 0; font-size:16px}
+  .card p{margin:0 0 12px 0; font-size:13px; color:var(--muted)}
+  .badge{
+    position:absolute; top:12px; right:12px; font-size:11px; padding:4px 8px; border-radius:999px;
+    border:1px solid #2a3957; color:#b9c9e6; background:#0d1726;
+  }
+  .btn{
+    cursor:pointer; user-select:none;
+    background:linear-gradient(135deg,#1c2a40,#172033);
+    border:1px solid #263553; color:#dbe8ff;
+    padding:8px 12px; border-radius:10px; font-size:13px;
+    transition: transform .1s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); background:#1a2740; border-color:#34507b; box-shadow:0 4px 16px rgba(64,129,255,.2) }
+  .btn.accent{ background:linear-gradient(135deg,#22c55e,#16a34a); border-color:#23c55e; color:#06130b; }
+  .btn.accent:hover{ box-shadow:0 6px 18px rgba(34,197,94,.45); }
+
+  /* Tiny helpers */
+  .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  .muted{color:var(--muted)}
+  .hint{font-size:12px; color:#a9bfe0}
+
+  /* Access Control demo */
+  .meter{
+    height:8px; background:#0f1a2a; border:1px solid #1d2c49; border-radius:999px; overflow:hidden;
+  }
+  .bar{height:100%; width:0%; background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e); transition: width .35s ease}
+  .pill{padding:6px 10px; border-radius:999px; background:#0d1726; border:1px solid #2a3957; font-size:12px}
+
+  /* Firewall animation */
+  .fw-stage{
+    position:relative; height:130px; border-radius:12px; background:#08101b; border:1px dashed #1f2d49; overflow:hidden;
+  }
+  .wall{position:absolute; top:0; bottom:0; left:55%; width:6px; background:linear-gradient(#2c3e75,#4b6bff);}
+  .packet{
+    position:absolute; top:0; left:-60px; width:48px; height:18px; border-radius:6px;
+    background:linear-gradient(90deg,#2bd4ff,#6effb3); box-shadow:0 0 16px rgba(79,255,196,.45);
+    animation: fly 5s linear infinite; display:flex; align-items:center; justify-content:center; font-size:11px; color:#06251a;
+  }
+  .packet.bad{ background:linear-gradient(90deg,#ff6b6b,#ffcc70); box-shadow:0 0 16px rgba(255,107,107,.45); color:#280606 }
+  @keyframes fly { from{ transform: translateX(0)} to{ transform: translateX(1600px)} }
+  .blocked{ filter: grayscale(.7) brightness(.6); transform: scale(.96); }
+
+  /* Encryption demo */
+  .enc-box{
+    background:#0b1322; border:1px solid #1c2a3f; border-radius:12px; padding:10px;
+  }
+  .chip{
+    display:inline-block; padding:4px 8px; border-radius:8px; border:1px solid #274065; background:#0e1b30; font-size:12px; margin-right:6px;
+  }
+
+  /* Logging demo */
+  .terminal{
+    background:#07101a; border:1px solid #122238; border-radius:12px; height:140px; padding:8px; overflow:auto;
+    font-family: ui-monospace, Menlo, Consolas, monospace; font-size:12px; line-height:1.45;
+  }
+  .dot{height:8px; width:8px; border-radius:50%; background:#1f3a5f; box-shadow:0 0 0 4px #0e1a2c inset}
+  .dot.ok{ background:var(--ok)}
+  .dot.warn{ background:var(--warn)}
+  .dot.bad{ background:var(--bad)}
+
+  /* Radar demo */
+  .radar{
+    position:relative; height:140px; border-radius:50%; border:1px solid #213557; background:
+      radial-gradient(circle at center, rgba(40,220,130,.12) 0 40%, transparent 41% 100%),
+      #07121b;
+    overflow:hidden;
+  }
+  .sweep{
+    position:absolute; inset:-10% -10%;
+    background: conic-gradient(from 0deg, rgba(67,231,149,.35), transparent 45%);
+    animation: spin 3s linear infinite;
+    filter: blur(8px);
+  }
+  @keyframes spin { to { transform: rotate(360deg) } }
+  .blip{
+    position:absolute; width:8px; height:8px; border-radius:50%; background:#6effb3; box-shadow:0 0 10px #6effb3;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 50%{ transform: scale(1.9); opacity:.4} 100%{ transform: scale(1); opacity:1} }
+
+  /* Segmentation demo */
+  .seg-stage{position:relative; height:140px; border:1px dashed #1f2d49; border-radius:12px; overflow:hidden; background:#08121e}
+  .seg-wall{position:absolute; top:0; bottom:0; left:50%; width:2px; background:#2f426a}
+  .node{position:absolute; width:14px; height:14px; border-radius:50%; background:#6ee7ff; transform: translate(-50%,-50%); box-shadow:0 0 10px rgba(110,231,255,.6)}
+  .node.db{ background:#a78bfa}
+  .node.web{ background:#22c55e}
+  .node.app{ background:#ffd166; color:#1b1404}
+
+  /* Phishing demo */
+  .mail{
+    background:#0b1322; border:1px solid #1c2a3f; border-radius:12px; padding:10px; font-size:13px;
+  }
+  .flag{color:#ff7b7b; font-weight:600}
+  .mail .link{ color:#5ac8fa; text-decoration:underline; cursor:pointer}
+  .toast{
+    position:fixed; right:20px; top:20px; padding:12px 16px; border-radius:12px; border:1px solid #214b3a;
+    background:linear-gradient(135deg,#0f211b,#0b1914); color:#bfeada; box-shadow:0 8px 24px rgba(0,0,0,.35);
+    opacity:0; transform: translateY(-8px); transition: all .25s ease; z-index: 50;
+  }
+  .toast.show{ opacity:1; transform: translateY(0) }
+
+  /* Incident Response */
+  .timeline{display:flex; gap:10px; flex-wrap:wrap}
+  .step{
+    flex:1 1 140px; min-width:140px; background:#0b1220; border:1px solid #1a2435; border-radius:12px; padding:8px;
+    position:relative; overflow:hidden;
+  }
+  .step .bar{
+    position:absolute; left:0; bottom:0; height:3px; width:0%;
+    background:linear-gradient(90deg,#60a5fa,#34d399,#fcd34d,#f472b6);
+    transition: width .6s ease;
+  }
+  .step.done{ border-color:#284b7a; }
+  .step h4{ margin:0 0 6px 0; font-size:13px}
+  .step p{ margin:0; font-size:12px; color:var(--muted)}
+
+  /* Modal */
+  dialog{
+    width:min(780px, 92vw); border:none; border-radius:16px; padding:0; background:#0b1220; color:var(--text);
+    box-shadow: 0 30px 80px rgba(0,0,0,.5); border:1px solid #1a2435;
+  }
+  dialog::backdrop{ background: rgba(5,10,18,.6) backdrop-filter blur(4px); }
+  .modal-header{display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid #142137}
+  .modal-body{padding:16px}
+  .x{cursor:pointer; border:none; background:transparent; color:#99b4d8; font-size:18px}
+  .kbd{
+    display:inline-block; border:1px solid #2a3957; background:#0d1726; border-radius:6px; padding:2px 6px; font-size:12px; color:#b9c9e6;
+  }
+
+  /* Footer */
+  footer{max-width:1180px; margin:0 auto 50px; padding:0 20px; color:#96aacc; font-size:12px}
+  a{color:#8ac6ff}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="title">
+      <div class="logo">CS</div>
+      <div>
+        <h1>Cyber Security Lab</h1>
+        <div class="subtitle">Learn the essentials with playful, realistic animations — no libraries, just HTML/CSS/JS.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+  <!-- 1. Access Control -->
+  <section class="card">
+    <span class="badge">Access Control</span>
+    <h3>Strong Auth: Passwords + MFA</h3>
+    <p>Type a password to see strength. Toggle MFA to see risk drop.</p>
+    <div class="row">
+      <input id="pw" type="password" placeholder="Try: P@ssw0rd!2025" style="flex:1; min-width:140px; background:#0b1322; color:var(--text); border:1px solid #1c2a3f; border-radius:8px; padding:8px"/>
+      <label class="pill"><input id="mfa" type="checkbox"/> MFA</label>
+      <span id="pwScore" class="pill">Score: 0</span>
+    </div>
+    <div class="meter" style="margin-top:10px"><div id="pwBar" class="bar"></div></div>
+    <div class="hint" style="margin-top:8px">Tip: length + variety (+MFA) = 🚀</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" data-open="#modal-access">Learn</button>
+    </div>
+  </section>
+
+  <!-- 2. System & Network Security -->
+  <section class="card">
+    <span class="badge">Network Security</span>
+    <h3>Firewall: Block Malicious Packets</h3>
+    <p>Start traffic and watch the firewall stop red packets.</p>
+    <div class="fw-stage" id="fwStage">
+      <div class="wall"></div>
+      <!-- packets injected by JS -->
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="fwToggle">Start Traffic</button>
+      <span class="pill">Blocked: <span id="fwBlocked" class="mono">0</span></span>
+      <span class="pill">Passed: <span id="fwPassed" class="mono">0</span></span>
+      <button class="btn" data-open="#modal-network">Learn</button>
+    </div>
+  </section>
+
+  <!-- 3. Data Security -->
+  <section class="card">
+    <span class="badge">Data Security</span>
+    <h3>Encryption: Lock Your Data</h3>
+    <p>Enter text & key (XOR demo). Observe ciphertext change.</p>
+    <div class="enc-box">
+      <div class="row">
+        <input id="encInput" placeholder="Message" style="flex:1; min-width:120px; background:#0b1322; color:var(--text); border:1px solid #1c2a3f; border-radius:8px; padding:8px">
+        <input id="encKey" placeholder="Key" style="width:120px; background:#0b1322; color:var(--text); border:1px solid #1c2a3f; border-radius:8px; padding:8px">
+      </div>
+      <div style="margin-top:8px" class="mono" id="cipherOut">Cipher: <span class="muted">—</span></div>
+      <div style="margin-top:4px" class="mono" id="plainOut">Plain : <span class="muted">—</span></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <span class="chip">TLS</span><span class="chip">At Rest</span><span class="chip">Keys</span>
+      <button class="btn" data-open="#modal-data">Learn</button>
+    </div>
+  </section>
+
+  <!-- 4. Monitoring & Logging -->
+  <section class="card">
+    <span class="badge">Monitoring</span>
+    <h3>SIEM: Live Event Stream</h3>
+    <p>Start the log stream, spot anomalies in yellow/red.</p>
+    <div class="terminal" id="logBox"></div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="logToggle">Start Logs</button>
+      <span class="dot ok" title="OK"></span>
+      <span class="dot warn" title="Warn"></span>
+      <span class="dot bad" title="Critical"></span>
+      <button class="btn" data-open="#modal-logging">Learn</button>
+    </div>
+  </section>
+
+  <!-- 5. Malware Protection -->
+  <section class="card">
+    <span class="badge">Malware Defense</span>
+    <h3>Radar: Detect Threats</h3>
+    <p>Enable radar to scan. Blips show detections.</p>
+    <div class="radar" id="radar">
+      <div class="sweep"></div>
+      <!-- blips by JS -->
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="radarToggle">Enable Radar</button>
+      <button class="btn" data-open="#modal-malware">Learn</button>
+    </div>
+  </section>
+
+  <!-- 6. Network Segmentation -->
+  <section class="card">
+    <span class="badge">Segmentation</span>
+    <h3>Isolate Critical Services</h3>
+    <p>Toggle segmentation. Watch cross-zone travel stop.</p>
+    <div class="seg-stage" id="segStage">
+      <div class="seg-wall"></div>
+      <div class="node web" id="nWeb" style="top:35%; left:25%" title="Web"></div>
+      <div class="node app" id="nApp" style="top:65%; left:35%" title="App"></div>
+      <div class="node db"  id="nDb"  style="top:50%; left:75%" title="DB"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <label class="pill"><input id="segToggle" type="checkbox"> Segmentation ON</label>
+      <span class="pill">Crossings Blocked: <span id="segBlocked" class="mono">0</span></span>
+      <button class="btn" data-open="#modal-seg">Learn</button>
+    </div>
+  </section>
+
+  <!-- 7. User Awareness -->
+  <section class="card">
+    <span class="badge">Awareness</span>
+    <h3>Phishing Spotter</h3>
+    <p>Hover links. Click “Scan” to highlight red flags.</p>
+    <div class="mail" id="mail">
+      From: IT Support &lt;it-help@secure-support.com&gt;<br/>
+      Subject: Immediate Password Reset Required<br/><br/>
+      Hi,<br/>
+      We detected unusual activity. Please verify your account now:<br/>
+      <span class="link" data-real="false">http://security-update.example-account-login.com</span><br/><br/>
+      Regards,<br/>IT Team
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="scanPhish">Scan Email</button>
+      <span class="pill">Flags: <span id="flagsCount" class="mono">0</span></span>
+      <button class="btn" data-open="#modal-awareness">Learn</button>
+    </div>
+  </section>
+
+  <!-- 8. Incident Response -->
+  <section class="card">
+    <span class="badge">Incident Response</span>
+    <h3>Animated Playbook</h3>
+    <p>Simulate a breach and follow the steps.</p>
+    <div class="timeline" id="tl">
+      <div class="step"><h4>Detect</h4><p>Alert triggers</p><div class="bar"></div></div>
+      <div class="step"><h4>Contain</h4><p>Limit spread</p><div class="bar"></div></div>
+      <div class="step"><h4>Eradicate</h4><p>Remove cause</p><div class="bar"></div></div>
+      <div class="step"><h4>Recover</h4><p>Restore ops</p><div class="bar"></div></div>
+      <div class="step"><h4>Lessons</h4><p>Improve</p><div class="bar"></div></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn accent" id="simulateIR">Simulate Breach</button>
+      <span class="pill">Status: <span id="irStatus" class="mono">Idle</span></span>
+      <button class="btn" data-open="#modal-ir">Learn</button>
+    </div>
+  </section>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="toast">Notification</div>
+
+<!-- Modals (Learn More) -->
+<dialog id="modal-access"><div class="modal-header"><strong>Access Control</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p><span class="kbd">Passwords</span> should be long (12+), unique, and include different character classes. <span class="kbd">MFA</span> stops attackers even if a password leaks.</p>
+  <ul>
+    <li>Use a password manager</li>
+    <li>Enable MFA (TOTP, hardware key)</li>
+    <li>Apply least privilege on accounts</li>
+  </ul>
+</div></dialog>
+
+<dialog id="modal-network"><div class="modal-header"><strong>System & Network Security</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Firewalls filter traffic. IDS/IPS detect and block patterns. Keep systems patched and unused ports closed.</p>
+</div></dialog>
+
+<dialog id="modal-data"><div class="modal-header"><strong>Data Security</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Encrypt <em>in transit</em> (TLS) and <em>at rest</em> (disk/DB). Manage keys securely and rotate regularly.</p>
+</div></dialog>
+
+<dialog id="modal-logging"><div class="modal-header"><strong>Monitoring & Logging</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Centralize logs, alert on anomalies, and retain for forensics. A SIEM helps correlate events.</p>
+</div></dialog>
+
+<dialog id="modal-malware"><div class="modal-header"><strong>Malware & Threat Protection</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Use AV/EDR, sandbox unknown files, and keep signatures up to date. Radar demo shows detections.</p>
+</div></dialog>
+
+<dialog id="modal-seg"><div class="modal-header"><strong>Network Segmentation</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Split networks (e.g., Web/App/DB). Only required paths are open. Compromise in one zone shouldn’t jump freely.</p>
+</div></dialog>
+
+<dialog id="modal-awareness"><div class="modal-header"><strong>User Awareness</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Phishing tricks: suspicious domains, urgency, requests for credentials, attachments from unknown senders.</p>
+</div></dialog>
+
+<dialog id="modal-ir"><div class="modal-header"><strong>Incident Response</strong><button class="x" data-close>×</button></div><div class="modal-body">
+  <p>Follow the playbook: Detect → Contain → Eradicate → Recover → Lessons learned.</p>
+</div></dialog>
+
+<footer class="wrap">
+  Built with ♥ using only HTML, CSS, and JavaScript. Tweak and extend as you like!
+</footer>
+
+<script>
+/* ---------- Toast helper ---------- */
+const toast = (msg)=>{ 
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(()=> el.classList.remove('show'), 2200);
+};
+
+/* ---------- Modals ---------- */
+document.querySelectorAll('[data-open]').forEach(btn=>{
+  btn.addEventListener('click', ()=> document.querySelector(btn.getAttribute('data-open')).showModal());
+});
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.addEventListener('click', ()=> btn.closest('dialog').close());
+});
+
+/* ---------- 1) Access Control: password meter + MFA ---------- */
+const pw = document.getElementById('pw');
+const mfa = document.getElementById('mfa');
+const pwBar = document.getElementById('pwBar');
+const pwScore = document.getElementById('pwScore');
+
+function calcPwScore(str){
+  let s = 0;
+  if (!str) return 0;
+  const len = Math.min(str.length, 24);
+  s += len * 3;                           // length
+  if (/[a-z]/.test(str)) s += 8;
+  if (/[A-Z]/.test(str)) s += 10;
+  if (/[0-9]/.test(str)) s += 10;
+  if (/[^A-Za-z0-9]/.test(str)) s += 12;  // symbols
+  if (!/(.)\1{2,}/.test(str)) s += 8;     // avoid repeats
+  if (/(password|qwerty|12345|admin)/i.test(str)) s -= 25; // bad words
+  return Math.max(0, Math.min(100, s));
+}
+function updatePw(){
+  const base = calcPwScore(pw.value);
+  const bonus = mfa.checked ? 20 : 0; // MFA bonus
+  const total = Math.min(100, base + bonus);
+  pwBar.style.width = total + '%';
+  pwScore.textContent = 'Score: ' + total;
+  pwBar.style.filter = mfa.checked ? 'saturate(1.3)' : 'none';
+}
+[pw, mfa].forEach(el=> el.addEventListener('input', updatePw));
+updatePw();
+
+/* ---------- 2) Firewall animation ---------- */
+const fwStage = document.getElementById('fwStage');
+const fwToggle = document.getElementById('fwToggle');
+const fwBlocked = document.getElementById('fwBlocked');
+const fwPassed = document.getElementById('fwPassed');
+let fwOn = false, fwTimer, blockCount=0, passCount=0;
+function makePacket(){
+  const p = document.createElement('div');
+  p.className = 'packet' + (Math.random()<0.35 ? ' bad' : '');
+  p.style.top = (20 + Math.random()*90) + 'px';
+  p.style.animationDuration = (3 + Math.random()*4)+'s';
+  p.textContent = Math.random()<0.35 ? 'X' : '✓';
+  fwStage.appendChild(p);
+  // collision with wall ~55%
+  const isBad = p.classList.contains('bad');
+  const speed = parseFloat(getComputedStyle(p).animationDuration);
+  const travel = 1600; // from keyframes
+  const pxPerSec = travel / speed;
+  const wallX = fwStage.clientWidth * 0.55;
+  // polling for simple collision
+  const tick = setInterval(()=>{
+    const curX = p.getBoundingClientRect().left - fwStage.getBoundingClientRect().left + 48;
+    if (curX >= wallX-4 && curX <= wallX+8) {
+      if (isBad){ // block
+        p.classList.add('blocked');
+        p.style.animationPlayState='paused';
+        clearInterval(tick);
+        setTimeout(()=> p.remove(), 1200);
+        fwBlocked.textContent = ++blockCount;
+      }
+    }
+    // passed
+    if (curX > fwStage.clientWidth) {
+      clearInterval(tick);
+      p.remove();
+      if (!isBad) fwPassed.textContent = ++passCount;
+    }
+    if (!fwOn){ clearInterval(tick); p.remove(); }
+  }, 60);
+}
+fwToggle.addEventListener('click', ()=>{
+  fwOn = !fwOn;
+  fwToggle.textContent = fwOn ? 'Stop Traffic' : 'Start Traffic';
+  toast(fwOn ? 'Firewall monitoring ON' : 'Firewall monitoring OFF');
+  if (fwOn){
+    fwTimer = setInterval(()=> makePacket(), 450);
+  } else {
+    clearInterval(fwTimer);
+  }
+});
+
+/* ---------- 3) Encryption demo (XOR stream) ---------- */
+const encInput = document.getElementById('encInput');
+const encKey = document.getElementById('encKey');
+const cipherOut = document.getElementById('cipherOut');
+const plainOut = document.getElementById('plainOut');
+
+function xorEncrypt(plain, key){
+  if (!key) return '';
+  let out = [];
+  for (let i=0;i<plain.length;i++){
+    out.push( plain.charCodeAt(i) ^ key.charCodeAt(i % key.length) );
+  }
+  return out.map(n=> n.toString(16).padStart(2,'0')).join(' ');
+}
+function xorDecrypt(hex, key){
+  if (!key) return '';
+  const bytes = hex.split(' ').filter(Boolean).map(h=> parseInt(h,16));
+  let out = '';
+  for (let i=0;i<bytes.length;i++){
+    out += String.fromCharCode(bytes[i] ^ key.charCodeAt(i % key.length));
+  }
+  return out;
+}
+function updateEnc(){
+  const msg = encInput.value;
+  const key = encKey.value;
+  const c = xorEncrypt(msg,key);
+  cipherOut.innerHTML = 'Cipher: <span class="mono">'+(c||'—')+'</span>';
+  plainOut.innerHTML  = 'Plain : <span class="mono">'+(c? xorDecrypt(c,key): '—')+'</span>';
+}
+[encInput, encKey].forEach(el=> el.addEventListener('input', updateEnc));
+updateEnc();
+
+/* ---------- 4) Logging demo ---------- */
+const logBox = document.getElementById('logBox');
+const logToggle = document.getElementById('logToggle');
+let logOn=false, logTimer=0, logSeq=0;
+const msgs = [
+  'auth ok for user=alice ip=10.0.0.12',
+  'nginx 200 /index.html',
+  'backup completed in 14s',
+  'rate-limit tripped for ip=203.0.113.5',
+  'anomaly: spikes on /api/login',
+  'IDS signature match: SYN flood',
+  'db replica lag=212ms',
+  'user bob failed 5 logins',
+];
+function pushLog(){
+  const m = msgs[Math.floor(Math.random()*msgs.length)];
+  let level='OK';
+  if (/anomaly|failed|flood|rate-limit/i.test(m)) level='WARN';
+  const time = new Date().toLocaleTimeString();
+  const line = `[${time}] [${level}] ${m}\n`;
+  const span = document.createElement('div');
+  span.textContent = line;
+  span.style.color = (level==='OK') ? '#9bd8b3' : (level==='WARN' ? '#ffd166' : '#ff7b7b');
+  logBox.appendChild(span);
+  logBox.scrollTop = logBox.scrollHeight;
+  // Occasionally inject a CRIT
+  if (Math.random() < 0.08){
+    const crit = document.createElement('div');
+    crit.textContent = `[${time}] [CRIT] outbound spike to unknown ASN`;
+    crit.style.color = '#ff7b7b';
+    crit.style.fontWeight = '600';
+    logBox.appendChild(crit);
+    logBox.scrollTop = logBox.scrollHeight;
+  }
+  if (!logOn){ span.remove(); }
+}
+logToggle.addEventListener('click', ()=>{
+  logOn = !logOn;
+  logToggle.textContent = logOn ? 'Stop Logs' : 'Start Logs';
+  toast(logOn ? 'Log stream started' : 'Log stream stopped');
+  if (logOn) logTimer = setInterval(pushLog, 650); else clearInterval(logTimer);
+});
+
+/* ---------- 5) Malware radar ---------- */
+const radar = document.getElementById('radar');
+const radarToggle = document.getElementById('radarToggle');
+let radarOn=false, radarTimer=0;
+function addBlip(){
+  const b = document.createElement('div');
+  b.className='blip';
+  // random inside circle
+  const r = 60 * Math.sqrt(Math.random()); // biased inward
+  const a = Math.random()*2*Math.PI;
+  const x = 50 + r * Math.cos(a);
+  const y = 50 + r * Math.sin(a);
+  b.style.left = x + '%';
+  b.style.top = y + '%';
+  radar.appendChild(b);
+  setTimeout(()=> b.remove(), 4000);
+}
+radarToggle.addEventListener('click', ()=>{
+  radarOn = !radarOn;
+  radarToggle.textContent = radarOn ? 'Disable Radar' : 'Enable Radar';
+  toast(radarOn ? 'Threat radar activated' : 'Threat radar off');
+  if (radarOn) radarTimer = setInterval(addBlip, 700); else clearInterval(radarTimer);
+});
+
+/* ---------- 6) Segmentation ---------- */
+const segStage = document.getElementById('segStage');
+const segToggle = document.getElementById('segToggle');
+const segBlocked = document.getElementById('segBlocked');
+const nWeb = document.getElementById('nWeb');
+const nApp = document.getElementById('nApp');
+const nDb  = document.getElementById('nDb');
+let segBlocks=0, segOn=false;
+// simple drift movement
+function drift(el, dx, dy){
+  const rect = segStage.getBoundingClientRect();
+  const box = {w: segStage.clientWidth, h: segStage.clientHeight};
+  let x = parseFloat(el.style.left), y = parseFloat(el.style.top);
+  function tick(){
+    if (!document.body.contains(el)) return;
+    x += dx; y += dy;
+    if (x<5 || x>95) dx*=-1;
+    if (y<15 || y>85) dy*=-1;
+    // block cross if segmentation
+    if (segOn){
+      const nextLeft = x;
+      const crossing = ( (x<50 && nextLeft>=50) || (x>50 && nextLeft<=50) );
+      if (crossing){
+        segBlocks++;
+        segBlocked.textContent = segBlocks;
+        dx*=-1; // bounce back
+      }
+    }
+    el.style.left = x + '%';
+    el.style.top = y + '%';
+    el._t = requestAnimationFrame(tick);
+  }
+  el._t = requestAnimationFrame(tick);
+}
+drift(nWeb,  .22, .18);
+drift(nApp, -.18, .21);
+drift(nDb,  .16,-.17);
+
+segToggle.addEventListener('change', (e)=>{
+  segOn = e.target.checked;
+  toast(segOn ? 'Segmentation enforced' : 'Segmentation relaxed');
+});
+
+/* ---------- 7) Phishing scan ---------- */
+const scanBtn = document.getElementById('scanPhish');
+const flagsCount = document.getElementById('flagsCount');
+const mail = document.getElementById('mail');
+scanBtn.addEventListener('click', ()=>{
+  let flags = 0;
+  // suspicious domain: multiple hyphens / subdomains / http
+  mail.querySelectorAll('.link').forEach(a=>{
+    const t = a.textContent.trim();
+    const bad = /^http:/.test(t) || (t.match(/\./g)||[]).length>2 || /login|verify|update/i.test(t);
+    a.style.color = bad ? '#ff7b7b' : '#5ac8fa';
+    if (bad) flags++;
+  });
+  // urgent subject / credential request
+  if (mail.textContent.match(/immediate|now|verify|password/i)) flags++;
+  flagsCount.textContent = flags;
+  toast(flags ? `⚠️ ${flags} red flag(s) found` : 'Looks okay — still be cautious!');
+});
+
+/* ---------- 8) Incident Response timeline ---------- */
+const tl = Array.from(document.querySelectorAll('#tl .step'));
+const irBtn = document.getElementById('simulateIR');
+const irStatus = document.getElementById('irStatus');
+let irRunning = false;
+irBtn.addEventListener('click', async ()=>{
+  if (irRunning) return;
+  irRunning = true; irStatus.textContent = 'Detecting…'; toast('Breach detected!');
+  for (let i=0;i<tl.length;i++){
+    const step = tl[i]; const bar = step.querySelector('.bar');
+    step.classList.add('done'); bar.style.width='0%';
+    for (let p=0;p<=100;p+=20){
+      bar.style.width = p+'%';
+      await new Promise(r=> setTimeout(r, 240));
+    }
+    irStatus.textContent = ['Detect','Contain','Eradicate','Recover','Lessons'][i] + ' ✓';
+  }
+  toast('Incident resolved. Document lessons learned.');
+  setTimeout(()=>{ irStatus.textContent = 'Idle'; tl.forEach(s=>{ s.classList.remove('done'); s.querySelector('.bar').style.width='0%'; }); irRunning=false; }, 1300);
+});
+</script>
+</body>
+</html>

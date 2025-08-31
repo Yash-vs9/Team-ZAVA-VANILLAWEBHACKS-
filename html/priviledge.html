@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privilege Escalation Security Demonstration</title>
+    <link rel="stylesheet" href="../css/priviledge.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Initial Setup Interface -->
+        <div class="screen" id="introScreen">
+            <header class="header">
+                <div class="header-content">
+                    <h1 class="header-title">
+                        <span class="security-icon">🛡️</span>
+                        Privilege Escalation Security Demonstration
+                    </h1>
+                    <div class="warning-banner">
+                        <span class="warning-icon">⚠️</span>
+                        <span class="warning-text">Educational Purpose Only - Cybersecurity Training</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="intro-content">
+                <div class="education-panel card">
+                    <div class="card__body">
+                        <h2>What is Privilege Escalation?</h2>
+                        <p>Privilege escalation is a cyberattack technique where attackers gain elevated access to resources that are normally restricted to higher-privilege users or applications. This demonstration shows how malicious software can:</p>
+                        
+                        <div class="threat-list">
+                            <div class="threat-item">
+                                <span class="threat-icon">🔑</span>
+                                <span class="threat-text">Request administrative permissions during installation</span>
+                            </div>
+                            <div class="threat-item">
+                                <span class="threat-icon">👀</span>
+                                <span class="threat-text">Monitor all keyboard input and system activities</span>
+                            </div>
+                            <div class="threat-item">
+                                <span class="threat-icon">📁</span>
+                                <span class="threat-text">Access sensitive files and personal information</span>
+                            </div>
+                            <div class="threat-item">
+                                <span class="threat-icon">🌐</span>
+                                <span class="threat-text">Track network activity and capture credentials</span>
+                            </div>
+                        </div>
+
+                        <div class="demo-warning">
+                            <h3>About This Demo</h3>
+                            <p>You'll experience a simulated malware installation and see real-time monitoring in action. Everything is safe and contained within this educational environment.</p>
+                        </div>
+
+                        <button class="btn btn--primary btn--lg" id="startDemoBtn">Start Security Demo</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Software Installation Simulation -->
+        <div class="screen hidden" id="installerScreen">
+            <div class="installer-window">
+                <div class="window-header">
+                    <div class="window-title">
+                        <span class="app-icon">🎵</span>
+                        Media Player Pro v2.3 - Setup Wizard
+                    </div>
+                    <div class="window-controls">
+                        <span class="control minimize">−</span>
+                        <span class="control maximize">□</span>
+                        <span class="control close">×</span>
+                    </div>
+                </div>
+                
+                <div class="installer-content">
+                    <div class="installer-header">
+                        <h2>Installing Media Player Pro</h2>
+                        <p>Please wait while the application is being installed...</p>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-text" id="progressText">Initializing...</div>
+                        <div class="progress-percentage" id="progressPercentage">0%</div>
+                    </div>
+
+                    <div class="installation-log" id="installationLog">
+                        <div class="log-header">Installation Log:</div>
+                        <div class="log-content" id="logContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UAC Prompt Simulation -->
+            <div class="uac-prompt hidden" id="uacPrompt">
+                <div class="uac-window">
+                    <div class="uac-header">
+                        <span class="uac-icon">🛡️</span>
+                        <span class="uac-title">User Account Control</span>
+                    </div>
+                    <div class="uac-content">
+                        <p><strong>Do you want to allow this app to make changes to your device?</strong></p>
+                        <div class="uac-app-info">
+                            <strong>Media Player Pro Setup</strong><br>
+                            Verified publisher: Unknown<br>
+                            File origin: Downloaded from the internet
+                        </div>
+                        <div class="uac-buttons">
+                            <button class="btn btn--primary" id="uacAllow">Yes</button>
+                            <button class="btn btn--secondary" id="uacDeny">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Virtual Desktop Interface -->
+        <div class="screen hidden" id="desktopScreen">
+            <div class="desktop-header">
+                <div class="taskbar">
+                    <div class="taskbar-start">
+                        <span class="start-icon">🖥️</span>
+                        <span class="desktop-title">Virtual Desktop Environment</span>
+                    </div>
+                    <div class="taskbar-apps">
+                        <button class="taskbar-app active" id="notepadTab">
+                            <span class="app-icon">📝</span>
+                            Notepad
+                        </button>
+                        <button class="taskbar-app" id="terminalTab">
+                            <span class="app-icon">💻</span>
+                            Terminal
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="desktop-content">
+                <!-- Application Windows Container -->
+                <div class="applications-container">
+                    <!-- Notepad Window -->
+                    <div class="application-window" id="notepadWindow">
+                        <div class="window-header">
+                            <div class="window-title">
+                                <span class="app-icon">📝</span>
+                                Notepad - Document1.txt
+                            </div>
+                            <div class="window-controls">
+                                <span class="control minimize">−</span>
+                                <span class="control maximize">□</span>
+                                <span class="control close">×</span>
+                            </div>
+                        </div>
+                        <div class="notepad-content">
+                            <textarea class="notepad-textarea" id="notepadInput" placeholder="Type your text here... Try typing words like 'password', 'credit', 'bank', etc. to see sensitive data detection in action."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Window -->
+                    <div class="application-window hidden" id="terminalWindow">
+                        <div class="window-header">
+                            <div class="window-title">
+                                <span class="app-icon">💻</span>
+                                Command Prompt - System Monitor
+                            </div>
+                            <div class="window-controls">
+                                <span class="control minimize">−</span>
+                                <span class="control maximize">□</span>
+                                <span class="control close">×</span>
+                            </div>
+                        </div>
+                        <div class="terminal-content">
+                            <div class="terminal-output" id="terminalOutput"></div>
+                            <div class="terminal-input">
+                                <span class="terminal-prompt">C:\System&gt;</span>
+                                <span class="terminal-cursor">_</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Educational Side Panel -->
+                <div class="education-sidebar">
+                    <h3>What's Happening?</h3>
+                    <div class="education-step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Privilege Escalation Complete</h4>
+                            <p>The "software" now has admin access and can monitor everything you do.</p>
+                        </div>
+                    </div>
+                    <div class="education-step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Keylogger Active</h4>
+                            <p>Every keystroke is being captured and analyzed for sensitive information.</p>
+                        </div>
+                    </div>
+                    <div class="education-step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>System Monitoring</h4>
+                            <p>File access, network activity, and system processes are being tracked.</p>
+                        </div>
+                    </div>
+
+                    <div class="activity-section">
+                        <h4>Simulate Activities:</h4>
+                        <p class="activity-description">Click these buttons to see how different actions are monitored:</p>
+                        <div class="activity-buttons">
+                            <button class="btn btn--secondary btn--sm activity-btn" id="copyBtn">
+                                <span class="btn-icon">📋</span>
+                                Copy Text
+                            </button>
+                            <button class="btn btn--secondary btn--sm activity-btn" id="fileBtn">
+                                <span class="btn-icon">📁</span>
+                                Access File
+                            </button>
+                            <button class="btn btn--secondary btn--sm activity-btn" id="webBtn">
+                                <span class="btn-icon">🌐</span>
+                                Visit Website
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Summary -->
+        <div class="screen hidden" id="summaryScreen">
+            <div class="summary-content card">
+                <div class="card__body">
+                    <h2>Security Demonstration Complete</h2>
+                    
+                    <div class="summary-section">
+                        <h3>What You Just Experienced</h3>
+                        <p>This demonstration showed how privilege escalation works in a real cyberattack:</p>
+                        
+                        <div class="attack-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-number">1</div>
+                                <div class="timeline-content">
+                                    <h4>Social Engineering</h4>
+                                    <p>Malicious software disguised as legitimate application</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-number">2</div>
+                                <div class="timeline-content">
+                                    <h4>Permission Request</h4>
+                                    <p>User grants admin permissions during installation</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-number">3</div>
+                                <div class="timeline-content">
+                                    <h4>Privilege Escalation</h4>
+                                    <p>Malware gains system-level access and installs monitoring tools</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-number">4</div>
+                                <div class="timeline-content">
+                                    <h4>Data Harvesting</h4>
+                                    <p>All user activities monitored and sensitive data captured</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-tips">
+                        <h3>Protection Strategies</h3>
+                        <div class="tips-grid">
+                            <div class="tip-card">
+                                <span class="tip-icon">🔒</span>
+                                <h4>Verify Software Sources</h4>
+                                <p>Only install software from trusted, official sources</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">🛡️</span>
+                                <h4>Use Antivirus Software</h4>
+                                <p>Keep real-time protection enabled and updated</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">⚡</span>
+                                <h4>Keep Systems Updated</h4>
+                                <p>Install security updates to patch vulnerabilities</p>
+                            </div>
+                            <div class="tip-card">
+                                <span class="tip-icon">🤔</span>
+                                <h4>Be Skeptical of Permissions</h4>
+                                <p>Question why software needs admin privileges</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="demo-actions">
+                        <button class="btn btn--primary" id="restartBtn">Restart Demo</button>
+                        <button class="btn btn--secondary" id="summaryBtn">View Summary</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/priviledge.js"></script>
+</body>
+</html>
