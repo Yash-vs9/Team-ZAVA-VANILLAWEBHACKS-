@@ -5,454 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberGuard Dashboard</title>
     <link rel="stylesheet" href="../css/Dashboard.css">
-    <style>
-        /* Additional styles that extend your existing CSS without changing it */
-        
-        /* XP Tooltip - appears when hovering over XP */
-        .xp-tooltip {
-            position: absolute;
-            background: rgba(30, 0, 60, 0.95);
-            border: 1px solid #a259ec;
-            border-radius: 12px;
-            padding: 16px;
-            min-width: 250px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
-            backdrop-filter: blur(10px);
-        }
-
-        .xp-tooltip.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(-5px);
-        }
-
-        .xp-level-bar {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 5px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .xp-level-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #a259ec, #6236ff);
-            border-radius: 5px;
-            transition: width 0.8s ease;
-        }
-
-        /* Activity Calendar */
-        .calendar-wrapper {
-            background: rgba(30, 0, 60, 0.7);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            box-shadow: 0 0 25px rgba(128, 0, 255, 0.25);
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .calendar-nav-btn {
-            background: rgba(168, 85, 247, 0.2);
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .calendar-nav-btn:hover {
-            background: rgba(168, 85, 247, 0.4);
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-        }
-
-        .calendar-month-year {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.8);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-top: 1rem;
-        }
-
-        .calendar-day-header {
-            text-align: center;
-            font-weight: 600;
-            padding: 8px;
-            color: #a855f7;
-            font-size: 0.9rem;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .calendar-day:hover {
-            background: rgba(168, 85, 247, 0.2);
-            transform: scale(1.05);
-        }
-
-        .calendar-day.today {
-            background: rgba(168, 85, 247, 0.3);
-            border: 2px solid #a259ec;
-            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-        }
-
-        .calendar-day.has-activity {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .calendar-day.other-month {
-            opacity: 0.3;
-        }
-
-        .badges-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.2rem;
-            padding: 0.5rem;
-        }
-
-        .badge-enhanced {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            min-height: 120px;
-            cursor: pointer;
-        }
-
-        .badge-enhanced:hover {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: rgba(168, 85, 247, 0.4);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
-        }
-
-        .badge-enhanced.earned {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: rgba(168, 85, 247, 0.4);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-        }
-
-        .badge-enhanced.locked {
-            opacity: 0.4;
-            filter: grayscale(100%);
-        }
-
-        .badge-icon-large {
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-            filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
-        }
-
-        .badge-name {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 4px;
-            line-height: 1.2;
-        }
-
-        .badge-description {
-            font-size: 0.7rem;
-            color: #bbb;
-            text-align: center;
-            line-height: 1.3;
-        }
-
-        .badge-progress {
-            font-size: 0.65rem;
-            color: #a259ec;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        /* Activity Feed */
-        .activity-log {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-        }
-
-        .activity-item:hover {
-            background: rgba(168, 85, 247, 0.1);
-            border-left-color: #a259ec;
-            transform: translateX(5px);
-        }
-
-        .activity-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-            font-weight: bold;
-        }
-
-        .activity-icon.game { background: linear-gradient(135deg, #a259ec, #6236ff); }
-        .activity-icon.badge { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .activity-icon.level { background: linear-gradient(135deg, #10b981, #059669); }
-        .activity-icon.streak { background: linear-gradient(135deg, #ef4444, #dc2626); }
-
-        /* Notification System */
-        .notification-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(30, 0, 60, 0.95);
-            border: 1px solid #a259ec;
-            border-radius: 12px;
-            padding: 16px 20px;
-            min-width: 320px;
-            max-width: 400px;
-            z-index: 10000;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .notification-toast.show {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .notification-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .notification-icon {
-            font-size: 1.2rem;
-        }
-
-        .notification-title {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .notification-message {
-            font-size: 0.9rem;
-            color: #bbb;
-            line-height: 1.4;
-        }
-
-        /* Demo Controls */
-        .demo-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(30, 0, 60, 0.95);
-            border: 1px solid #a259ec;
-            border-radius: 12px;
-            padding: 16px;
-            z-index: 1000;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
-            backdrop-filter: blur(10px);
-        }
-
-        .demo-controls h4 {
-            color: #fff;
-            margin: 0 0 12px 0;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .demo-btn {
-            background: linear-gradient(90deg, #a259ec, #6236ff);
-            border: none;
-            color: #fff;
-            padding: 6px 12px;
-            margin: 2px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
-        }
-
-        .demo-btn.danger {
-            background: linear-gradient(90deg, #dc2626, #991b1b);
-        }
-
-        .demo-btn.success {
-            background: linear-gradient(90deg, #10b981, #059669);
-        }
-
-        /* Performance Visualization */
-        .performance-graph {
-            height: 180px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            align-items: end;
-            gap: 6px;
-            position: relative;
-        }
-
-        .graph-bar {
-            flex: 1;
-            background: linear-gradient(to top, rgba(162, 89, 236, 0.3), rgba(162, 89, 236, 0.8));
-            border-radius: 4px 4px 0 0;
-            min-height: 10px;
-            transition: all 0.5s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .graph-bar:hover {
-            background: linear-gradient(to top, #a259ec, #6236ff);
-            transform: translateY(-2px);
-        }
-
-        .graph-bar::after {
-            content: attr(data-value);
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            color: #aaa;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .graph-bar:hover::after {
-            opacity: 1;
-        }
-
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #a259ec, #6236ff);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #b46aec, #7247ff);
-        }
-
-        /* Animation keyframes */
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% {
-                box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 25px rgba(168, 85, 247, 0.8);
-            }
-        }
-
-        .animate-slide-in {
-            animation: slideInRight 0.5s ease-out;
-        }
-
-        .pulse-glow {
-            animation: pulseGlow 2s infinite;
-        }
-
-        /* Export/Import Buttons */
-        .data-management-btn {
-            background: linear-gradient(90deg, #a259ec, #6236ff);
-            border: none;
-            color: #fff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 4px;
-            font-size: 0.9rem;
-        }
-
-        .data-management-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
-        }
-
-        .data-management-btn.danger {
-            background: linear-gradient(90deg, #dc2626, #991b1b);
-        }
-    </style>
 </head>
 <body>
-    <!-- Navigation (using your exact CSS structure) -->
+    <!-- Navigation -->
     <nav class="cyber-nav">
         <div class="nav-container">
             <div class="nav-brand">
@@ -460,97 +15,128 @@
                 <span class="brand-text">Cyber<span class="brand-accent">Guard</span></span>
             </div>
             <ul class="nav-links">
-                <li><a href="./home.html">Home</a></li>
-                <li><a href="./Dashboard.html" class="active">Dashboard</a></li>
-                <li><a href="./game.html">Games</a></li>
-                <li><a href="./Learn.html">Learn</a></li>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="Dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="game.html">Games</a></li>
+                <li><a href="Learn.html">Learn</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Dashboard Content -->
-    <section class="section">
+    <div class="section">
         <div class="container">
-            <!-- Header with User Stats (using your exact CSS structure) -->
+            <!-- Header with Stats -->
             <div class="section-header">
-                <h2 class="section-title">Cyber Security Dashboard</h2>
+                <h1 class="section-title">Cyber Security Dashboard</h1>
                 <div class="user-stats">
-                    <div class="stat-item">
+                    <div class="stat-item" id="levelStat">
                         <span class="stat-label">Level 🚀</span>
                         <span class="stat-value" id="userLevel">1</span>
                     </div>
-                    <div class="stat-item" id="xpHoverArea">
+                    <div class="stat-item" id="xpStat">
                         <span class="stat-label">XP 📈</span>
                         <span class="stat-value" id="userXP">0</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-item" id="accuracyStat">
                         <span class="stat-label">Accuracy 🎯</span>
                         <span class="stat-value" id="userAccuracy">0%</span>
                     </div>
-                    <div class="stat-item">
+                    <div class="stat-item" id="streakStat">
                         <span class="stat-label">Streak 🔥</span>
                         <span class="stat-value" id="userStreak">0</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Activity Calendar -->
-            <div class="calendar-wrapper">
-                <div class="calendar-header">
-                    <h3 style="color: #fff; font-size: 1.3rem; margin: 0;">🗓️ Activity Calendar</h3>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <button class="calendar-nav-btn" id="prevMonth">‹ Prev</button>
-                        <span class="calendar-month-year" id="currentMonthYear">January 2025</span>
-                        <button class="calendar-nav-btn" id="nextMonth">Next ›</button>
-                    </div>
+            <!-- Level Progress Bar -->
+            <div class="cyber-panel level-progress-panel">
+                <h3>Level Progress</h3>
+                <div class="level-info">
+                    <span>Level <span id="currentLevel">1</span> → <span id="nextLevel">2</span></span>
+                    <span class="level-xp"><span id="currentXP">0</span> XP / <span id="nextLevelXP">500</span> XP</span>
                 </div>
-                <div class="calendar-grid" id="calendarGrid">
-                    <!-- Calendar will be generated by JavaScript -->
+                <div class="progress-bar level-progress">
+                    <div class="progress-fill" id="levelProgressFill"></div>
                 </div>
-                <div style="margin-top: 12px; font-size: 0.85rem; color: #aaa; text-align: center;">
-                    🟢 = Training completed | Current streak: <span id="streakDisplay">0</span> days
+                <div class="level-time">
+                    <span>XP to next level: <span id="xpToNext">500</span></span>
                 </div>
             </div>
 
-            <!-- Dashboard Grid (using your exact CSS structure) -->
+            <!-- Dashboard Grid -->
             <div class="dashboard-grid">
-                <!-- Training Progress Panel -->
+                <!-- Training Progress -->
                 <div class="cyber-panel">
                     <h3>🎯 Training Progress</h3>
                     <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span>Phishing Detection</span>
-                            <span id="phishingScore">0/10</span>
-                        </div>
+                        <span>Phishing Detection <span id="phishingScore">0/10</span></span>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="phishingProgress" style="width: 0%;"></div>
+                            <div class="progress-fill" id="phishingProgress"></div>
                         </div>
                     </div>
                     <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span>Password Security</span>
-                            <span id="passwordScore">0/5</span>
-                        </div>
+                        <span>Password Security <span id="passwordScore">0/5</span></span>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="passwordProgress" style="width: 0%;"></div>
+                            <div class="progress-fill" id="passwordProgress"></div>
                         </div>
                     </div>
                     <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span>Network Defense</span>
-                            <span id="networkScore">0/20</span>
-                        </div>
+                        <span>Network Defense <span id="networkScore">0/20</span></span>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="networkProgress" style="width: 0%;"></div>
+                            <div class="progress-fill" id="networkProgress"></div>
+                        </div>
+                    </div>
+                    <div class="progress-section">
+                        <span>Learning Progress <span id="networkScore">0/20</span></span>
+                        <div class="progress-bar">
+                            <div id="learningProgress" class="progress-fill"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Achievement Badges -->
+                <!-- Best Scores -->
+                <div class="cyber-panel">
+                    <h3>🏆 Best Scores</h3>
+                    <div class="best-scores">
+                        <div class="score-item">
+                            <div class="score-icon">🎣</div>
+                            <div class="score-info">
+                                <div class="score-name">Phishing Detection</div>
+                                <div class="score-value" id="bestPhishingScore">0/5</div>
+                                <div class="score-date" id="bestPhishingDate">Never played</div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-icon">🔐</div>
+                            <div class="score-info">
+                                <div class="score-name">Password Fortress</div>
+                                <div class="score-value" id="bestPasswordScore">0/5</div>
+                                <div class="score-date" id="bestPasswordDate">Never played</div>
+                            </div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-icon">🛡️</div>
+                            <div class="score-info">
+                                <div class="score-name">Network Defense</div>
+                                <div class="score-value" id="bestNetworkScore">0</div>
+                                <div class="score-date" id="bestNetworkDate">Never played</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
                 <div class="cyber-panel">
                     <h3>🏆 Achievements</h3>
                     <div class="badges-grid" id="badgesContainer">
-                        <!-- Badges will be populated by JavaScript -->
+                        <!-- Badges will be generated by JavaScript -->
+                    </div>
+                    <div class="achievement-progress">
+                        <span>Progress: <span id="badgeProgress">0/8</span></span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="badgeProgressFill"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -574,97 +160,169 @@
                             <div class="stat-name">Best Streak</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-icon">⭐</div>
+                            <div class="stat-icon">🏆</div>
                             <div class="stat-number" id="totalBadges">0</div>
                             <div class="stat-name">Badges</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Activity Heatmap -->
+                <div class="cyber-panel heatmap-panel">
+                    <h3>📈 Activity Heatmap</h3>
+                    <div class="heatmap-info">
+                        <div class="heatmap-stats">
+                            <span>Last 180 days</span>
+                            <span class="current-streak">Current streak: <span id="streakDisplay">0</span> days</span>
+                        </div>
+                        <div class="heatmap-legend">
+                            <span>Less</span>
+                            <div class="legend-colors">
+                                <div class="legend-box level-0"></div>
+                                <div class="legend-box level-1"></div>
+                                <div class="legend-box level-2"></div>
+                                <div class="legend-box level-3"></div>
+                                <div class="legend-box level-4"></div>
+                            </div>
+                            <span>More</span>
+                        </div>
+                    </div>
+                    <div class="heatmap-container" id="heatmapContainer">
+                        <!-- Heatmap will be generated by JavaScript -->
+                    </div>
+                </div>
+
                 <!-- Recent Activity -->
                 <div class="cyber-panel">
                     <h3>📈 Recent Activity</h3>
-                    <div class="activity-log" id="activityFeed">
-                        <div style="text-align: center; color: #666; padding: 40px 20px;">
-                            <div style="font-size: 2rem; margin-bottom: 8px;">🎯</div>
-                            <div>Complete your first training to see activity here!</div>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-placeholder">
+                            Complete your first training to see activity here!
                         </div>
                     </div>
                 </div>
 
-                <!-- Performance Graph -->
+                <!-- Learning Progress -->
                 <div class="cyber-panel">
-                    <h3>📈 Weekly Performance</h3>
-                    <div class="performance-graph" id="performanceGraph">
-                        <!-- Bars will be generated by JavaScript -->
-                    </div>
-                    <div style="text-align: center; margin-top: 12px; color: #aaa; font-size: 0.85rem;">
-                        Daily accuracy over the last 7 days
+                    <h3>📚 Learning Progress</h3>
+                    <div class="learning-stats">
+                        <div class="learning-item">
+                            <div class="learning-icon">💻</div>
+                            <div class="learning-info">
+                                <div class="learning-name">Terminal Commands</div>
+                                <div class="learning-progress">
+                                    <span id="terminalProgress">0/30</span>
+                                    <div class="progress-bar small">
+                                        <div class="progress-fill" id="terminalProgressFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="learning-item">
+                            <div class="learning-icon">🔍</div>
+                            <div class="learning-info">
+                                <div class="learning-name">Lessons Completed</div>
+                                <div class="learning-progress">
+                                    <span id="lessonsProgress">0/6</span>
+                                    <div class="progress-bar small">
+                                        <div class="progress-fill" id="lessonsProgressFill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Data Management -->
                 <div class="cyber-panel">
                     <h3>💾 Data Management</h3>
-                    <div style="margin-bottom: 16px;">
-                        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 12px;">
-                            Manage your training data and progress
-                        </p>
-                        <button class="data-management-btn" id="exportBtn">📊 Export Data</button>
-                        <button class="data-management-btn danger" id="resetBtn">🗑️ Reset Progress</button>
+                    <div class="data-info">
+                        <div class="data-stats">
+                            <div>📅 Joined: <span id="joinDate">Today</span></div>
+                            <div>⏱️ Total Time: <span id="totalTime">0 minutes</span></div>
+                            <div>💽 Data Size: <span id="dataSize">0 KB</span></div>
+                            <div>🎯 Sessions: <span id="totalSessions">0</span></div>
+                        </div>
+                        <div class="data-actions">
+                            <button class="cyber-btn" id="exportDataBtn">📊 Export Data</button>
+                            <button class="cyber-btn danger" id="resetDataBtn">🗑️ Reset Progress</button>
+                        </div>
                     </div>
-                    <div style="font-size: 0.8rem; color: #666; line-height: 1.4;">
-                        <div>📅 Joined: <span id="joinDate">Today</span></div>
-                        <div>⏱️ Total Time: <span id="totalTime">0 minutes</span></div>
-                        <div>💽 Data Size: <span id="dataSize">0 KB</span></div>
+                </div>
+
+                <!-- Weekly Performance Chart -->
+                <div class="cyber-panel">
+                    <h3>📈 Weekly Performance</h3>
+                    <div class="weekly-chart">
+                        <div class="chart-info">
+                            <span>Daily accuracy over the last 7 days</span>
+                            <span class="avg-accuracy">Avg: <span id="avgAccuracy">0%</span></span>
+                        </div>
+                        <div class="chart-container" id="weeklyChart">
+                            <!-- Chart will be generated by JavaScript -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- XP Tooltip (appears on hover) -->
-    <div class="xp-tooltip" id="xpTooltip">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <div style="font-weight: 600; color: #fff;">Level Progress</div>
-            <div style="font-size: 0.9rem; color: #a259ec;" id="tooltipLevels">Level 1 → 2</div>
-        </div>
-        <div class="xp-level-bar">
-            <div class="xp-level-progress" id="tooltipProgressBar" style="width: 0%;"></div>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: #bbb;">
-            <span><span id="tooltipCurrentXP">0</span> XP</span>
-            <span><span id="tooltipNeededXP">500</span> XP to next level</span>
+    <!-- XP Tooltip -->
+    <div id="xpTooltip" class="xp-tooltip hidden">
+        <div class="tooltip-content">
+            <div class="tooltip-header">
+                <span>Level <span id="tooltipLevel">1</span></span>
+                <span><span id="tooltipXP">0</span> / <span id="tooltipMaxXP">500</span> XP</span>
+            </div>
+            <div class="tooltip-bar">
+                <div class="tooltip-fill" id="tooltipFill"></div>
+            </div>
+            <div class="tooltip-footer">
+                <span id="tooltipRemaining">500 XP to next level</span>
+            </div>
         </div>
     </div>
 
-    <!-- Notification Toast -->
-    <div class="notification-toast" id="notificationToast">
-        <div class="notification-header">
-            <span class="notification-icon" id="notificationIcon">🎉</span>
-            <span class="notification-title" id="notificationTitle">Achievement Unlocked!</span>
-        </div>
-        <div class="notification-message" id="notificationMessage">
-            You've earned a new badge!
+    <!-- Achievement Notification -->
+    <div id="achievementNotification" class="achievement-notification hidden">
+        <div class="notification-content">
+            <div class="notification-icon" id="notificationIcon">🏆</div>
+            <div class="notification-text">
+                <div class="notification-title" id="notificationTitle">Achievement Unlocked!</div>
+                <div class="notification-desc" id="notificationDesc">You've earned a new badge!</div>
+            </div>
         </div>
     </div>
 
-    <!-- Demo Controls -->
-    <div class="demo-controls" id="demoControls">
+    <!-- Data Export Modal -->
+    <div id="exportModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Export Data</h3>
+                <button class="close-btn" id="closeExportModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="export-options">
+                    <button class="cyber-btn" id="exportJsonBtn">📄 Export as JSON</button>
+                    <button class="cyber-btn" id="exportCsvBtn">📊 Export as CSV</button>
+                </div>
+                <textarea id="exportData" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Controls (for testing) -->
+    <div class="demo-controls">
         <h4>🎮 Demo Controls</h4>
-        <div style="margin-bottom: 8px;">
-            <button class="demo-btn success" onclick="completeGame('phishing', true)">✅ Phishing Win</button>
-            <button class="demo-btn success" onclick="completeGame('password', true)">✅ Password Win</button>
-            <button class="demo-btn success" onclick="completeGame('network', true)">✅ Network Win</button>
+        <div class="demo-buttons">
+            <button class="demo-btn success" data-game="phishing" data-result="win">✅ Phishing Win</button>
+            <button class="demo-btn success" data-game="password" data-result="win">✅ Password Win</button>
+            <button class="demo-btn success" data-game="network" data-result="win">✅ Network Win</button>
+            <button class="demo-btn danger" data-game="phishing" data-result="lose">❌ Phishing Lose</button>
+            <button class="demo-btn danger" data-game="password" data-result="lose">❌ Password Lose</button>
+            <button class="demo-btn danger" data-game="network" data-result="lose">❌ Network Lose</button>
         </div>
-        <div style="margin-bottom: 8px;">
-            <button class="demo-btn danger" onclick="completeGame('phishing', false)">❌ Phishing Lose</button>
-            <button class="demo-btn danger" onclick="completeGame('password', false)">❌ Password Lose</button>
-            <button class="demo-btn danger" onclick="completeGame('network', false)">❌ Network Lose</button>
-        </div>
-        <button class="demo-btn" onclick="document.getElementById('demoControls').style.display='none'" style="width: 100%; background: #6b7280;">
-            Hide Controls
-        </button>
+        <button class="demo-btn" id="hideDemoControls">Hide Controls</button>
     </div>
 
     <script src="../js/Dashboard.js"></script>
