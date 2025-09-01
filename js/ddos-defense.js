@@ -614,9 +614,10 @@ class DDoSDefenseSimulator {
             const falsePositivePenalty = Math.max(0, 1 - this.stats.falsePositives / 1000);
             
             this.stats.score += Math.floor(blockingEfficiency * latencyPenalty * falsePositivePenalty * 10);
+            this.saveDDoSStats();
+
 
         }
-        this.saveDDoSStats();
     }
 
     updateServerLoads() {
