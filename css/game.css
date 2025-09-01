@@ -1,5 +1,5 @@
 :root {
-  --cyber-primary: #00ffff;
+  --cyber-primary: #b2f5f5;
   --cyber-secondary: #ff00ff;
   --cyber-accent: #ffff00;
   --cyber-danger: #ff0040;
@@ -31,10 +31,14 @@ body::before {
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(0,255,255,0.04) 0%, transparent 70%),
-    radial-gradient(circle at 80% 20%, rgba(255,0,255,0.03) 0%, transparent 70%);
-}
+ background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(rgba(255, 0, 128, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 128, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px, 50px 50px, 100px 100px, 100px 100px;
+            animation: gridMove 25s linear infinite, gridPulse 8s ease-in-out infinite alternate;
+             }
 
 body::after {
   content: '';
@@ -42,81 +46,206 @@ body::after {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(0,255,255,0.007) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,255,0.007) 1px, transparent 1px);
-  background-size: 48px 48px;
+background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(0, 255, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255, 0, 128, 0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(0, 255, 65, 0.3), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255, 170, 0, 0.2), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: particleFloat 20s linear infinite;
+         
 }
+  @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes gridPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-200px) rotate(360deg); }
+        }
 
 .container {
-  max-width: 1100px;
-  margin: 3em auto;
-  background: rgba(21,21,32,0.96);
-  border-radius: var(--cyber-radius);
-  box-shadow: 0 0 14px 2px rgba(0,255,255,0.1);
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2em;
 }
 
+/* Section Title */
 .section-header {
   text-align: center;
   margin-bottom: var(--space-32);
 }
 
 .section-title {
-  font-size: 2em;
+  font-size: 2.2em;
   font-family: 'Orbitron', Arial, sans-serif;
-  color: var(--cyber-primary);
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 4px #00aac3;
-  margin-bottom: var(--space-16);
-  text-transform: uppercase;
+ text-align: left; 
+ color:white;
+ padding-left:20px;
 }
 
+
+/* Grid Layout */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: var(--space-24);
+  grid-template-columns: repeat(4, 1fr); /* 4 cards in a row */
+  gap: 40px;
+  justify-items: center;
+  align-items: start; /* baseline alignment */
 }
 
+/* Alternate vertical offset */
+.game-card:nth-child(2),
+.game-card:nth-child(4) {
+  margin-top: 60px; /* push these down */
+}
+
+/* Card Styling */
 .game-card {
-  background: linear-gradient(120deg, #17182c 75%, #2a1a36 100%);
-  border-radius: var(--cyber-radius);
-  box-shadow: 0 3px 10px rgba(0,255,255,0.06);
-  border: 1px solid var(--cyber-border);
-  padding: var(--space-32) var(--space-20);
+  width: 260px;      /* looks like a phone screen */
+  height: 500px;     /* tall, rectangular like mockups */
+  background: #0f0f0f; /* deep background for contrast */
+  border-radius: 32px; /* smoother, phone-like edges */
+  border: 4px solid rgba(255, 255, 255, 0.5); /* subtle thin outline */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  transition: transform 0.25s, box-shadow 0.25s, border 0.15s;
+
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
-.game-card:hover,
-.game-card:focus-within {
-  transform: translateY(-4px) scale(1.01);
-  box-shadow: 0 5px 18px rgba(0,255,255,0.12), 0 0 8px rgba(255,0,255,0.07);
-  border: 1.3px solid var(--cyber-primary);
+/* notch inside game-card */
+.game-card .notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 10px;
+  background: rgb(86, 196, 221);
+  border-bottom-left-radius: 80px;
+  border-bottom-right-radius: 80px;
+  z-index: 5; /* ensure it stays visible above content */
 }
 
-.game-icon {
-  font-size: 2.6rem;
-  margin-bottom: var(--space-20);
-  text-shadow: 0 0 3px var(--cyber-primary);
+
+/* Remove the manual push */
+.game-card {
+  margin-left: 0; /* remove the 30px pushing cards unevenly */
+  padding-bottom: 20px;
 }
 
-.game-card h3 {
-  font-family: 'Orbitron', Arial, sans-serif;
-  font-size: 1.15em;
-  color: var(--cyber-primary);
-  margin-bottom: var(--space-12);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-shadow: 0 0 3px #00ccd3;
+/* Hover effect – subtle, not glowing too much */
+.game-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+              0 0 20px rgba(0, 255, 255, 0.3);
+  border-color: rgba(0, 255, 255, 0.4);
 }
 
-.game-card p {
-  color: var(--cyber-text-secondary);
-  margin-bottom: var(--space-20);
-  font-size: 0.9em;
+/* --- GLOW BLOB EFFECT --- */
+.blob {
+  position: absolute;
+  top: -25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(0,255,255,0.4),
+    rgba(255,0,255,0.4),
+    rgba(0,255,255,0.4)
+  );
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: rotateGlow 8s linear infinite;
+  z-index: 0; /* stays behind content */
 }
+
+@keyframes rotateGlow {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Keep content above glow */
+.game-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* icon visible by default */
+.game-card .game-icon {
+  font-size: 5.6rem;
+  position: absolute;
+  transition: 0.2s ease-in-out;
+  z-index: 1;
+  text-shadow: 0 0 6px #00f0ff;
+}
+
+/* hide content by default */
+.game-card h3,
+.game-card p,
+.game-card button {
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+  z-index: 2;
+}
+.game-card .textBox {
+
+  opacity: 0;
+  transform: translateY(0px);  /* start lower */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 3em;
+  transition: 0.4s ease-in-out;
+  z-index: 2;
+}
+/* show contents on hover */
+.game-card:hover h3,
+.game-card:hover p,
+.game-card:hover button,
+.game-card:hover .textBox {
+  opacity: 1;
+}
+
+/* blur + animate icon */
+.game-card:hover .game-icon {
+  height: 55%;
+  filter: blur(10px);
+  animation: floatAnim 3s infinite;
+}
+
+/* card hover motion */
+.game-card:hover {
+  transform: scale(1.04) rotate(-1deg);
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);
+}
+
+/* floating animation */
+@keyframes floatAnim {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); }
+}
+
 
 .cyber-panel {
   backdrop-filter: blur(0.7px);
@@ -166,7 +295,7 @@ body::after {
   width: 100%;
   height: 100%;
   background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(1rem);
+  backdrop-filter: blur(7rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,24 +311,29 @@ body::after {
   pointer-events: none;
 }
 
-/* Modal Container */
-.game-container {
-  background: rgba(21, 21, 32, 0.95);
-  border: 1.7px solid #00cccc;
-  border-radius: 14px;
-  width: 90%;
-  max-width: 1000px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow:
-    0 0 9px #00cccc99,
-    0 0 18px #cc00cc99;
-  padding: 1.3rem 1.8rem;
-  position: relative;
-  font-family: 'Orbitron', monospace, monospace;
-  color: #d0d0ffdd;
-}
-
+ .game-container {
+            background: var(--bg-panel);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            width: 47%;
+            height:500px;
+            max-width: 900px;
+            max-height: 98vh;
+          
+            position: relative;
+            box-shadow: var(--shadow-intense);
+            animation: modalSlideIn 0.4s ease-out;
+        }
+@keyframes modalSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
 /* Modal Header */
 .game-header {
   display: flex;
@@ -326,15 +460,80 @@ body::after {
   padding: 8px 12px;     
 }
 .btn-primary {
-  background-color: #00cccccc;
+  background-color: #f6f5f7;
   color: #0a0a1a;
+  
+
+  border-top: 2px solid white;
+  border-left: 2px solid white;
+  transition-duration: 1s;
+  transition-property: border-top, border-left, border-bottom, border-right,
+    box-shadow;
+}
+.btn-primary.btn-primary:hover{
+      border-bottom: 5px solid blueviolet;
+  border-right: 5px solid blueviolet;
+}
+/* Custom Cyber Button Style (scoped to .game-launch-btn only) */
+.game-launch-btn {
+  display: inline-block;
+  width: 180px; /* made a bit wider for text fit */
+  height: 50px;
+  border-radius: 20px;
+  
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease-in;
+  z-index: 1;
+  background-color: whit; /* removes bootstrap background */
+}
+
+.game-launch-btn::before,
+.game-launch-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  background-color: white;
+  width: 0;
+  height: 100%;
+  transform: skew(15deg);
+  transition: all 0.5s;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.game-launch-btn::before {
+  left: -10px;
+  background: #f6f2fa;
+}
+
+.game-launch-btn::after {
+  right: -10px;
+  background: #ad62ea;
+}
+
+.game-launch-btn:hover::before,
+.game-launch-btn:hover::after {
+  width: 58%;
+}
+
+.game-launch-btn span {
+  color: #03045e;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease-in;
+}
+
+.game-launch-btn:hover span {
+  color: #4d0676;
+  transition: 0.3s;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background-color: #00bbbb;
+  background-color: #cce5e5;
   box-shadow:
-    0 0 8px #00ccccee,
+    0 0 8px #bcd4d4ee,
     0 0 16px #cc00ccbb;
   color: #12082f;
 }
@@ -634,3 +833,4 @@ body::after {
     font-size: 1.6em;
   }
 }
+

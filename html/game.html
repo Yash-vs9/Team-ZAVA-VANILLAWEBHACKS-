@@ -8,12 +8,15 @@
 </head>
 <body>
     <section id="games" class="section">
-        <div class="container">
-            <div class="section-header">
+        <div class="section-header">
                 <h2 class="section-title">Training Modules</h2>
             </div>
+        <div class="container">
+            
             <div class="games-grid">
                 <div class="game-card cyber-panel" data-game="phishing">
+                   <div class="notch"></div>
+                    <div class="blob"></div>
                     <div class="game-icon">🎯</div>
                     <h3>Phishing Detection</h3>
                     <p>Identify malicious emails and protect against phishing attacks</p>
@@ -23,6 +26,9 @@
                     </button>
                 </div>
                 <div class="game-card cyber-panel" data-game="password">
+                   
+                    <div class="notch"></div>
+                     <div class="blob"></div>
                     <div class="game-icon">🔐</div>
                     <h3>Password Fortress</h3>
                     <p>Create strong, unbreakable passwords and security practices</p>
@@ -32,8 +38,21 @@
                     </button>
                 </div>
                 <div class="game-card cyber-panel" data-game="network">
-                    <div class="game-icon">🛡️</div>
+                    <div class="notch"></div>
+                    <div class="blob"></div>
+                    <div class="game-icon">🕸️</div>
                     <h3>Network Guardian</h3>
+                    <p>Defend networks against cyber threats and intrusions</p>
+                    <button class="btn btn-primary cyber-btn game-launch-btn">
+                        <span>LAUNCH TRAINING</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                <div class="game-card cyber-panel" data-game="network">
+                    <div class="notch"></div>
+                    <div class="blob"></div>
+                    <div class="game-icon">🛡️</div>
+                    <h3>Captcha</h3>
                     <p>Defend networks against cyber threats and intrusions</p>
                     <button class="btn btn-primary cyber-btn game-launch-btn">
                         <span>LAUNCH TRAINING</span>
@@ -106,8 +125,9 @@
             
             <div class="game-content">
                 <div class="password-input-section">
-                    <label>Create a strong password:</label>
-                    <input type="password" id="passwordInput" class="form-control password-field" placeholder="Enter your password...">
+                    <h3>Create a strong password:</h3>
+                    
+                    <input type="password" id="passwordInput" class="form-control password-field" placeholder="Enter your password..."  style="width: 100%;" >
                     <div class="strength-meter">
                         <div class="strength-bar" id="strengthBar"></div>
                         <span class="strength-label" id="strengthLabel">Enter password</span>
@@ -115,7 +135,7 @@
                 </div>
                 
                 <div class="password-requirements">
-                    <h4>Requirements:</h4>
+                    <h3>Requirements:</h3>
                     <div class="requirement-list" id="requirementList"></div>
                 </div>
                 
