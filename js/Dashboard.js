@@ -862,7 +862,7 @@ class CompleteCyberSecurityDashboard {
                 <div class="activity-icon">${icon}</div>
                 <div class="activity-content">
                     <div class="activity-title">${this.capitalize(game.type)} Training ${statusIcon}</div>
-                    <div class="activity-desc">Score: ${game.score}</div>
+                    
                 </div>
                 <div class="activity-time">${timeAgo}</div>
             `;
