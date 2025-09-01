@@ -337,6 +337,34 @@ background-image:
                 transform: translateY(0) scale(1);
             }
         }
+
+        /* Slim cyan scrollbar for game modal */
+.game-container::-webkit-scrollbar {
+  width: 6px;              /* slim scrollbar */
+}
+
+.game-container::-webkit-scrollbar-track {
+  background: rgba(0, 255, 255, 0.05); /* subtle track */
+  border-radius: 10px;
+}
+
+.game-container::-webkit-scrollbar-thumb {
+  background: #c991d4cc;  /* cyan thumb */
+  border-radius: 10px;
+  box-shadow: 0 0 6px #c87accaa;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.game-container::-webkit-scrollbar-thumb:hover {
+  background: #e6abdc;
+  box-shadow: 0 0 12px #00ffff;  /* neon glow on hover */
+}
+
+/* Firefox (offline support, no external libs needed) */
+.game-container {
+  scrollbar-width: thin;                  /* slim */
+  scrollbar-color: #cec4cecc transparent; /* cyan thumb + transparent track */
+}
 /* Modal Header */
 .game-header {
   display: flex;
