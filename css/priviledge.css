@@ -1585,7 +1585,7 @@ body {
     height: 40px;
     border-radius: 50%;      /* Makes it circular */
     border: none;
-    background-color: #686666;
+    background-color: #cbc5c5;
     display: flex;
     align-items: center;
     justify-content: center;

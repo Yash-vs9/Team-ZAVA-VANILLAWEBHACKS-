@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <style>/* ===== CONTACT ===== */
+    body{
+        background-color: black;
+color:white
+    }
+
+    .navbar {
+  display: flex;
+  justify-content: space-between; /* pushes h1 left, links right */
+  align-items: center; /* vertically centers h1 and links */
+  padding: 10px 20px;
+  background-color: #000; /* optional: navbar background */
+}
+.navbar h1{
+    font-size:xx-large;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  
+  font-weight: 500;
+  font-size: 1rem;
+}
+.navbar a {
+  color: #f7f8f9;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.navbar a.active,
+.navbar a:hover {
+  background: rgba(2, 218, 234, 0.1);
+  color: #f1f5f9;
+}
+
+.navbar a.active {
+  background-color: #58d7e2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.contact-section {
+  max-width: 600px;
+  margin: 100px auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.contact-section h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.contact-section p {
+  margin-bottom: 30px;
+  color: #cbd5e1;
+}
+
+.contact-section a {
+  color: #38bdf8;
+  text-decoration: underline;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 1rem;
+}
+
+.contact-form button {
+  background-color: #1e293b;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin: 0 auto; /* centers only the button */
+  display: block; /* ensures margin auto works */
+}
+
+
+.contact-form button:hover {
+  background-color: #334155;
+}
+</style>
+</head>
+<body>
+       <div class="section-header">
+               
+                  <nav class="navbar">
+                     <h1 class="section-title">Contact Us</h1>
+      <ul class="nav-links">
+        <li><a href="./home.html"">Home</a></li>
+        <li><a href="./Dashboard.html">DashBoard</a></li>
+        <li><a href="#" class="active"">Games</a></li>
+        <li><a href="./Learn.html">Cyber Library</a></li>
+        <li><a href="./ddos-defence.html">DDOS</a></li>
+      </ul>
+    </nav>
+            </div>
+    <section id="contact" class="contact-section">
+      <h2>Hit Us Up!</h2>
+      <p>
+        Please contact us directly at
+        <a href="mailto:teamzavaweb@gmail.com"
+          >CyberGuard@gmail.com</a
+        >
+        or through this form.
+      </p>
+<form class="contact-form" action="https://getform.io/f/aejeyxmb" method="POST" name="contact-form">
+  <input type="email" name="email" placeholder="Your email" required />
+  <textarea name="message" rows="6" placeholder="Your message" required></textarea>
+  <button type="submit">
+    Submit
+    <i class="fa-solid fa-paper-plane"></i>
+  </button>
+</form>
+
+    </section>
+</body>
+</html>

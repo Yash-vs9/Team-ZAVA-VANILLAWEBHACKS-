@@ -366,6 +366,7 @@ background-image:
 
 /* Modal Background Overlay */
 .game-modal {
+
   position: fixed;
   top: 0;
   left: 0;
@@ -396,7 +397,9 @@ background-image:
             width: 57%;
             max-width: 900px;
             max-height: 100vh;
-          
+          border:2px solid #f0ffff;
+          padding :10px;
+          border-radius: 10px;
             position: relative;
             box-shadow: var(--shadow-intense);
             animation: modalSlideIn 0.4s ease-out;
@@ -483,9 +486,9 @@ background-image:
 
 .close-btn:hover,
 .close-btn:focus {
-  color: #ff00cc;
+  color: #efd5ea;
   outline: none;
-  text-shadow: 0 0 7px #ff00cc;
+  text-shadow: 0 0 7px #9e8f9b;
 }
 
 /* Modal Content */
