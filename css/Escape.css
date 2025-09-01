@@ -786,7 +786,6 @@
     align-items: flex-start;
     gap: var(--space-12);
     padding: var(--space-16);
-    background: var(--color-bg-1);
     border-radius: var(--radius-base);
     border: 1px solid var(--color-border);
   }
@@ -810,8 +809,6 @@
   
   /* Game Header */
   .game-header {
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
     padding: var(--space-16) 0;
     position: sticky;
     top: 0;

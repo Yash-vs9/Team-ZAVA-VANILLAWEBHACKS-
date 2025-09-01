@@ -21,7 +21,7 @@
         </span>
         <span class="logo-text">Cyber-Guardian</span>
       </div>
-      <ul class="nav-links">
+      <ul class="nav-links id="navLinks">
         <li><a href="#" class="active">Home</a></li>
         <li><a href="./Dashboard.html">DashBoard</a></li>
         <li><a href="./game.html">Games</a></li>
@@ -30,7 +30,11 @@
       </ul>
       <div>
           <a href="./Contactus.html" class="outline-btn">Contact us </a>
-   
+   <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
       </div>
     </nav>
 
@@ -134,7 +138,14 @@
     <footer class="footer">
       <p>© 2025 Cyber-Guardian. All rights reserved.</p>
     </footer>
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
 
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
+  });
+</script>
   
   </body>
 </html>
