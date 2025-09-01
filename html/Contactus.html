@@ -1,145 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
-    <style>/* ===== CONTACT ===== */
-    body{
-        background-color: black;
-color:white
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact</title>
+  <style>
+    /* ===== BASE ===== */
+    body {
+      background-color: black;
+      color: white;
+      margin: 0;
+      font-family: sans-serif;
     }
 
+    /* ===== NAVBAR ===== */
     .navbar {
-  display: flex;
-  justify-content: space-between; /* pushes h1 left, links right */
-  align-items: center; /* vertically centers h1 and links */
-  padding: 10px 20px;
-  background-color: #000; /* optional: navbar background */
-}
-.navbar h1{
-    font-size:xx-large;
-}
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 6px;
-  
-  font-weight: 500;
-  font-size: 1rem;
-}
-.navbar a {
-  color: #f7f8f9;
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 999px;
-  transition: background 0.3s ease, color 0.3s ease;
-}
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #000;
+      position: relative;
+    }
 
-.navbar a.active,
-.navbar a:hover {
-  background: rgba(2, 218, 234, 0.1);
-  color: #f1f5f9;
-}
+    .navbar h1 {
+      font-size: xx-large;
+      margin: 0;
+    }
 
-.navbar a.active {
-  background-color: #58d7e2;
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: #fff;
-  font-weight: bold;
-  transition: all 0.3s ease;
-}
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 6px;
+      font-weight: 500;
+      font-size: 1rem;
+    }
 
-.contact-section {
-  max-width: 600px;
-  margin: 100px auto;
-  text-align: center;
-  padding: 20px;
-}
+    .nav-links a {
+      color: #f7f8f9;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      transition: background 0.3s ease, color 0.3s ease;
+      white-space: nowrap;
+    }
 
-.contact-section h2 {
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: rgba(2, 218, 234, 0.1);
+      color: #f1f5f9;
+    }
 
-.contact-section p {
-  margin-bottom: 30px;
-  color: #cbd5e1;
-}
+    .nav-links a.active {
+      background-color: #58d7e2;
+      padding: 8px 16px;
+      border-radius: 20px;
+      color: #fff;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
 
-.contact-section a {
-  color: #38bdf8;
-  text-decoration: underline;
-}
+    /* ===== HAMBURGER ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 28px;
+      height: 22px;
+      cursor: pointer;
+      position: relative;
+      margin-left: auto;
+    }
 
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background-color: #00ffff;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
 
-.contact-form input,
-.contact-form textarea {
-  background-color: #e2e8f0;
-  color: #1e293b;
-  border: none;
-  border-radius: 10px;
-  padding: 15px;
-  font-size: 1rem;
-}
+    .hamburger.active span {
+      display: none;
+    }
 
-.contact-form button {
-  background-color: #1e293b;
-  color: white;
-  border: none;
-  padding: 12px 25px;
-  font-size: 1rem;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  margin: 0 auto; /* centers only the button */
-  display: block; /* ensures margin auto works */
-}
+    .hamburger.active::before {
+      content: "✖";
+      color: cyan;
+      font-size: 2rem;
+      position: absolute;
+      top: -6px;
+      right: -2px;
+    }
 
+    /* ===== MOBILE MENU ===== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.95);
+        padding: 16px;
+        gap: 12px;
+      }
 
-.contact-form button:hover {
-  background-color: #334155;
-}
-</style>
+      .nav-links.show {
+        display: flex;
+      }
+
+      .nav-links a {
+        width: 100%;
+        text-align: left;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* ===== CONTACT SECTION ===== */
+    .contact-section {
+      max-width: 600px;
+      margin: 100px auto;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .contact-section h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .contact-section p {
+      margin-bottom: 30px;
+      color: #cbd5e1;
+    }
+
+    .contact-section a {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 1rem;
+    }
+
+    .contact-form button {
+      background-color: #1e293b;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 0 auto;
+      display: block;
+    }
+
+    .contact-form button:hover {
+      background-color: #334155;
+    }
+  </style>
 </head>
 <body>
-       <div class="section-header">
-               
-                  <nav class="navbar">
-                     <h1 class="section-title">Contact Us</h1>
-      <ul class="nav-links">
-        <li><a href="./home.html"">Home</a></li>
-        <li><a href="./Dashboard.html">DashBoard</a></li>
-        <li><a href="#" class="active"">Games</a></li>
-        <li><a href="./Learn.html">Cyber Library</a></li>
-        <li><a href="./ddos-defence.html">DDOS</a></li>
-      </ul>
-    </nav>
-            </div>
-    <section id="contact" class="contact-section">
-      <h2>Hit Us Up!</h2>
-      <p>
-        Please contact us directly at
-        <a href="mailto:teamzavaweb@gmail.com"
-          >CyberGuard@gmail.com</a
-        >
-        or through this form.
-      </p>
-<form class="contact-form" action="https://getform.io/f/aejeyxmb" method="POST" name="contact-form">
-  <input type="email" name="email" placeholder="Your email" required />
-  <textarea name="message" rows="6" placeholder="Your message" required></textarea>
-  <button type="submit">
-    Submit
-    <i class="fa-solid fa-paper-plane"></i>
-  </button>
-</form>
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <h1 class="section-title">Contact Us</h1>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="./home.html">Home</a></li>
+      <li><a href="./Dashboard.html">DashBoard</a></li>
+      <li><a href="#" class="active">Games</a></li>
+      <li><a href="./Learn.html">Cyber Library</a></li>
+      <li><a href="./ddos-defence.html">DDOS</a></li>
+    </ul>
+    <!-- Hamburger -->
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
 
-    </section>
+  <!-- ===== CONTACT SECTION ===== -->
+  <section id="contact" class="contact-section">
+    <h2>Hit Us Up!</h2>
+    <p>
+      Please contact us directly at
+      <a href="mailto:teamzavaweb@gmail.com">CyberGuard@gmail.com</a>
+      or through this form.
+    </p>
+
+    <form class="contact-form" action="https://getform.io/f/aejeyxmb" method="POST" name="contact-form">
+      <input type="email" name="email" placeholder="Your email" required />
+      <textarea name="message" rows="6" placeholder="Your message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </section>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+      hamburger.classList.toggle('active'); 
+    });
+  </script>
 </body>
 </html>

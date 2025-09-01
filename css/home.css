@@ -23,14 +23,45 @@ a {
   transition: color 0.2s;
 }
 /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 28px 5vw;
-      position: relative;
-      z-index: 20;
+
+   .hamburger {
+  display: none; /* shown only on mobile */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+}
+
+    .hamburger span {
+      display: block;
+      height: 3px;
+      background-color: #00ffff;
+      border-radius: 3px;
+      transition: all 0.3s ease;
     }
+.hamburger.active::before {
+  content: "✖";
+  color: cyan;     /* make it visible */
+  font-size: 2rem; /* bigger size */
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+   .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* space between button and hamburger */
+}
+
+    .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 5vw;
+  position: relative;
+  z-index: 20;
+}
 
     .logo {
       display: flex;
@@ -60,7 +91,11 @@ a {
       border-radius: 25px;
       font-weight: 500;
       transition: all 0.3s ease;
+     
+  white-space: nowrap;  /* keeps "Cyber Library" on one line */
+
     }
+
 
     .nav-links li a:hover,
     .nav-links li a.active {
@@ -91,37 +126,15 @@ a {
       border-color: transparent;
     }
 
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: space-around;
-      width: 28px;
-      height: 22px;
-      cursor: pointer;
-    }
-
-    .hamburger span {
-      display: block;
-      height: 3px;
-      background-color: #00ffff;
-      border-radius: 3px;
-      transition: all 0.3s ease;
-    }
-
-    /* Hamburger animation when active */
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
 
     /* Responsive */
     @media (max-width: 768px) {
+        .navbar {
+    flex-wrap: wrap;
+  }
+   .nav-right {
+    gap: 250px; /* smaller gap for mobile */
+  }
       .nav-links {
         display: none;
         flex-direction: column;
@@ -131,21 +144,51 @@ a {
         width: 100%;
         background: rgba(0,0,0,0.95);
         padding: 16px;
-        gap: 12px;
+        gap: 22px;
+        text-align:left
       }
-
+  .navbar .nav-links a {
+    display: block;
+    width: 100%;         /* make link span full width */
+    padding: 12px 20px;  /* bigger click area */
+    text-align: left;    /* align text left */
+    white-space: nowrap; /* stop wrapping */
+  }
+      
       .nav-links.show {
         display: flex;
       }
 
-      .hamburger {
-        display: flex;
-      }
+    .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+    margin-left: auto;
+    order: 2;
+    position: relative; /* makes ::before position work */
+   
+  .hamburger.active::before {
+    blur:8px;
+    content: "✖";
+    color: cyan;
+    font-size: 2rem;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
+  }
 
       .contact-btn {
         width: 100%;
         text-align: center;
         margin-top: 12px;
+      }
+      .hero-actions {
+        flex-direction: column;
+        gap: 16px;
       }
     }
 

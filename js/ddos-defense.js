@@ -1404,4 +1404,11 @@ class DDoSDefenseSimulator {
 // Initialize the enhanced simulator
 document.addEventListener('DOMContentLoaded', () => {
     new DDoSDefenseSimulator();
+});// Hamburger menu toggle
+const hamburger = document.getElementById("hamburger");
+const navLinks = document.querySelector(".nav-links");
+
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("active");
+  navLinks.classList.toggle("show");
 });

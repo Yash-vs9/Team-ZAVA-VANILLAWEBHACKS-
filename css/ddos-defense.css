@@ -125,6 +125,7 @@ body {
   padding: 10px 20px;
   border-radius: 999px;
   transition: background 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
 }
 
 .navbar a.active,
@@ -140,6 +141,73 @@ body {
   color: #fff;
   font-weight: bold;
   transition: all 0.3s ease;
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background-color: #00ffff;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.95);
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .navbar .nav-links a {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .hamburger.active span {
+    display: none;
+  }
+
+  .hamburger.active::before {
+    content: "✖";
+    color: cyan;
+    font-size: 2rem;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
 }
 
 

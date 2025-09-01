@@ -49,6 +49,7 @@ body {
   padding: 10px 10px;
   border-radius: 999px;
   transition: background 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
 }
 
 .navbar a.active,
@@ -65,6 +66,105 @@ body {
   font-weight: bold;
   transition: all 0.3s ease;
 }
+  .hamburger {
+  display: none; /* shown only on mobile */
+  flex-direction: column;
+  justify-content: space-around;
+  width: 28px;
+  height: 22px;
+  cursor: pointer;
+}
+
+    .hamburger span {
+      display: block;
+      position:relative;
+      height: 3px;
+      background-color: #00ffff;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+.hamburger.active::before {
+  content: "✖";
+  color: cyan;     /* make it visible */
+  font-size: 2rem; /* bigger size */
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.95);
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .navbar .nav-links a {
+    display: block;
+    width: 100%;         /* make link span full width */
+    padding: 12px 20px;  /* bigger click area */
+    text-align: left;    /* align text left */
+    white-space: nowrap; /* stop wrapping */
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 28px;
+    height: 22px;
+    cursor: pointer;
+    margin-left: auto;
+    order: 2;
+    position: relative; /* makes ::before position work */
+  }
+
+  .hamburger.active span {
+    display: none; /* hide bars when active */
+  }
+
+  .hamburger.active::before {
+    content: "✖";
+    color: cyan;
+    font-size: 2rem;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
+}
+/* Ensure navbar sits on top */
+.navbar {
+  position: relative;
+  z-index: 1001; /* higher than terminal windows */
+}
+
+.nav-links {
+  z-index: 1002; /* ensures dropdown is above terminal */
+}
+
+/* Optional: push dropdown full width properly */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;   /* directly below navbar */
+    left: 0;
+    width: 100%;
+  }
+}
+
 
 
 .hidden {
