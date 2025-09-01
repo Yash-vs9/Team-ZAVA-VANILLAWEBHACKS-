@@ -286,6 +286,20 @@ class DDoSDefenseSimulator {
         });
     }
 
+    saveDDoSStats() {
+        const ddosStats = {
+            score: this.stats.score,
+            effectiveness: this.stats.effectiveness,
+            totalRequests: this.stats.totalRequests,
+            blockedRequests: this.stats.blockedRequests,
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('ddos_defense_stats', JSON.stringify(ddosStats));
+        console.log(`🚫 DDoS stats saved: ${Math.round(this.stats.effectiveness)}%`);
+    }
+
+
     setupTrafficChart() {
         this.canvas = document.getElementById('traffic-chart');
         this.ctx = this.canvas.getContext('2d');
@@ -596,6 +610,7 @@ class DDoSDefenseSimulator {
             this.stats.score += Math.floor(blockingEfficiency * latencyPenalty * falsePositivePenalty * 10);
 
         }
+        this.saveDDoSStats();
     }
 
     updateServerLoads() {

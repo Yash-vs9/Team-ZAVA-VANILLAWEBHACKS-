@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTools Pro - Development Environment</title>
+    <link rel="stylesheet" href="../css//Escalation.css">
+</head>
+<body>
+    <!-- Installation Phase -->
+    <div class="installer" id="installer">
+        <div class="installer-container">
+            <div class="installer-header">
+                <div class="installer-icon">🛠️</div>
+                <h1>DevTools Pro</h1>
+                <p>Professional Development Environment</p>
+            </div>
+            
+            <div class="installer-content" id="installer-content">
+                <div class="install-step active" id="step-1">
+                    <h3>Welcome to DevTools Pro</h3>
+                    <p>A comprehensive development environment for modern applications.</p>
+                    <div class="feature-list">
+                        <div class="feature">✓ Advanced Code Editor</div>
+                        <div class="feature">✓ Integrated Terminal</div>
+                        <div class="feature">✓ Real-time Monitoring</div>
+                        <div class="feature">✓ System Analysis Tools</div>
+                    </div>
+                    <button class="btn btn--primary btn--lg" onclick="nextStep()">Continue</button>
+                </div>
+                
+                <div class="install-step" id="step-2">
+                    <h3>Installation Options</h3>
+                    <div class="install-options">
+                        <label class="option-card">
+                            <input type="radio" name="install-type" value="standard" checked>
+                            <div class="option-content">
+                                <h4>Standard Installation</h4>
+                                <p>Recommended for most users</p>
+                                <span class="option-size">~450 MB</span>
+                            </div>
+                        </label>
+                        <label class="option-card">
+                            <input type="radio" name="install-type" value="full">
+                            <div class="option-content">
+                                <h4>Full Installation</h4>
+                                <p>Complete development suite</p>
+                                <span class="option-size">~1.2 GB</span>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="btn btn--primary btn--lg" onclick="nextStep()">Install</button>
+                </div>
+                
+                <div class="install-step" id="step-3">
+                    <h3>Installing DevTools Pro</h3>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="install-progress"></div>
+                        </div>
+                        <div class="progress-text" id="install-text">0%</div>
+                    </div>
+                    <div class="install-status" id="install-status">Initializing...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app hidden" id="main-app">
+        <!-- Left Side - Desktop Environment -->
+        <div class="desktop-environment">
+            <!-- Desktop Area -->
+            <div class="desktop-area" id="desktop-area">
+                <div class="desktop-wallpaper">
+                    <div class="desktop-icons">
+                        <div class="desktop-icon" data-app="notepad" onclick="openApp('notepad')">
+                            <div class="icon">📝</div>
+                            <span>Notepad Pro</span>
+                        </div>
+                        <div class="desktop-icon" data-app="explorer" onclick="openApp('explorer')">
+                            <div class="icon">📁</div>
+                            <span>File Explorer</span>
+                        </div>
+                        <div class="desktop-icon" data-app="browser" onclick="openApp('browser')">
+                            <div class="icon">🌐</div>
+                            <span>Web Browser</span>
+                        </div>
+                        <div class="desktop-icon" data-app="calculator" onclick="openApp('calculator')">
+                            <div class="icon">🧮</div>
+                            <span>Calculator</span>
+                        </div>
+                        <div class="desktop-icon" data-app="photos" onclick="openApp('photos')">
+                            <div class="icon">🖼️</div>
+                            <span>Photo Viewer</span>
+                        </div>
+                        <div class="desktop-icon" data-app="music" onclick="openApp('music')">
+                            <div class="icon">🎵</div>
+                            <span>Media Player</span>
+                        </div>
+                        <div class="desktop-icon" data-app="email" onclick="openApp('email')">
+                            <div class="icon">📧</div>
+                            <span>Email Client</span>
+                        </div>
+                        <div class="desktop-icon" data-app="chat" onclick="openApp('chat')">
+                            <div class="icon">💬</div>
+                            <span>Chat Messenger</span>
+                        </div>
+                        <div class="desktop-icon" data-app="code" onclick="openApp('code')">
+                            <div class="icon">💻</div>
+                            <span>Code Editor</span>
+                        </div>
+                        <div class="desktop-icon" data-app="settings" onclick="openApp('settings')">
+                            <div class="icon">⚙️</div>
+                            <span>Settings</span>
+                        </div>
+                        <div class="desktop-icon" data-app="taskmanager" onclick="openApp('taskmanager')">
+                            <div class="icon">📊</div>
+                            <span>Task Manager</span>
+                        </div>
+                        <div class="desktop-icon" data-app="terminal" onclick="openApp('terminal')">
+                            <div class="icon">⚫</div>
+                            <span>Command Prompt</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="taskbar">
+                <div class="start-button" onclick="toggleStartMenu()">
+                    <span class="start-icon">🪟</span>
+                    Start
+                </div>
+                <div class="taskbar-apps" id="taskbar-apps"></div>
+                <div class="system-tray">
+                    <div class="tray-notifications">🔔</div>
+                    <div class="tray-time" id="tray-time">12:00</div>
+                </div>
+            </div>
+
+            <!-- Start Menu -->
+            <div class="start-menu hidden" id="start-menu">
+                <div class="start-menu-header">
+                    <div class="user-profile">
+                        <div class="user-avatar">👤</div>
+                        <div class="user-info">
+                            <div class="username">Yash</div>
+                            <div class="user-status">Administrator</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="start-menu-categories">
+                    <div class="category-section">
+                        <h4>System</h4>
+                        <div class="category-apps">
+                            <div class="start-app" onclick="openApp('settings')">⚙️ Settings</div>
+                            <div class="start-app" onclick="openApp('taskmanager')">📊 Task Manager</div>
+                            <div class="start-app" onclick="openApp('explorer')">📁 File Explorer</div>
+                        </div>
+                    </div>
+                    <div class="category-section">
+                        <h4>Applications</h4>
+                        <div class="category-apps">
+                            <div class="start-app" onclick="openApp('notepad')">📝 Notepad Pro</div>
+                            <div class="start-app" onclick="openApp('browser')">🌐 Web Browser</div>
+                            <div class="start-app" onclick="openApp('code')">💻 Code Editor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Terminal System -->
+        <div class="terminal-system">
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <span class="skull-icon">💀</span>
+                    NEURAL INTERCEPTOR v4.2.1
+                </div>
+                <div class="terminal-stats" id="terminal-stats">
+                    <span id="keys-captured">Keys: 0</span>
+                    <span id="apps-monitored">Apps: 0</span>
+                    <span id="files-accessed">Files: 0</span>
+                    <span id="data-extracted">Data: 0MB</span>
+                </div>
+            </div>
+
+            <div class="terminal-tabs">
+                <div class="tab active" data-tab="system" onclick="switchTab('system')">System</div>
+                <div class="tab" data-tab="keylogger" onclick="switchTab('keylogger')">Keylogger</div>
+                <div class="tab" data-tab="network" onclick="switchTab('network')">Network</div>
+                <div class="tab" data-tab="files" onclick="switchTab('files')">Files</div>
+                <div class="tab" data-tab="data" onclick="switchTab('data')">Data</div>
+            </div>
+
+            <div class="terminal-content">
+                <div class="tab-panel active" id="system-panel">
+                    <div class="terminal-output" id="system-output"></div>
+                </div>
+                <div class="tab-panel" id="keylogger-panel">
+                    <div class="terminal-output" id="keylogger-output"></div>
+                </div>
+                <div class="tab-panel" id="network-panel">
+                    <div class="terminal-output" id="network-output"></div>
+                </div>
+                <div class="tab-panel" id="files-panel">
+                    <div class="terminal-output" id="files-output"></div>
+                </div>
+                <div class="tab-panel" id="data-panel">
+                    <div class="terminal-output" id="data-output"></div>
+                </div>
+            </div>
+
+            <div class="terminal-input-bar">
+                <span class="prompt">root@neural:~$</span>
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Windows -->
+    <div class="app-window hidden" id="app-window">
+        <div class="window-header" id="window-header">
+            <div class="window-title" id="window-title">Application</div>
+            <div class="window-controls">
+                <button class="window-btn minimize" onclick="minimizeWindow()">−</button>
+                <button class="window-btn maximize" onclick="maximizeWindow()">□</button>
+                <button class="window-btn close" onclick="closeWindow()">✕</button>
+            </div>
+        </div>
+        <div class="window-content" id="window-content"></div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu hidden" id="context-menu">
+        <div class="context-item" onclick="refreshDesktop()">🔄 Refresh</div>
+        <div class="context-item" onclick="openApp('notepad')">📝 New Text File</div>
+        <div class="context-item" onclick="showProperties()">🔧 Properties</div>
+    </div>
+
+    <script src="../js/Escalation.js"></script>
+</body>
+</html>
