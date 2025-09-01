@@ -2,14 +2,14 @@
 
 :root {
     --terminal-bg: #0c0c0c;
-    --terminal-green: #00ff41;
-    --terminal-cyan: #00ffff;
+    --terminal-green:#00ffff;
+    --terminal-cyan:  #00ff41;
     --terminal-purple: #ff00ff;
     --terminal-red: #ff0040;
     --terminal-yellow: #ffff00;
     --terminal-orange: #ff8800;
-    --panel-bg: #1a1a2e;
-    --border-color: #16213e;
+    --panel-bg:#0c0c0c;
+    --border-color: #0c0c0c;
     --text-primary: #00ff41;
     --text-secondary: #a0ffa0;
     --text-muted: #608060;
@@ -113,9 +113,9 @@ body {
 /* Header */
 .terminal-header {
     background: var(--panel-bg);
-    border-bottom: 2px solid var(--terminal-green);
+    
     padding: 1rem 2rem;
-    box-shadow: 0 2px 20px var(--terminal-green);
+ 
 }
 
 .header-content {
@@ -244,7 +244,7 @@ body {
     border-radius: 10px;
     overflow: hidden;
     flex: 1;
-    box-shadow: var(--glow-green), inset 0 0 50px rgba(0, 255, 65, 0.1);
+   
 }
 
 .terminal-titlebar {
