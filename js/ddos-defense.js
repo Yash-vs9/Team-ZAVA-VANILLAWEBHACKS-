@@ -297,6 +297,12 @@ class DDoSDefenseSimulator {
         
         localStorage.setItem('ddos_defense_stats', JSON.stringify(ddosStats));
         console.log(`🚫 DDoS stats saved: ${Math.round(this.stats.effectiveness)}%`);
+        try {
+            localStorage.setItem('latestDDoSSession', Date.now().toString());
+            console.log('💾 DDoS Defense stats saved:', Math.round(this.stats.effectiveness) + '% effectiveness');
+        } catch (error) {
+            console.warn('Could not save DDoS session data:', error);
+        }
     }
 
 

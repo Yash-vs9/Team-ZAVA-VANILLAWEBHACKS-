@@ -529,6 +529,21 @@ class BotDetectionCAPTCHA {
         const metrics = this.calculateMetrics(this.mouseData);
         const analysis = this.detectBot(metrics);
         
+        try {
+            const captchaStats = {
+                accuracy: analysis.humanScore,
+                score: analysis.humanScore,
+                timestamp: new Date().toISOString(),
+                classification: analysis.classification.result,
+                metrics: analysis.metrics
+            };
+            
+            localStorage.setItem('captcha_verification_stats', JSON.stringify(captchaStats));
+            console.log('💾 CAPTCHA stats saved to localStorage:', captchaStats);
+        } catch (error) {
+            console.warn('Could not save CAPTCHA stats:', error);
+        }
+
         // Update results display
         const resultsPanel = document.getElementById('resultsPanel');
         const resultIcon = document.getElementById('resultIcon');

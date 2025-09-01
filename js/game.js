@@ -375,6 +375,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetPhishingGame() {
+
+    try {
+            localStorage.setItem("latestPhishingGame", Date.now().toString());
+            const currentBest = parseInt(localStorage.getItem("bestPhishingScore")) || 0;
+            if (phishingScore > currentBest) {
+                localStorage.setItem("bestPhishingScore", phishingScore.toString());
+            }
+            console.log('💾 Phishing game stats saved:', phishingScore);
+        } catch (error) {
+            console.warn('Could not save phishing score:', error);
+        }
     phishingIndex = 0;
     phishingScore = 0;
     gameCompletionInProgress = false;
@@ -551,18 +562,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetPasswordGame() {
     try {
-      localStorage.setItem("latestPasswordScore", passwordScore);
-      const currentPasswordBest = parseInt(localStorage.getItem("passwordBestScore")) || 0;
-      if (passwordScore > currentPasswordBest) {
-        localStorage.setItem("passwordBestScore", passwordScore);
-      }
-
-      if (typeof window.cyberDashboard !== 'undefined' && window.cyberDashboard.recordGameSession) {
-        window.cyberDashboard.recordGameSession('password', passwordScore);
-      }
-    } catch (error) {
-      console.warn('Could not save password score:', error);
-    }
+            localStorage.setItem("latestPasswordGame", Date.now().toString());
+            const currentPasswordBest = parseInt(localStorage.getItem("passwordBestScore")) || 0;
+            if (passwordScore > currentPasswordBest) {
+                localStorage.setItem("passwordBestScore", passwordScore.toString());
+            }
+            console.log('💾 Password game stats saved:', passwordScore);
+        } catch (error) {
+            console.warn('Could not save password score:', error);
+        }
 
     passwordScore = 0;
     passwordAttempt = 1;
@@ -722,18 +730,15 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInterval(intervalId);
     
     try {
-      localStorage.setItem("latestNetworkScore", networkScore);
-      const bestNetworkScore = parseInt(localStorage.getItem("networkBestScore")) || 0;
-      if (networkScore > bestNetworkScore) {
-        localStorage.setItem("networkBestScore", networkScore);
-      }
-
-      if (typeof window.cyberDashboard !== 'undefined' && window.cyberDashboard.recordGameSession) {
-        window.cyberDashboard.recordGameSession('network', networkScore);
-      }
-    } catch (error) {
-      console.warn('Could not save network score:', error);
-    }
+            localStorage.setItem("latestNetworkGame", Date.now().toString());
+            const bestNetworkScore = parseInt(localStorage.getItem("bestNetworkScore")) || 0;
+            if (networkScore > bestNetworkScore) {
+                localStorage.setItem("bestNetworkScore", networkScore.toString());
+            }
+            console.log('💾 Network game stats saved:', networkScore);
+        } catch (error) {
+            console.warn('Could not save network score:', error);
+        }
 
     networkGameTimer = 30;
     networkScore = 0;

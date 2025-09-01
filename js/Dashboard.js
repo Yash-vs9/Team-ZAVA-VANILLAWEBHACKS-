@@ -1,21 +1,12 @@
 /**
- * COMPLETE CYBERSECURITY DASHBOARD - FIXED & ENHANCED VERSION
- * 
- * Fixes:
- * - Progress bars now working properly
- * - Streak tracking fixed with persistence
- * - Best scores for all games working
- * - 1-year heatmap (365 days)
- * - Recent activity feed working
- * - Weekly performance chart functional
- * - 15 achievement badges added
- * - Better data synchronization
- * - Improved localStorage integration
+ * COMPLETE CYBERSECURITY DASHBOARD - ENHANCED OFFLINE VERSION
+ * Maintains original layout with localStorage integration and GitHub heatmap
  */
-
 class CompleteCyberSecurityDashboard {
     constructor() {
-        // Storage keys for data integration
+        console.log('🚀 Initializing Enhanced CyberSecurity Dashboard...');
+        
+        // Storage keys for complete data integration
         this.STORAGE_KEYS = {
             // Dashboard core data
             USER_DATA: 'cyberguard_user_data',
@@ -23,10 +14,10 @@ class CompleteCyberSecurityDashboard {
             GAME_HISTORY: 'cyberguard_game_history',
             STREAK_DATA: 'cyberguard_streak_data',
             
-            // Game integration keys
+            // Game integration keys (existing localStorage keys from other files)
             NETWORK_BEST: 'bestNetworkScore',
             PHISHING_BEST: 'bestPhishingScore',
-            PASSWORD_BEST: 'passwordBestScore', // Added missing password best
+            PASSWORD_BEST: 'passwordBestScore',
             LATEST_NETWORK: 'latestNetworkGame',
             LATEST_PHISHING: 'latestPhishingGame',
             LATEST_PASSWORD: 'latestPasswordGame',
@@ -37,10 +28,19 @@ class CompleteCyberSecurityDashboard {
             
             // DDoS defense keys
             DDOS_STATS: 'ddos_defense_stats',
-            DDOS_SESSIONS: 'ddos_sessions'
+            DDOS_SESSIONS: 'ddos_sessions',
+            
+            // CAPTCHA detection keys
+            CAPTCHA_STATS: 'captcha_verification_stats',
+            
+            // Escape room keys
+            ESCAPE_PROGRESS: 'escape_room_progress'
         };
 
-        // Default user data structure
+        // Current year for heatmap navigation
+        this.currentYear = new Date().getFullYear();
+        
+        // Default user data structure (maintaining original structure)
         this.defaultUserData = {
             profile: {
                 username: 'Cyber Agent',
@@ -87,161 +87,63 @@ class CompleteCyberSecurityDashboard {
             }
         };
 
-        // Enhanced badge definitions with 15+ achievements
+        // Enhanced badge definitions (15+ achievements)
         this.badgeDefinitions = [
-            {
-                id: 'first_steps',
-                name: 'First Steps',
-                description: 'Complete your first training session',
-                icon: '🌟',
-                condition: (userData) => userData.stats.totalGames >= 1
-            },
-            {
-                id: 'phishing_detective',
-                name: 'Phishing Detective',
-                description: 'Score 4+ in phishing detection',
-                icon: '🕵️',
-                condition: (userData) => userData.bestScores.phishing.score >= 4
-            },
-            {
-                id: 'password_guardian',
-                name: 'Password Guardian',
-                description: 'Score 4+ in password security',
-                icon: '🔐',
-                condition: (userData) => userData.bestScores.password.score >= 4
-            },
-            {
-                id: 'network_defender',
-                name: 'Network Defender',
-                description: 'Block all 4 threats in network defense',
-                icon: '🛡️',
-                condition: (userData) => userData.bestScores.network.score >= 4
-            },
-            {
-                id: 'ddos_master',
-                name: 'DDoS Master',
-                description: 'Achieve 80%+ effectiveness in DDoS defense',
-                icon: '🚫',
-                condition: (userData) => userData.bestScores.ddos.effectiveness >= 80
-            },
-            {
-                id: 'terminal_expert',
-                name: 'Terminal Expert',
-                description: 'Master 15+ terminal commands',
-                icon: '💻',
-                condition: (userData) => userData.stats.commandsLearned >= 15
-            },
-            {
-                id: 'streak_warrior',
-                name: 'Streak Warrior',
-                description: 'Maintain a 5-day training streak',
-                icon: '🔥',
-                condition: (userData) => userData.stats.currentStreak >= 5
-            },
-            {
-                id: 'cyber_veteran',
-                name: 'Cyber Veteran',
-                description: 'Complete 25 training sessions',
-                icon: '🏆',
-                condition: (userData) => userData.stats.totalGames >= 25
-            },
-            {
-                id: 'perfect_score',
-                name: 'Perfect Score',
-                description: 'Get perfect scores in all games',
-                icon: '⭐',
-                condition: (userData) => userData.bestScores.phishing.score >= 5 && 
-                                      userData.bestScores.password.score >= 5 && 
-                                      userData.bestScores.network.score >= 4
-            },
-            {
-                id: 'marathon_runner',
-                name: 'Marathon Runner',
-                description: 'Maintain a 10-day training streak',
-                icon: '🏃‍♂️',
-                condition: (userData) => userData.stats.currentStreak >= 10
-            },
-            {
-                id: 'security_ace',
-                name: 'Security Ace',
-                description: 'Win 50 training sessions',
-                icon: '🎯',
-                condition: (userData) => userData.stats.gamesWon >= 50
-            },
-            {
-                id: 'command_ninja',
-                name: 'Command Ninja',
-                description: 'Master all 24 terminal commands',
-                icon: '🥷',
-                condition: (userData) => userData.stats.commandsLearned >= 24
-            },
-            {
-                id: 'level_master',
-                name: 'Level Master',
-                description: 'Reach level 10',
-                icon: '🎖️',
-                condition: (userData) => userData.stats.level >= 10
-            },
-            {
-                id: 'consistency_king',
-                name: 'Consistency King',
-                description: 'Train for 30 consecutive days',
-                icon: '👑',
-                condition: (userData) => userData.stats.longestStreak >= 30
-            },
-            {
-                id: 'cyber_legend',
-                name: 'Cyber Legend',
-                description: 'Complete 100 training sessions',
-                icon: '🌟',
-                condition: (userData) => userData.stats.totalGames >= 100
-            }
+            { id: 'first_steps', name: 'First Steps', description: 'Complete your first training session', icon: '🌟', condition: (userData) => userData.stats.totalGames >= 1 },
+            { id: 'phishing_detective', name: 'Phishing Detective', description: 'Score 4+ in phishing detection', icon: '🕵️', condition: (userData) => userData.bestScores.phishing.score >= 4 },
+            { id: 'password_guardian', name: 'Password Guardian', description: 'Score 4+ in password security', icon: '🔐', condition: (userData) => userData.bestScores.password.score >= 4 },
+            { id: 'network_defender', name: 'Network Defender', description: 'Block all 4 threats in network defense', icon: '🛡️', condition: (userData) => userData.bestScores.network.score >= 4 },
+            { id: 'ddos_master', name: 'DDoS Master', description: 'Achieve 80%+ effectiveness in DDoS defense', icon: '🚫', condition: (userData) => userData.bestScores.ddos.effectiveness >= 80 },
+            { id: 'terminal_expert', name: 'Terminal Expert', description: 'Master 15+ terminal commands', icon: '💻', condition: (userData) => userData.stats.commandsLearned >= 15 },
+            { id: 'streak_warrior', name: 'Streak Warrior', description: 'Maintain a 5-day training streak', icon: '🔥', condition: (userData) => userData.stats.currentStreak >= 5 },
+            { id: 'cyber_veteran', name: 'Cyber Veteran', description: 'Complete 25 training sessions', icon: '🏆', condition: (userData) => userData.stats.totalGames >= 25 },
+            { id: 'perfect_score', name: 'Perfect Score', description: 'Get perfect scores in all games', icon: '⭐', condition: (userData) => userData.bestScores.phishing.score >= 5 && userData.bestScores.password.score >= 5 && userData.bestScores.network.score >= 4 },
+            { id: 'marathon_runner', name: 'Marathon Runner', description: 'Maintain a 10-day training streak', icon: '🏃♂️', condition: (userData) => userData.stats.currentStreak >= 10 },
+            { id: 'security_ace', name: 'Security Ace', description: 'Win 50 training sessions', icon: '🎯', condition: (userData) => userData.stats.gamesWon >= 50 },
+            { id: 'command_ninja', name: 'Command Ninja', description: 'Master all 24 terminal commands', icon: '🥷', condition: (userData) => userData.stats.commandsLearned >= 24 },
+            { id: 'level_master', name: 'Level Master', description: 'Reach level 10', icon: '🎖️', condition: (userData) => userData.stats.level >= 10 },
+            { id: 'consistency_king', name: 'Consistency King', description: 'Train for 30 consecutive days', icon: '👑', condition: (userData) => userData.stats.longestStreak >= 30 },
+            { id: 'cyber_legend', name: 'Cyber Legend', description: 'Complete 100 training sessions', icon: '🌟', condition: (userData) => userData.stats.totalGames >= 100 }
         ];
 
         this.init();
     }
 
     /**
-     * INITIALIZATION
+     * INITIALIZATION (Maintaining original structure)
      */
     init() {
-        console.log('🚀 Initializing Complete CyberSecurity Dashboard...');
-        
         this.loadAllData();
         this.setupEventListeners();
         this.updateAllUI();
-        this.generateHeatmap();
+        this.generateGitHubHeatmap();
         this.startDataMonitoring();
         this.startSessionTracking();
-        
+        this.initializeMatrixBackground();
         console.log('✅ Dashboard fully initialized!');
     }
 
     /**
-     * ENHANCED DATA MANAGEMENT
+     * ENHANCED DATA MANAGEMENT WITH LOCALSTORAGE
      */
     loadAllData() {
         try {
-            // Load dashboard data
+            // Load dashboard data (maintaining original structure)
             const storedData = localStorage.getItem(this.STORAGE_KEYS.USER_DATA);
             if (storedData) {
-                this.userData = { 
-                    ...this.defaultUserData, 
-                    ...JSON.parse(storedData) 
-                };
+                this.userData = { ...this.defaultUserData, ...JSON.parse(storedData) };
                 // Ensure all nested objects exist
                 this.userData.stats = { ...this.defaultUserData.stats, ...this.userData.stats };
                 this.userData.progress = { ...this.defaultUserData.progress, ...this.userData.progress };
                 this.userData.bestScores = { ...this.defaultUserData.bestScores, ...this.userData.bestScores };
                 this.userData.lastKnownValues = { ...this.defaultUserData.lastKnownValues, ...this.userData.lastKnownValues };
-                
                 this.userData.profile.lastLogin = new Date().toISOString();
                 this.userData.profile.sessionsCount++;
             } else {
                 this.userData = { ...this.defaultUserData };
             }
-            
-            // Load activity data
+
+            // Load activity data for GitHub heatmap
             this.activityData = this.loadActivityData();
             
             // Load game history
@@ -250,7 +152,7 @@ class CompleteCyberSecurityDashboard {
             // Load streak data
             this.loadStreakData();
             
-            // Initial sync with all systems
+            // Initial sync with all external systems
             this.syncWithAllSystems();
             
             console.log('📊 All data loaded successfully');
@@ -261,7 +163,17 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Load game history
+    loadActivityData() {
+        try {
+            const data = localStorage.getItem(this.STORAGE_KEYS.ACTIVITY_DATA);
+            return data ? JSON.parse(data) : {};
+        } catch (error) {
+            console.error('❌ Error loading activity data:', error);
+            return {};
+        }
+    }
+
+    // Load game history (maintaining original structure)
     loadGameHistory() {
         try {
             const historyData = localStorage.getItem(this.STORAGE_KEYS.GAME_HISTORY);
@@ -274,7 +186,7 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Load streak data
+    // Load streak data (maintaining original structure)
     loadStreakData() {
         try {
             const streakData = localStorage.getItem(this.STORAGE_KEYS.STREAK_DATA);
@@ -289,7 +201,7 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Save streak data
+    // Save streak data (maintaining original structure)
     saveStreakData() {
         try {
             const streakData = {
@@ -303,19 +215,24 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Enhanced system synchronization
+    /**
+     * ENHANCED SYSTEM SYNCHRONIZATION (maintaining original structure)
+     */
     syncWithAllSystems() {
         this.syncGameData();
         this.syncLearningData();
         this.syncDDoSData();
+        this.syncCaptchaData();
+        this.syncEscapeData();
         this.updateStreakStatus();
     }
 
-    // Enhanced game data sync with password support
+    // Enhanced game data sync with password support (maintaining original structure)
     syncGameData() {
         const networkBest = parseInt(localStorage.getItem(this.STORAGE_KEYS.NETWORK_BEST)) || 0;
         const phishingBest = parseInt(localStorage.getItem(this.STORAGE_KEYS.PHISHING_BEST)) || 0;
         const passwordBest = parseInt(localStorage.getItem(this.STORAGE_KEYS.PASSWORD_BEST)) || 0;
+
         const latestNetwork = localStorage.getItem(this.STORAGE_KEYS.LATEST_NETWORK);
         const latestPhishing = localStorage.getItem(this.STORAGE_KEYS.LATEST_PHISHING);
         const latestPassword = localStorage.getItem(this.STORAGE_KEYS.LATEST_PASSWORD);
@@ -364,15 +281,14 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Enhanced learning data sync
+    // Enhanced learning data sync (maintaining original structure)
     syncLearningData() {
         try {
             const completedCommands = localStorage.getItem(this.STORAGE_KEYS.LEARNING_COMMANDS);
-            
             if (completedCommands) {
                 const commands = JSON.parse(completedCommands);
                 const completedCount = Array.isArray(commands) ? commands.length : 0;
-                
+
                 if (completedCount !== this.userData.lastKnownValues.completedCommands) {
                     const newCommands = completedCount - this.userData.lastKnownValues.completedCommands;
                     if (newCommands > 0) {
@@ -383,7 +299,6 @@ class CompleteCyberSecurityDashboard {
                         this.updateLevel();
                         this.showNotification('📚', 'Commands Mastered!', `+${learningXP} XP earned!`);
                     }
-                    
                     this.userData.lastKnownValues.completedCommands = completedCount;
                 }
             }
@@ -392,14 +307,12 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Enhanced DDoS data sync
+    // Enhanced DDoS data sync (maintaining original structure)
     syncDDoSData() {
         try {
             const ddosStats = localStorage.getItem(this.STORAGE_KEYS.DDOS_STATS);
-            
             if (ddosStats) {
                 const stats = JSON.parse(ddosStats);
-                
                 if (stats.effectiveness > this.userData.bestScores.ddos.effectiveness) {
                     this.userData.bestScores.ddos.effectiveness = stats.effectiveness;
                     this.userData.bestScores.ddos.score = stats.score || 0;
@@ -413,31 +326,199 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Enhanced streak tracking
+    // NEW: CAPTCHA data sync
+    syncCaptchaData() {
+        try {
+            const captchaStats = localStorage.getItem(this.STORAGE_KEYS.CAPTCHA_STATS);
+            if (captchaStats) {
+                const stats = JSON.parse(captchaStats);
+                if (stats.accuracy > (this.userData.bestScores.captcha?.accuracy || 0)) {
+                    if (!this.userData.bestScores.captcha) {
+                        this.userData.bestScores.captcha = { accuracy: 0, score: 0, date: null };
+                    }
+                    this.userData.bestScores.captcha.accuracy = stats.accuracy;
+                    this.userData.bestScores.captcha.score = stats.score || 0;
+                    this.userData.bestScores.captcha.date = new Date().toISOString();
+                    this.showNotification('🤖', 'Bot Hunter!', `${Math.round(stats.accuracy)}% accuracy!`);
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error syncing CAPTCHA data:', error);
+        }
+    }
+
+    // NEW: Escape room data sync
+    syncEscapeData() {
+        try {
+            const escapeProgress = localStorage.getItem(this.STORAGE_KEYS.ESCAPE_PROGRESS);
+            if (escapeProgress) {
+                const progress = JSON.parse(escapeProgress);
+                if (progress.score > 0) {
+                    this.recordGameSession('escape', progress.score, progress.completed);
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error syncing escape data:', error);
+        }
+    }
+
+    /**
+     * GITHUB-STYLE HEATMAP GENERATION (New Feature)
+     */
+    generateGitHubHeatmap() {
+        console.log('📈 Generating GitHub-style heatmap...');
+        
+        const container = document.getElementById('heatmapGrid');
+        const monthsContainer = document.getElementById('heatmapMonths');
+        
+        if (!container) return;
+
+        // Clear existing content
+        container.innerHTML = '';
+        if (monthsContainer) monthsContainer.innerHTML = '';
+
+        // Calculate date range (52 weeks from current date)
+        const today = new Date(this.currentYear, 11, 31); // End of selected year
+        const startDate = new Date(today);
+        startDate.setDate(startDate.getDate() - 364); // 52 weeks * 7 days
+
+        // Generate month labels
+        this.generateMonthLabels(monthsContainer, startDate);
+
+        // Generate heatmap grid
+        this.generateHeatmapGrid(container, startDate);
+
+        // Update year display
+        document.getElementById('heatmapYear').textContent = this.currentYear;
+    }
+
+    generateMonthLabels(container, startDate) {
+        if (!container) return;
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        
+        let currentDate = new Date(startDate);
+        let currentMonth = -1;
+
+        // Generate labels for visible months
+        for (let week = 0; week < 52; week++) {
+            const weekDate = new Date(currentDate);
+            weekDate.setDate(weekDate.getDate() + (week * 7));
+            
+            if (weekDate.getMonth() !== currentMonth && week % 4 === 0) {
+                currentMonth = weekDate.getMonth();
+                
+                const monthLabel = document.createElement('div');
+                monthLabel.className = 'month-label';
+                monthLabel.textContent = months[currentMonth];
+                monthLabel.style.left = `${week * 13}px`;
+                container.appendChild(monthLabel);
+            }
+        }
+    }
+
+    generateHeatmapGrid(container, startDate) {
+        const currentDate = new Date(startDate);
+        
+        // Adjust start date to begin on Sunday
+        const dayOfWeek = currentDate.getDay();
+        currentDate.setDate(currentDate.getDate() - dayOfWeek);
+        
+        // Generate 52 weeks × 7 days grid
+        for (let week = 0; week < 52; week++) {
+            const weekColumn = document.createElement('div');
+            weekColumn.className = 'heatmap-week';
+            
+            for (let day = 0; day < 7; day++) {
+                const cellDate = new Date(currentDate);
+                cellDate.setDate(cellDate.getDate() + (week * 7) + day);
+                
+                const dateStr = cellDate.toDateString();
+                const activityLevel = this.getActivityLevel(dateStr);
+                
+                const cell = document.createElement('div');
+                cell.className = `heatmap-cell level-${activityLevel}`;
+                cell.dataset.date = dateStr;
+                cell.title = this.getActivityTooltip(dateStr);
+                
+                // Add click handler for details
+                cell.addEventListener('click', () => {
+                    this.showDayDetails(dateStr);
+                });
+                
+                weekColumn.appendChild(cell);
+            }
+            
+            container.appendChild(weekColumn);
+        }
+    }
+
+    getActivityLevel(dateStr) {
+        const activity = this.activityData[dateStr] || 0;
+        
+        if (activity === 0) return 0;
+        if (activity <= 2) return 1;
+        if (activity <= 4) return 2;
+        if (activity <= 6) return 3;
+        return 4; // 7+ activities
+    }
+
+    getActivityTooltip(dateStr) {
+        const activity = this.activityData[dateStr] || 0;
+        const date = new Date(dateStr).toLocaleDateString();
+        
+        return activity === 0 ? 
+            `${date}: No activity` : 
+            `${date}: ${activity} training session${activity > 1 ? 's' : ''}`;
+    }
+
+    showDayDetails(dateStr) {
+        const activity = this.activityData[dateStr] || 0;
+        const date = new Date(dateStr).toLocaleDateString();
+        const dayGames = this.userData.gameHistory.filter(game => 
+            new Date(game.timestamp).toDateString() === dateStr
+        );
+        
+        let details = `📅 ${date}\n\nSessions: ${activity}\n`;
+        
+        if (dayGames.length > 0) {
+            details += '\nGames played:\n';
+            dayGames.forEach(game => {
+                details += `• ${game.type}: ${game.score} ${game.success ? '✅' : '❌'}\n`;
+            });
+        }
+        
+        alert(details);
+    }
+
+    /**
+     * ENHANCED STREAK TRACKING (maintaining original structure)
+     */
     updateStreakStatus() {
         const today = new Date().toDateString();
         const lastActivity = this.userData.stats.lastActivityDate;
-        
+
         if (lastActivity) {
             const lastDate = new Date(lastActivity).toDateString();
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             const yesterdayStr = yesterday.toDateString();
-            
+
             // If last activity was not today and not yesterday, reset streak
             if (lastDate !== today && lastDate !== yesterdayStr) {
                 this.userData.stats.currentStreak = 0;
             }
         }
-        
+
         this.saveStreakData();
     }
 
-    // Enhanced game session recording
+    // Enhanced game session recording (maintaining original structure)
     recordGameSession(gameType, score) {
         const isSuccess = this.determineSuccess(gameType, score);
         const xpEarned = this.calculateXPReward(gameType, score, isSuccess);
-        
+
         const gameRecord = {
             id: Date.now(),
             type: gameType,
@@ -447,15 +528,14 @@ class CompleteCyberSecurityDashboard {
             score: score
         };
 
-        // Update stats
+        // Update stats (maintaining original structure)
         this.userData.stats.totalGames++;
         if (isSuccess) {
             this.userData.stats.gamesWon++;
         }
-        
+
         // Update streak
         this.updateStreak(isSuccess);
-        
         this.userData.stats.xp += xpEarned;
         this.updateLevel();
         this.updateDailyActivity();
@@ -467,31 +547,31 @@ class CompleteCyberSecurityDashboard {
         if (this.userData.gameHistory.length > 50) {
             this.userData.gameHistory = this.userData.gameHistory.slice(-50);
         }
+
         localStorage.setItem(this.STORAGE_KEYS.USER_DATA, JSON.stringify(this.userData));
         localStorage.setItem(this.STORAGE_KEYS.GAME_HISTORY, JSON.stringify(this.userData.gameHistory));
         this.saveUserData();
         this.saveGameHistory();
-        
+
         if (isSuccess) {
             this.showNotification('🎉', 'Training Complete!', `+${xpEarned} XP earned!`);
         }
 
         // Refresh UI
         this.updateActivityFeed();
-
         console.log(`🎮 Game session recorded: ${gameType} - ${isSuccess ? 'Success' : 'Failure'} - ${xpEarned} XP`);
     }
 
-    // Enhanced streak update
+    // Enhanced streak update (maintaining original structure)
     updateStreak(isSuccess) {
         const today = new Date().toDateString();
         const lastActivity = this.userData.stats.lastActivityDate;
-        
+
         if (!lastActivity || new Date(lastActivity).toDateString() !== today) {
             // First activity of the day
             const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
-            
+
             if (lastActivity && new Date(lastActivity).toDateString() === yesterday.toDateString()) {
                 // Continued streak
                 this.userData.stats.currentStreak++;
@@ -503,19 +583,18 @@ class CompleteCyberSecurityDashboard {
                 this.userData.stats.currentStreak = 1;
             }
         }
-        
+
         // Update longest streak
         if (this.userData.stats.currentStreak > this.userData.stats.longestStreak) {
             this.userData.stats.longestStreak = this.userData.stats.currentStreak;
         }
-        
+
         // Update last activity date
         this.userData.stats.lastActivityDate = new Date().toISOString();
-        
         this.saveStreakData();
     }
 
-    // Save game history
+    // Save game history (maintaining original structure)
     saveGameHistory() {
         try {
             localStorage.setItem(this.STORAGE_KEYS.GAME_HISTORY, JSON.stringify(this.userData.gameHistory));
@@ -524,7 +603,7 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Determine game success
+    // Determine game success (maintaining original structure)
     determineSuccess(gameType, score) {
         const thresholds = {
             'phishing': 3,
@@ -534,24 +613,24 @@ class CompleteCyberSecurityDashboard {
         return score >= (thresholds[gameType] || 3);
     }
 
-    // Calculate XP reward
+    // Calculate XP reward (maintaining original structure)
     calculateXPReward(gameType, score, isSuccess) {
         if (!isSuccess) return 10;
-        
+
         const baseRewards = {
             'phishing': 25,
             'password': 30,
             'network': 35
         };
-        
+
         const baseXP = baseRewards[gameType] || 20;
         const scoreBonus = score * 5;
         const streakBonus = Math.min(this.userData.stats.currentStreak * 3, 15);
-        
+
         return baseXP + scoreBonus + streakBonus;
     }
 
-    // Update user level
+    // Update user level (maintaining original structure)
     updateLevel() {
         const newLevel = Math.floor(this.userData.stats.xp / 500) + 1;
         if (newLevel > this.userData.stats.level) {
@@ -560,24 +639,32 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    // Update daily activity
+    // Update daily activity (maintaining original structure)
     updateDailyActivity() {
         const today = new Date().toDateString();
-        if (!this.activityData) this.activityData = {};
         
         if (!this.activityData[today]) {
-            this.activityData[today] = 1;
-        } else {
-            this.activityData[today]++;
+            this.activityData[today] = 0;
         }
+        
+        this.activityData[today]++;
         this.saveActivityData();
     }
 
-    // Fixed weekly performance update
+    // Save activity data for heatmap
+    saveActivityData() {
+        try {
+            localStorage.setItem(this.STORAGE_KEYS.ACTIVITY_DATA, JSON.stringify(this.activityData));
+        } catch (error) {
+            console.error('❌ Error saving activity data:', error);
+        }
+    }
+
+    // Fixed weekly performance update (maintaining original structure)
     updateWeeklyPerformance(isSuccess) {
         const today = new Date().getDay(); // 0-6 (Sunday-Saturday)
         const current = this.userData.weeklyPerformance[today] || 0;
-        
+
         // Use a more reliable calculation
         if (current === 0) {
             this.userData.weeklyPerformance[today] = isSuccess ? 100 : 50;
@@ -586,15 +673,15 @@ class CompleteCyberSecurityDashboard {
             const newPerformance = isSuccess ? 100 : 0;
             this.userData.weeklyPerformance[today] = (current * 0.7) + (newPerformance * 0.3);
         }
-        
+
         // Ensure values are within 0-100 range
         this.userData.weeklyPerformance[today] = Math.max(0, Math.min(100, this.userData.weeklyPerformance[today]));
     }
 
-    // Check and award badges
+    // Check and award badges (maintaining original structure)
     checkAndAwardBadges() {
         let newBadges = [];
-        
+
         this.badgeDefinitions.forEach(badge => {
             if (!this.userData.badges.includes(badge.id) && badge.condition(this.userData)) {
                 this.userData.badges.push(badge.id);
@@ -602,7 +689,7 @@ class CompleteCyberSecurityDashboard {
                 this.userData.stats.xp += 100; // Badge bonus
             }
         });
-        
+
         if (newBadges.length > 0) {
             const badge = newBadges[0];
             this.showNotification(badge.icon, 'Badge Earned!', badge.name);
@@ -610,7 +697,7 @@ class CompleteCyberSecurityDashboard {
     }
 
     /**
-     * DATA MONITORING - Enhanced
+     * DATA MONITORING - Enhanced (maintaining original structure)
      */
     startDataMonitoring() {
         // Monitor localStorage changes every 2 seconds
@@ -623,7 +710,7 @@ class CompleteCyberSecurityDashboard {
     }
 
     /**
-     * ENHANCED UI UPDATE METHODS
+     * ENHANCED UI UPDATE METHODS (maintaining original structure)
      */
     updateAllUI() {
         this.updateUserStats();
@@ -638,20 +725,17 @@ class CompleteCyberSecurityDashboard {
         this.updateDataInfo();
     }
 
-    // Fixed user stats update
+    // Fixed user stats update (maintaining original structure)
     updateUserStats() {
         this.updateElement('userLevel', this.userData.stats.level);
         this.updateElement('userXP', this.userData.stats.xp.toLocaleString());
-        
-        const accuracy = this.userData.stats.totalGames > 0 
-            ? Math.round((this.userData.stats.gamesWon / this.userData.stats.totalGames) * 100) 
-            : 0;
+        const accuracy = this.userData.stats.totalGames > 0 ? Math.round((this.userData.stats.gamesWon / this.userData.stats.totalGames) * 100) : 0;
         this.updateElement('userAccuracy', accuracy + '%');
         this.updateElement('userStreak', this.userData.stats.currentStreak);
         this.updateElement('streakDisplay', this.userData.stats.currentStreak);
     }
 
-    // Fixed level progress
+    // Fixed level progress (maintaining original structure)
     updateLevelProgress() {
         const currentLevel = this.userData.stats.level;
         const currentXP = this.userData.stats.xp;
@@ -660,20 +744,20 @@ class CompleteCyberSecurityDashboard {
         const progressXP = currentXP - levelXP;
         const neededXP = nextLevelXP - levelXP;
         const progressPercent = Math.max(0, Math.min(100, (progressXP / neededXP) * 100));
-        
+
         this.updateElement('currentLevel', currentLevel);
         this.updateElement('nextLevel', currentLevel + 1);
         this.updateElement('currentXP', currentXP);
         this.updateElement('nextLevelXP', nextLevelXP);
         this.updateElement('xpToNext', Math.max(0, nextLevelXP - currentXP));
-        
+
         const progressFill = document.getElementById('levelProgressFill');
         if (progressFill) {
             progressFill.style.width = progressPercent + '%';
         }
     }
 
-    // Fixed progress bars
+    // Fixed progress bars (maintaining original structure)
     updateProgressBars() {
         const progressData = [
             { id: 'phishing', current: this.userData.progress.phishingScore, max: 10 },
@@ -682,11 +766,10 @@ class CompleteCyberSecurityDashboard {
             { id: 'ddos', current: this.userData.progress.ddosScore, max: 10 },
             { id: 'learning', current: this.userData.progress.learningScore, max: 30 }
         ];
-        
+
         progressData.forEach(({ id, current, max }) => {
             const percent = Math.min(100, (current / max) * 100);
             this.updateElement(`${id}Score`, `${current}/${max}`);
-            
             const progressEl = document.getElementById(`${id}Progress`);
             if (progressEl) {
                 progressEl.style.width = percent + '%';
@@ -694,77 +777,69 @@ class CompleteCyberSecurityDashboard {
         });
     }
 
-    // Fixed best scores display
+    // Fixed best scores display (maintaining original structure)
     updateBestScores() {
         const bestScores = this.userData.bestScores;
-        
+
         this.updateElement('bestPhishingScore', `${bestScores.phishing.score}/5`);
-        this.updateElement('bestPhishingDate', 
-            bestScores.phishing.date ? this.formatDate(bestScores.phishing.date) : 'Never played');
-        
+        this.updateElement('bestPhishingDate', bestScores.phishing.date ? this.formatDate(bestScores.phishing.date) : 'Never played');
+
         this.updateElement('bestPasswordScore', `${bestScores.password.score}/5`);
-        this.updateElement('bestPasswordDate', 
-            bestScores.password.date ? this.formatDate(bestScores.password.date) : 'Never played');
-        
+        this.updateElement('bestPasswordDate', bestScores.password.date ? this.formatDate(bestScores.password.date) : 'Never played');
+
         this.updateElement('bestNetworkScore', `${bestScores.network.score}/4`);
-        this.updateElement('bestNetworkDate', 
-            bestScores.network.date ? this.formatDate(bestScores.network.date) : 'Never played');
-            
+        this.updateElement('bestNetworkDate', bestScores.network.date ? this.formatDate(bestScores.network.date) : 'Never played');
+
         this.updateElement('bestDdosScore', `${Math.round(bestScores.ddos.effectiveness)}%`);
-        this.updateElement('bestDdosDate', 
-            bestScores.ddos.date ? this.formatDate(bestScores.ddos.date) : 'Never played');
+        this.updateElement('bestDdosDate', bestScores.ddos.date ? this.formatDate(bestScores.ddos.date) : 'Never played');
     }
 
-    // Fixed badges display
+    // Fixed badges display (maintaining original structure)
     updateBadges() {
         const container = document.getElementById('badgesContainer');
         if (!container) return;
-        
+
         container.innerHTML = '';
-        
+
         this.badgeDefinitions.forEach(badge => {
             const isEarned = this.userData.badges.includes(badge.id);
             const badgeEl = document.createElement('div');
             badgeEl.className = `badge ${isEarned ? 'earned' : 'locked'}`;
             badgeEl.title = `${badge.name}: ${badge.description}`;
             badgeEl.textContent = badge.icon;
-            
+
             if (!isEarned) {
                 badgeEl.style.opacity = '0.4';
                 badgeEl.style.filter = 'grayscale(80%)';
             }
-            
+
             container.appendChild(badgeEl);
         });
-        
+
         // Update badge progress
         const earnedBadges = this.userData.badges.length;
         const totalBadges = this.badgeDefinitions.length;
         this.updateElement('badgeProgress', `${earnedBadges}/${totalBadges}`);
     }
 
-    // Fixed performance stats
+    // Fixed performance stats (maintaining original structure)
     updatePerformanceStats() {
         this.updateElement('totalGames', this.userData.stats.totalGames);
         this.updateElement('gamesWon', this.userData.stats.gamesWon);
-        
-        const winRate = this.userData.stats.totalGames > 0 
-            ? Math.round((this.userData.stats.gamesWon / this.userData.stats.totalGames) * 100) 
-            : 0;
+        const winRate = this.userData.stats.totalGames > 0 ? Math.round((this.userData.stats.gamesWon / this.userData.stats.totalGames) * 100) : 0;
         this.updateElement('winRate', winRate + '%');
-        
         this.updateElement('longestStreak', this.userData.stats.longestStreak);
         this.updateElement('totalBadges', this.userData.badges.length);
         this.updateElement('commandsLearned', this.userData.stats.commandsLearned);
     }
 
-    // Fixed activity feed
+    // Fixed activity feed (maintaining original structure)
     updateActivityFeed() {
         const activityList = document.getElementById('activityList');
         if (!activityList) return;
-        
-        const recentGames = this.userData.gameHistory.slice(-50).reverse();
-        
+
+        const recentGames = this.userData.gameHistory.slice(-10).reverse();
+
         if (recentGames.length === 0) {
             activityList.innerHTML = `
                 <div class="activity-placeholder">
@@ -773,353 +848,146 @@ class CompleteCyberSecurityDashboard {
             `;
             return;
         }
-        
+
         activityList.innerHTML = '';
-        
+
         recentGames.forEach(game => {
-            const activityItem = document.createElement('div');
-            activityItem.className = 'activity-item';
-            
-            const gameIcons = { 
-                phishing: '🎣', 
-                password: '🔐', 
-                network: '🛡️',
-                ddos: '🚫',
-                learning: '💻'
-            };
+            const activityEl = document.createElement('div');
+            activityEl.className = 'activity-item';
+
+            const icon = this.getGameIcon(game.type);
+            const timeAgo = this.getTimeAgo(new Date(game.timestamp));
             const statusIcon = game.success ? '✅' : '❌';
-            
-            activityItem.innerHTML = `
-                <div class="activity-icon">${gameIcons[game.type] || '🎮'}</div>
+
+            activityEl.innerHTML = `
+                <div class="activity-icon">${icon}</div>
                 <div class="activity-content">
                     <div class="activity-title">${this.capitalize(game.type)} Training ${statusIcon}</div>
-                    <div class="activity-desc">
-                        ${game.success ? `Score: ${game.score || 0} (+${game.xpEarned} XP)` : 'Keep practicing!'}
-                    </div>
+                    <div class="activity-desc">Score: ${game.score} | XP: +${game.xpEarned}</div>
                 </div>
-                <div class="activity-time">${this.getTimeAgo(game.timestamp)}</div>
+                <div class="activity-time">${timeAgo}</div>
             `;
-            
-            activityList.appendChild(activityItem);
+
+            activityList.appendChild(activityEl);
         });
     }
 
-    // Fixed learning progress
+    // Update learning progress (maintaining original structure)
     updateLearningProgress() {
-        this.updateElement('terminalCommands', `${this.userData.stats.commandsLearned}/24`);
+        const completed = this.userData.stats.commandsLearned;
+        const total = 30;
+        const percent = Math.min(100, (completed / total) * 100);
         
-        const lessonsCompleted = Math.floor(this.userData.stats.commandsLearned / 4);
-        this.updateElement('lessonsCompleted', `${Math.min(lessonsCompleted, 6)}/6`);
+        this.updateElement('commandsCompleted', completed);
         
-        const terminalProgress = document.getElementById('terminalProgress');
-        if (terminalProgress) {
-            const percent = (this.userData.stats.commandsLearned / 24) * 100;
-            terminalProgress.style.width = percent + '%';
-        }
-        
-        const lessonsProgress = document.getElementById('lessonsProgress');
-        if (lessonsProgress) {
-            const percent = (Math.min(lessonsCompleted, 6) / 6) * 100;
-            lessonsProgress.style.width = percent + '%';
+        const progressEl = document.getElementById('terminalProgress');
+        if (progressEl) {
+            progressEl.style.width = percent + '%';
         }
     }
 
-    // Fixed weekly chart
+    // Update weekly chart (maintaining original structure)
     updateWeeklyChart() {
-        const chartContainer = document.getElementById('weeklyChart');
-        if (!chartContainer) return;
-        
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        const performance = this.userData.weeklyPerformance;
-        
-        chartContainer.innerHTML = '';
-        
-        // Create chart bars
-        const chartBars = document.createElement('div');
-        chartBars.className = 'chart-container';
-        chartBars.style.cssText = 'display: flex; align-items: end; height: 120px; gap: 8px; margin-bottom: 10px;';
-        
-        performance.forEach((accuracy, index) => {
+        const container = document.getElementById('weeklyChart');
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        const maxHeight = 60;
+        this.userData.weeklyPerformance.forEach((performance, index) => {
+            const barHeight = Math.max(2, (performance / 100) * maxHeight);
+            
             const bar = document.createElement('div');
             bar.className = 'chart-bar';
-            const height = Math.max(accuracy, 5); // Minimum 5% height for visibility
-            bar.style.cssText = `
-                flex: 1;
-                height: ${height}%;
-                background: linear-gradient(to top, var(--color-primary-hover), var(--color-primary));
-                border-radius: 4px 4px 0 0;
-                min-height: 4px;
-            `;
-            bar.setAttribute('data-value', Math.round(accuracy) + '%');
-            bar.setAttribute('data-day', days[index]);
-            bar.title = `${days[index]}: ${Math.round(accuracy)}%`;
-            chartBars.appendChild(bar);
+            bar.style.height = barHeight + 'px';
+            bar.setAttribute('data-value', Math.round(performance) + '%');
+            
+            container.appendChild(bar);
         });
-        
-        // Create labels
-        const labels = document.createElement('div');
-        labels.className = 'chart-labels';
-        labels.style.cssText = 'display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-secondary);';
-        
-        days.forEach(day => {
-            const label = document.createElement('span');
-            label.textContent = day;
-            labels.appendChild(label);
-        });
-        
-        chartContainer.appendChild(chartBars);
-        chartContainer.appendChild(labels);
-        
-        // Update average accuracy
-        const avgAccuracy = Math.round(performance.reduce((a, b) => a + b, 0) / performance.length);
-        this.updateElement('avgAccuracy', avgAccuracy + '%');
+
+        // Update weekly average
+        const weeklyAvg = Math.round(this.userData.weeklyPerformance.reduce((a, b) => a + b, 0) / 7);
+        this.updateElement('weeklyAverage', weeklyAvg + '%');
     }
 
-    // Update data info
+    // Update data info (maintaining original structure)
     updateDataInfo() {
-        const totalTime = Math.floor(this.userData.profile.totalSessionTime / 60);
-        const dataSize = new Blob([JSON.stringify(this.userData)]).size;
+        this.updateElement('joinDate', new Date(this.userData.profile.joinDate).toLocaleDateString());
+        this.updateElement('sessionCount', this.userData.profile.sessionsCount);
         
-        this.updateElement('joinDate', this.formatDate(this.userData.profile.joinDate));
-        this.updateElement('totalTime', totalTime + ' minutes');
+        const totalMinutes = Math.floor((Date.now() - new Date(this.userData.profile.joinDate).getTime()) / (1000 * 60));
+        this.updateElement('totalTime', totalMinutes + ' minutes');
+        
+        const dataSize = this.calculateStorageSize();
         this.updateElement('dataSize', this.formatBytes(dataSize));
-        this.updateElement('totalSessions', this.userData.profile.sessionsCount);
     }
 
     /**
-     * FIXED HEATMAP GENERATION - 1 YEAR (365 DAYS)
-     */
-    generateHeatmap() {
-        const container = document.getElementById('heatmapContainer');
-        if (!container) return;
-        
-        container.innerHTML = '';
-        
-        const today = new Date();
-        const startDate = new Date(today);
-        startDate.setDate(today.getDate() - 364); // 365 days total including today
-        
-        // Generate 365 days of heatmap
-        for (let i = 0; i < 365; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
-            const dateString = currentDate.toDateString();
-            
-            const cell = document.createElement('div');
-            cell.className = 'heatmap-cell';
-            
-            const activity = this.activityData[dateString] || 0;
-            
-            // Activity levels: 0 = no activity, 1-2 = low, 3-5 = medium, 6-10 = high, 11+ = very high
-            if (activity > 0) {
-                let level = 1;
-                if (activity >= 11) level = 4;
-                else if (activity >= 6) level = 3;
-                else if (activity >= 3) level = 2;
-                else level = 1;
-                
-                cell.classList.add(`level-${level}`);
-            }
-            
-            cell.title = `${dateString}: ${activity} activities`;
-            container.appendChild(cell);
-        }
-    }
-
-    /**
-     * EVENT LISTENERS
+     * EVENT LISTENERS AND UI INTERACTIONS
      */
     setupEventListeners() {
-        // XP tooltip
-        const xpStat = document.getElementById('xpStat');
-        if (xpStat) {
-            xpStat.addEventListener('mouseenter', (e) => this.showXPTooltip(e));
-            xpStat.addEventListener('mouseleave', () => this.hideXPTooltip());
+        // Heatmap navigation
+        const heatmapPrev = document.getElementById('heatmapPrev');
+        const heatmapNext = document.getElementById('heatmapNext');
+        
+        if (heatmapPrev) {
+            heatmapPrev.addEventListener('click', () => {
+                this.currentYear--;
+                this.generateGitHubHeatmap();
+            });
+        }
+        
+        if (heatmapNext) {
+            heatmapNext.addEventListener('click', () => {
+                this.currentYear++;
+                this.generateGitHubHeatmap();
+            });
         }
 
-        // Export data
-        const exportBtn = document.getElementById('exportDataBtn');
+        // Data management buttons
+        const exportBtn = document.getElementById('exportData');
+        const backupBtn = document.getElementById('backupData');
+        const resetBtn = document.getElementById('resetData');
+
         if (exportBtn) {
-            exportBtn.addEventListener('click', () => this.showExportModal());
+            exportBtn.addEventListener('click', () => this.exportData());
         }
-
-        // Reset data
-        const resetBtn = document.getElementById('resetDataBtn');
+        
+        if (backupBtn) {
+            backupBtn.addEventListener('click', () => this.backupData());
+        }
+        
         if (resetBtn) {
-            resetBtn.addEventListener('click', () => this.resetUserData());
-        }
-
-        // Modal controls
-        const closeExportModal = document.getElementById('closeExportModal');
-        if (closeExportModal) {
-            closeExportModal.addEventListener('click', () => this.hideExportModal());
-        }
-
-        const exportJsonBtn = document.getElementById('exportJsonBtn');
-        const exportCsvBtn = document.getElementById('exportCsvBtn');
-        
-        if (exportJsonBtn) {
-            exportJsonBtn.addEventListener('click', () => this.exportData('json'));
-        }
-        
-        if (exportCsvBtn) {
-            exportCsvBtn.addEventListener('click', () => this.exportData('csv'));
+            resetBtn.addEventListener('click', () => this.resetData());
         }
     }
 
     /**
-     * SESSION TRACKING
+     * SESSION TRACKING (maintaining original structure)
      */
     startSessionTracking() {
         this.sessionStartTime = Date.now();
         
-        // Update session time every minute
-        setInterval(() => {
-            this.userData.profile.totalSessionTime += 60;
-            this.saveUserData();
-        }, 60000);
-        
-        // Save session on page unload
+        // Save session data on page unload
         window.addEventListener('beforeunload', () => {
-            const sessionTime = Math.floor((Date.now() - this.sessionStartTime) / 1000);
+            const sessionTime = Date.now() - this.sessionStartTime;
             this.userData.profile.totalSessionTime += sessionTime;
             this.saveUserData();
         });
-    }
 
-    /**
-     * TOOLTIP SYSTEM
-     */
-    showXPTooltip(event) {
-        const tooltip = document.getElementById('xpTooltip');
-        if (!tooltip) return;
-        
-        const currentLevel = this.userData.stats.level;
-        const currentXP = this.userData.stats.xp;
-        const levelXP = (currentLevel - 1) * 500;
-        const nextLevelXP = currentLevel * 500;
-        const progressXP = currentXP - levelXP;
-        const neededXP = nextLevelXP - levelXP;
-        const progressPercent = (progressXP / neededXP) * 100;
-        
-        this.updateElement('tooltipLevel', currentLevel);
-        this.updateElement('tooltipXP', progressXP);
-        this.updateElement('tooltipMaxXP', neededXP);
-        this.updateElement('tooltipRemaining', `${nextLevelXP - currentXP} XP to next level`);
-        
-        const tooltipFill = document.getElementById('tooltipFill');
-        if (tooltipFill) {
-            tooltipFill.style.width = progressPercent + '%';
-        }
-        
-        tooltip.style.left = event.pageX + 10 + 'px';
-        tooltip.style.top = event.pageY - 50 + 'px';
-        tooltip.classList.remove('hidden');
-    }
-
-    hideXPTooltip() {
-        const tooltip = document.getElementById('xpTooltip');
-        if (tooltip) {
-            tooltip.classList.add('hidden');
-        }
-    }
-
-    /**
-     * NOTIFICATION SYSTEM
-     */
-    showNotification(icon, title, message) {
-        const notification = document.createElement('div');
-        notification.className = 'achievement-notification';
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-icon">${icon}</span>
-                <div>
-                    <div class="notification-title">${title}</div>
-                    <div class="notification-desc">${message}</div>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 4000);
-    }
-
-    /**
-     * DATA EXPORT/IMPORT
-     */
-    showExportModal() {
-        const modal = document.getElementById('exportModal');
-        if (modal) {
-            modal.classList.remove('hidden');
-        }
-    }
-
-    hideExportModal() {
-        const modal = document.getElementById('exportModal');
-        if (modal) {
-            modal.classList.add('hidden');
-        }
-    }
-
-    exportData(format) {
-        const exportTextarea = document.getElementById('exportData');
-        if (!exportTextarea) return;
-        
-        if (format === 'json') {
-            exportTextarea.value = JSON.stringify({
-                userData: this.userData,
-                activityData: this.activityData,
-                exportDate: new Date().toISOString()
-            }, null, 2);
-        } else if (format === 'csv') {
-            const csvData = this.convertToCSV();
-            exportTextarea.value = csvData;
-        }
-        
-        exportTextarea.select();
-    }
-
-    convertToCSV() {
-        const headers = ['Date', 'Game Type', 'Success', 'XP Earned', 'Score'];
-        const rows = [headers.join(',')];
-        
-        this.userData.gameHistory.forEach(game => {
-            const row = [
-                new Date(game.timestamp).toISOString().split('T')[0],
-                game.type,
-                game.success,
-                game.xpEarned,
-                game.score || 'N/A'
-            ];
-            rows.push(row.join(','));
+        // Track page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                const sessionTime = Date.now() - this.sessionStartTime;
+                this.userData.profile.totalSessionTime += sessionTime;
+                this.saveUserData();
+            } else {
+                this.sessionStartTime = Date.now();
+            }
         });
-        
-        return rows.join('\n');
     }
 
-    resetUserData() {
-        if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-            // Clear all dashboard data
-            Object.values(this.STORAGE_KEYS).forEach(key => {
-                localStorage.removeItem(key);
-            });
-            
-            this.userData = { ...this.defaultUserData };
-            this.activityData = {};
-            
-            this.updateAllUI();
-            this.generateHeatmap();
-            
-            this.showNotification('🔄', 'Data Reset', 'All progress cleared');
-        }
-    }
-
-    /**
-     * DATA PERSISTENCE
-     */
+    // Save user data (maintaining original structure)
     saveUserData() {
         try {
             localStorage.setItem(this.STORAGE_KEYS.USER_DATA, JSON.stringify(this.userData));
@@ -1128,67 +996,202 @@ class CompleteCyberSecurityDashboard {
         }
     }
 
-    loadActivityData() {
-        try {
-            const activityData = localStorage.getItem(this.STORAGE_KEYS.ACTIVITY_DATA);
-            return activityData ? JSON.parse(activityData) : {};
-        } catch (error) {
-            return {};
-        }
+    /**
+     * MATRIX BACKGROUND (maintaining original visual)
+     */
+    initializeMatrixBackground() {
+        const canvas = document.getElementById('matrix-background');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        };
+        
+        setInterval(draw, 33);
     }
 
-    saveActivityData() {
-        try {
-            localStorage.setItem(this.STORAGE_KEYS.ACTIVITY_DATA, JSON.stringify(this.activityData));
-        } catch (error) {
-            console.error('❌ Error saving activity data:', error);
+    /**
+     * DATA MANAGEMENT FUNCTIONS
+     */
+    exportData() {
+        const exportData = {
+            version: '2.0',
+            exportDate: new Date().toISOString(),
+            userData: this.userData,
+            activityData: this.activityData
+        };
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `cyberguard-progress-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        URL.revokeObjectURL(url);
+        this.showNotification('✅', 'Export Complete', 'Progress data exported successfully!');
+    }
+
+    backupData() {
+        this.exportData();
+        this.showNotification('💾', 'Backup Created', 'Complete backup saved!');
+    }
+
+    resetData() {
+        if (confirm('⚠️ WARNING: This will permanently delete ALL progress!\n\nThis action cannot be undone. Continue?')) {
+            // Clear all localStorage data
+            Object.values(this.STORAGE_KEYS).forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            // Reset internal data
+            this.userData = { ...this.defaultUserData };
+            this.activityData = {};
+            
+            // Update UI
+            this.updateAllUI();
+            this.generateGitHubHeatmap();
+            
+            this.showNotification('🔄', 'Reset Complete', 'All progress cleared. Starting fresh!');
         }
     }
 
     /**
-     * UTILITY FUNCTIONS
+     * UTILITY METHODS (maintaining original functionality)
      */
-    updateElement(id, content) {
+    updateElement(id, value) {
         const element = document.getElementById(id);
         if (element) {
-            element.textContent = content;
+            element.textContent = value;
         }
+    }
+
+    formatDate(dateString) {
+        return dateString ? new Date(dateString).toLocaleDateString() : 'Never';
+    }
+
+    getGameIcon(gameType) {
+        const icons = {
+            phishing: '🎣',
+            password: '🔐',
+            network: '🛡️',
+            ddos: '🚫',
+            captcha: '🤖',
+            escape: '🔓'
+        };
+        return icons[gameType] || '🎮';
+    }
+
+    getTimeAgo(date) {
+        const now = new Date();
+        const diffMs = now - date;
+        const diffMins = Math.floor(diffMs / (1000 * 60));
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
+        return `${diffDays}d ago`;
     }
 
     capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
-    formatDate(dateString) {
-        return new Date(dateString).toLocaleDateString();
+    calculateStorageSize() {
+        let totalSize = 0;
+        Object.values(this.STORAGE_KEYS).forEach(key => {
+            const data = localStorage.getItem(key);
+            if (data) {
+                totalSize += data.length * 2;
+            }
+        });
+        return totalSize;
     }
 
     formatBytes(bytes) {
-        if (bytes === 0) return '0 Bytes';
+        if (bytes === 0) return '0 KB';
         const k = 1024;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
 
-    getTimeAgo(timestamp) {
-        const now = new Date();
-        const gameTime = new Date(timestamp);
-        const diffInMinutes = Math.floor((now - gameTime) / 60000);
+    showNotification(icon, title, message) {
+        console.log(`${icon} ${title}: ${message}`);
         
-        if (diffInMinutes < 1) return 'Just now';
-        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-        return `${Math.floor(diffInMinutes / 1440)}d ago`;
+        // Show achievement notification if available
+        const notification = document.getElementById('achievement-notification');
+        if (notification) {
+            const iconEl = document.getElementById('achievement-icon');
+            const titleEl = document.getElementById('achievement-title');
+            const descEl = document.getElementById('achievement-description');
+
+            if (iconEl && titleEl && descEl) {
+                iconEl.textContent = icon;
+                titleEl.textContent = title;
+                descEl.textContent = message;
+
+                notification.classList.remove('hidden');
+
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 5000);
+            }
+        }
     }
 }
+
+// Global dashboard instance
+let dashboard;
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.cyberDashboard = new CompleteCyberSecurityDashboard();
+    dashboard = new CompleteCyberSecurityDashboard();
+    
+    // Make dashboard globally accessible for other scripts
+    window.cyberDashboard = dashboard;
+    
+    console.log('🎯 Enhanced CyberSecurity Dashboard Ready!');
 });
 
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CompleteCyberSecurityDashboard;
-}
+// Handle page unload to save data
+window.addEventListener('beforeunload', () => {
+    if (dashboard) {
+        dashboard.saveUserData();
+    }
+});

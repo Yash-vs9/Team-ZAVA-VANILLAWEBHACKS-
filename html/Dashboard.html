@@ -3,340 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberGuard Security Dashboard</title>
+    <title>Cyber Security Dashboard</title>
     <link rel="stylesheet" href="../css/Dashboard.css">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Matrix Background -->
+    <canvas id="matrix-background"></canvas>
+
+    <!-- Navigation Bar -->
     <nav class="cyber-nav">
         <div class="nav-container">
             <div class="nav-brand">
-                <span class="brand-icon">🛡️</span>
-                <span class="brand-text">Cyber<span class="brand-accent">Guard</span></span>
+                <div class="brand-icon">🛡️</div>
+                <div class="brand-text">Cyber<span class="brand-accent">Guard</span></div>
             </div>
-            <ul class="nav-links">
-                <li><a href="./Dashboard.html" class="active">Dashboard</a></li>
-                <li><a href="./game.html">Games</a></li>
-                <li><a href="./Learn.html">Learn</a></li>
-                <li><a href="./ddos-defence.html">DDoS Defense</a></li>
-            </ul>
+            <div class="nav-actions">
+                <div class="live-status">
+                    <div class="pulse-dot"></div>
+                    <span>LIVE</span>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Main Dashboard Section -->
-    <main class="section">
-        <div class="container">
-            <!-- Section Header with User Stats -->
-            <div class="section-header">
-                <h1 class="section-title">Cyber Security Dashboard</h1>
-                <div class="user-stats">
-                    <div id="levelStat" class="stat-item">
-                        <span class="stat-label">Level 🚀</span>
-                        <span id="userLevel" class="stat-value">1</span>
-                    </div>
-                    <div id="xpStat" class="stat-item">
-                        <span class="stat-label">XP 📈</span>
-                        <span id="userXP" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Accuracy 🎯</span>
-                        <span id="userAccuracy" class="stat-value">0%</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Streak 🔥</span>
-                        <span id="userStreak" class="stat-value">0</span>
-                    </div>
+    <div class="container">
+        <!-- Section Header (Original Layout) -->
+        <div class="section-header">
+            <h1 class="section-title">🚀 Cyber Security Dashboard</h1>
+            <div class="user-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Level</span>
+                    <span class="stat-value" id="userLevel">1</span>
                 </div>
-            </div>
-
-            <!-- Level Progress Panel -->
-            <div class="level-progress-panel cyber-panel">
-                <div class="level-info">
-                    <span>Level <span id="currentLevel">1</span> → <span id="nextLevel">2</span></span>
-                    <span class="level-xp"><span id="currentXP">0</span> XP / <span id="nextLevelXP">500</span> XP</span>
+                <div class="stat-item">
+                    <span class="stat-label">XP</span>
+                    <span class="stat-value" id="userXP">0</span>
                 </div>
-                <div class="level-progress progress-bar">
-                    <div id="levelProgressFill" class="progress-fill"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Accuracy</span>
+                    <span class="stat-value" id="userAccuracy">0%</span>
                 </div>
-                <div class="level-time">XP to next level: <span id="xpToNext">500</span></div>
-            </div>
-
-            <!-- Dashboard Grid -->
-            <div class="dashboard-grid">
-                <!-- Training Progress Panel -->
-                <div class="cyber-panel">
-                    <h3>🎯 Training Progress</h3>
-                    <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Phishing Detection</span>
-                            <span id="phishingScore">0/10</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="phishingProgress" class="progress-fill"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Password Security</span>
-                            <span id="passwordScore">0/5</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="passwordProgress" class="progress-fill"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Network Defense</span>
-                            <span id="networkScore">0/20</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="networkProgress" class="progress-fill"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>DDoS Defense</span>
-                            <span id="ddosScore">0/10</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="ddosProgress" class="progress-fill"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span>Learning Progress</span>
-                            <span id="learningScore">0/30</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div id="learningProgress" class="progress-fill"></div>
-                        </div>
-                    </div>
+                <div class="stat-item">
+                    <span class="stat-label">Streak</span>
+                    <span class="stat-value" id="userStreak">0</span>
                 </div>
-
-                <!-- Best Scores Panel -->
-                <div class="cyber-panel">
-                    <h3>🏆 Best Scores</h3>
-                    <div class="best-scores">
-                        <div class="score-item">
-                            <div class="score-icon">🎣</div>
-                            <div class="score-info">
-                                <div class="score-name">Phishing Detection</div>
-                                <div id="bestPhishingScore" class="score-value">0/5</div>
-                                <div id="bestPhishingDate" class="score-date">Never played</div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-icon">🔐</div>
-                            <div class="score-info">
-                                <div class="score-name">Password Fortress</div>
-                                <div id="bestPasswordScore" class="score-value">0/5</div>
-                                <div id="bestPasswordDate" class="score-date">Never played</div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-icon">🛡️</div>
-                            <div class="score-info">
-                                <div class="score-name">Network Defense</div>
-                                <div id="bestNetworkScore" class="score-value">0/4</div>
-                                <div id="bestNetworkDate" class="score-date">Never played</div>
-                            </div>
-                        </div>
-                        <div class="score-item">
-                            <div class="score-icon">🚫</div>
-                            <div class="score-info">
-                                <div class="score-name">DDoS Defense</div>
-                                <div id="bestDdosScore" class="score-value">0%</div>
-                                <div id="bestDdosDate" class="score-date">Never played</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Achievements Panel -->
-                <div class="cyber-panel">
-                    <h3>🏆 Achievements</h3>
-                    <div class="badges-grid" id="badgesContainer">
-                        <!-- Badges will be populated by JavaScript -->
-                    </div>
-                    <div class="achievement-progress">
-                        Progress: <span id="badgeProgress">0/8</span>
-                    </div>
-                </div>
-
-                <!-- Performance Stats Panel -->
-                <div class="cyber-panel">
-                    <h3>📊 Performance Stats</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">🎮</div>
-                            <div id="totalGames" class="stat-number">0</div>
-                            <div class="stat-name">Games</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">✅</div>
-                            <div id="gamesWon" class="stat-number">0</div>
-                            <div class="stat-name">Won</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🎯</div>
-                            <div id="winRate" class="stat-number">0%</div>
-                            <div class="stat-name">Win Rate</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🔥</div>
-                            <div id="longestStreak" class="stat-number">0</div>
-                            <div class="stat-name">Best Streak</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">🏆</div>
-                            <div id="totalBadges" class="stat-number">0</div>
-                            <div class="stat-name">Badges</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-icon">💻</div>
-                            <div id="commandsLearned" class="stat-number">0</div>
-                            <div class="stat-name">Commands</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Activity Heatmap Panel -->
-                <div class="cyber-panel heatmap-panel">
-                    <h3>📈 Activity Heatmap</h3>
-                    <div class="heatmap-info">
-                        <span>Last 180 days</span>
-                        <div class="heatmap-legend">
-                            <span>Less</span>
-                            <div class="legend-colors">
-                                <div class="legend-box level-0"></div>
-                                <div class="legend-box level-1"></div>
-                                <div class="legend-box level-2"></div>
-                                <div class="legend-box level-3"></div>
-                                <div class="legend-box level-4"></div>
-                            </div>
-                            <span>More</span>
-                        </div>
-                        <span>Current streak: <span id="streakDisplay" class="current-streak">0</span> days</span>
-                    </div>
-                    <div id="heatmapContainer" class="heatmap-container">
-                        <!-- Heatmap cells will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Recent Activity Panel -->
-                <div class="cyber-panel">
-                    <h3>📈 Recent Activity</h3>
-                    <div id="activityList" class="activity-list">
-                        <div class="activity-placeholder">Complete your first training to see activity here!</div>
-                    </div>
-                </div>
-
-                <!-- Learning Progress Panel -->
-                <div class="cyber-panel">
-                    <h3>📚 Learning Progress</h3>
-                    <div class="learning-stats">
-                        <div class="learning-item">
-                            <div class="learning-icon">💻</div>
-                            <div class="learning-info">
-                                <div class="learning-name">Terminal Commands</div>
-                                <div class="learning-progress">
-                                    <div class="progress-bar">
-                                        <div id="terminalProgress" class="progress-fill"></div>
-                                    </div>
-                                    <span id="terminalCommands">0/30</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="learning-item">
-                            <div class="learning-icon">📖</div>
-                            <div class="learning-info">
-                                <div class="learning-name">Lessons Completed</div>
-                                <div class="learning-progress">
-                                    <div class="progress-bar">
-                                        <div id="lessonsProgress" class="progress-fill"></div>
-                                    </div>
-                                    <span id="lessonsCompleted">0/6</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Data Management Panel -->
-                <div class="cyber-panel">
-                    <h3>💾 Data Management</h3>
-                    <div class="data-info">
-                        <div class="data-stats">
-                            <div>📅 Joined: <span id="joinDate">Today</span></div>
-                            <div>⏱️ Total Time: <span id="totalTime">0 minutes</span></div>
-                            <div>💽 Data Size: <span id="dataSize">0 KB</span></div>
-                            <div>🎯 Sessions: <span id="totalSessions">0</span></div>
-                        </div>
-                        <div class="data-actions">
-                            <button id="exportDataBtn" class="cyber-btn">📊 Export Data</button>
-                            <button id="resetDataBtn" class="cyber-btn danger">🗑️ Reset Progress</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Weekly Performance Panel -->
-                <!-- <div class="cyber-panel">
-                    <h3>📈 Weekly Performance</h3>
-                    <div class="weekly-chart">
-                        <div class="chart-info">
-                            <span>Daily accuracy over the last 7 days</span>
-                            <span>Avg: <span id="avgAccuracy" class="avg-accuracy">0%</span></span>
-                        </div>
-                        <div id="weeklyChart" class="chart-container"> -->
-                            <!-- Chart bars will be populated by JavaScript -->
-                        <!-- </div>
-                    </div>
-                </div> --> 
             </div>
         </div>
-    </main>
 
-    <!-- XP Tooltip -->
-    <div id="xpTooltip" class="xp-tooltip hidden">
-        <div class="tooltip-content">
-            <div class="tooltip-header">
-                <span>Level <span id="tooltipLevel">1</span></span>
-                <span><span id="tooltipXP">0</span>/<span id="tooltipMaxXP">500</span> XP</span>
+        <!-- Level Progress Panel (Original Layout) -->
+        <div class="level-progress-panel">
+            <div class="level-info">
+                <span>Level <span id="currentLevel">1</span> → Level <span id="nextLevel">2</span></span>
+                <span class="level-xp"><span id="currentXP">0</span> XP / <span id="nextLevelXP">500</span> XP</span>
             </div>
-            <div class="tooltip-bar">
-                <div id="tooltipFill" class="tooltip-fill"></div>
+            <div class="progress-bar level-progress">
+                <div class="progress-fill" id="levelProgressFill"></div>
             </div>
-            <div id="tooltipRemaining" class="tooltip-footer">500 XP to next level</div>
+            <div class="level-time">XP to next level: <span id="xpToNext">500</span></div>
+        </div>
+
+        <!-- Dashboard Grid (Original Layout) -->
+        <div class="dashboard-grid">
+            <!-- Training Progress Panel -->
+            <div class="cyber-panel">
+                <h3>🎯 Training Progress</h3>
+                
+                <div class="progress-item">
+                    <div>Phishing Detection <span id="phishingScore">0/10</span></div>
+                    <div class="progress-bar small">
+                        <div class="progress-fill" id="phishingProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div>Password Security <span id="passwordScore">0/5</span></div>
+                    <div class="progress-bar small">
+                        <div class="progress-fill" id="passwordProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div>Network Defense <span id="networkScore">0/20</span></div>
+                    <div class="progress-bar small">
+                        <div class="progress-fill" id="networkProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div>DDoS Defense <span id="ddosScore">0/10</span></div>
+                    <div class="progress-bar small">
+                        <div class="progress-fill" id="ddosProgress"></div>
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div>Learning Progress <span id="learningScore">0/30</span></div>
+                    <div class="progress-bar small">
+                        <div class="progress-fill" id="learningProgress"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Best Scores Panel (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>🏆 Best Scores</h3>
+                <div class="best-scores">
+                    <div class="score-item">
+                        <div class="score-icon">🎣</div>
+                        <div class="score-info">
+                            <div class="score-name">Phishing Detection</div>
+                            <div class="score-value" id="bestPhishingScore">0/5</div>
+                            <div class="score-date" id="bestPhishingDate">Never played</div>
+                        </div>
+                    </div>
+
+                    <div class="score-item">
+                        <div class="score-icon">🔐</div>
+                        <div class="score-info">
+                            <div class="score-name">Password Fortress</div>
+                            <div class="score-value" id="bestPasswordScore">0/5</div>
+                            <div class="score-date" id="bestPasswordDate">Never played</div>
+                        </div>
+                    </div>
+
+                    <div class="score-item">
+                        <div class="score-icon">🛡️</div>
+                        <div class="score-info">
+                            <div class="score-name">Network Defense</div>
+                            <div class="score-value" id="bestNetworkScore">0/4</div>
+                            <div class="score-date" id="bestNetworkDate">Never played</div>
+                        </div>
+                    </div>
+
+                    <div class="score-item">
+                        <div class="score-icon">🚫</div>
+                        <div class="score-info">
+                            <div class="score-name">DDoS Defense</div>
+                            <div class="score-value" id="bestDdosScore">0%</div>
+                            <div class="score-date" id="bestDdosDate">Never played</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Panel (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>🏆 Achievements</h3>
+                <div class="achievement-progress">Progress: <span id="badgeProgress">0/15</span></div>
+                <div class="badges-grid" id="badgesContainer">
+                    <!-- Badges will be generated here -->
+                </div>
+            </div>
+
+            <!-- GitHub-Style Activity Heatmap (Enhanced) -->
+            <div class="cyber-panel heatmap-panel">
+                <h3>📈 Activity Heatmap</h3>
+                <div class="heatmap-nav">
+                    <button id="heatmapPrev" class="heatmap-btn">‹</button>
+                    <span id="heatmapYear">2025</span>
+                    <button id="heatmapNext" class="heatmap-btn">›</button>
+                </div>
+                
+                <div class="github-heatmap">
+                    <div class="heatmap-months" id="heatmapMonths"></div>
+                    <div class="heatmap-weekdays">
+                        <span></span>
+                        <span>Mon</span>
+                        <span></span>
+                        <span>Wed</span>
+                        <span></span>
+                        <span>Fri</span>
+                        <span></span>
+                    </div>
+                    <div class="heatmap-grid" id="heatmapGrid"></div>
+                </div>
+                
+                <div class="heatmap-info">
+                    <div class="heatmap-legend">
+                        <span class="legend-text">Less</span>
+                        <div class="legend-colors">
+                            <div class="legend-box level-0"></div>
+                            <div class="legend-box level-1"></div>
+                            <div class="legend-box level-2"></div>
+                            <div class="legend-box level-3"></div>
+                            <div class="legend-box level-4"></div>
+                        </div>
+                        <span class="legend-text">More</span>
+                    </div>
+                    <div class="current-streak">Current streak: <span id="streakDisplay">0</span> days</div>
+                </div>
+            </div>
+
+            <!-- Performance Stats (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>📊 Performance Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎮</div>
+                        <div class="stat-number" id="totalGames">0</div>
+                        <div class="stat-name">Games</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-number" id="gamesWon">0</div>
+                        <div class="stat-name">Won</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number" id="winRate">0%</div>
+                        <div class="stat-name">Win Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number" id="longestStreak">0</div>
+                        <div class="stat-name">Best Streak</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏅</div>
+                        <div class="stat-number" id="totalBadges">0</div>
+                        <div class="stat-name">Badges</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💻</div>
+                        <div class="stat-number" id="commandsLearned">0</div>
+                        <div class="stat-name">Commands</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Performance Chart (Original Layout) -->
+            <div class="cyber-panel weekly-chart">
+                <h3>📈 Weekly Performance</h3>
+                <div class="chart-info">
+                    <span>Last 7 days</span>
+                    <span class="avg-accuracy">Avg: <span id="weeklyAverage">0%</span></span>
+                </div>
+                <div class="chart-container" id="weeklyChart">
+                    <!-- Chart bars will be generated here -->
+                </div>
+                <div class="chart-labels">
+                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                </div>
+            </div>
+
+            <!-- Recent Activity (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>🕐 Recent Activity</h3>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-placeholder">
+                        Complete your first training to see activity here!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Progress (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>📚 Learning Progress</h3>
+                <div class="learning-stats">
+                    <div class="learning-item">
+                        <div class="learning-icon">💻</div>
+                        <div class="learning-info">
+                            <div class="learning-name">Terminal Commands</div>
+                            <div class="learning-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="terminalProgress"></div>
+                                </div>
+                                <span id="commandsCompleted">0</span> / 30 completed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management (Original Layout) -->
+            <div class="cyber-panel">
+                <h3>💾 Data Management</h3>
+                <div class="data-info">
+                    <div class="data-stats">
+                        <div>📅 Joined: <span id="joinDate">Today</span></div>
+                        <div>⏱️ Total Time: <span id="totalTime">0 minutes</span></div>
+                        <div>💽 Data Size: <span id="dataSize">0 KB</span></div>
+                        <div>🎯 Sessions: <span id="sessionCount">0</span></div>
+                    </div>
+                    <div class="data-actions">
+                        <button class="cyber-btn" id="exportData">📤 Export</button>
+                        <button class="cyber-btn" id="backupData">💾 Backup</button>
+                        <button class="cyber-btn danger" id="resetData">🗑️ Reset</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Achievement Notification -->
-    <div id="achievementNotification" class="achievement-notification hidden">
+    <div id="achievement-notification" class="achievement-notification hidden">
         <div class="notification-content">
-            <span id="notificationIcon" class="notification-icon">🎉</span>
+            <div class="notification-icon" id="achievement-icon">🏆</div>
             <div>
-                <div id="notificationTitle" class="notification-title">Achievement Unlocked!</div>
-                <div id="notificationDesc" class="notification-desc">You've earned a new badge!</div>
+                <div class="notification-title" id="achievement-title">Achievement Unlocked!</div>
+                <div class="notification-desc" id="achievement-description">You've earned a new badge!</div>
             </div>
         </div>
     </div>
 
-    <!-- Export Modal -->
-    <div id="exportModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Export Data</h3>
-                <button id="closeExportModal" class="close-btn">&times;</button>
-            </div>
-            <div class="export-options">
-                <button id="exportJsonBtn" class="cyber-btn">📄 Export as JSON</button>
-                <button id="exportCsvBtn" class="cyber-btn">📊 Export as CSV</button>
-            </div>
-            <textarea id="exportData" placeholder="Exported data will appear here..."></textarea>
-        </div>
-    </div>
-
-    <!-- Dashboard Script -->
     <script src="../js/Dashboard.js"></script>
 </body>
 </html>

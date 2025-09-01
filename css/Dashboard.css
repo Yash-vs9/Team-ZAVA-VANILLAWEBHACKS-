@@ -1708,3 +1708,232 @@ a {
     }
 }
 
+
+/* GitHub-Style Heatmap Styles */
+.heatmap-panel {
+    grid-column: span 2;
+}
+
+.heatmap-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-16);
+}
+
+.heatmap-btn {
+    background: var(--color-secondary);
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    padding: var(--space-4) var(--space-8);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-lg);
+    transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.heatmap-btn:hover {
+    background: var(--color-secondary-hover);
+    border-color: var(--color-primary);
+}
+
+.github-heatmap {
+    display: grid;
+    grid-template-areas: 
+        "months"
+        "weekdays grid"
+        "legend";
+    gap: var(--space-8);
+    margin: var(--space-16) 0;
+}
+
+.heatmap-months {
+    grid-area: months;
+    position: relative;
+    height: 20px;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.month-label {
+    position: absolute;
+    font-size: var(--font-size-xs);
+}
+
+.heatmap-weekdays {
+    grid-area: weekdays;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    width: 30px;
+    height: 91px; /* 7 days * 13px */
+}
+
+.heatmap-grid {
+    grid-area: grid;
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding: var(--space-2);
+}
+
+.heatmap-week {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.heatmap-cell {
+    width: 11px;
+    height: 11px;
+    border-radius: var(--space-1);
+    background: var(--color-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.2);
+    z-index: 10;
+    border: 1px solid var(--color-primary);
+    box-shadow: 0 0 8px rgba(var(--color-primary-rgb, 33, 128, 141), 0.6);
+}
+
+.heatmap-cell.level-1 { background: rgba(var(--color-primary-rgb, 33, 128, 141), 0.3); }
+.heatmap-cell.level-2 { background: rgba(var(--color-primary-rgb, 33, 128, 141), 0.5); }
+.heatmap-cell.level-3 { background: rgba(var(--color-primary-rgb, 33, 128, 141), 0.7); }
+.heatmap-cell.level-4 { 
+    background: var(--color-primary);
+    box-shadow: 0 0 4px rgba(var(--color-primary-rgb, 33, 128, 141), 0.4);
+}
+
+/* Live Status Indicator */
+.live-status {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    color: var(--color-success);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--color-success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* Matrix Background */
+#matrix-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* Achievement Notification */
+.achievement-notification {
+    position: fixed;
+    top: var(--space-20);
+    right: var(--space-20);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+    border-radius: var(--radius-lg);
+    padding: var(--space-20);
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    animation: slideInRight 0.5s var(--ease-standard);
+    max-width: 300px;
+}
+
+.achievement-notification.hidden {
+    display: none;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+}
+
+.notification-icon {
+    font-size: var(--font-size-3xl);
+}
+
+.notification-title {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-btn-primary-text);
+    margin-bottom: var(--space-4);
+}
+
+.notification-desc {
+    color: var(--color-btn-primary-text);
+    font-size: var(--font-size-sm);
+    opacity: 0.9;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Enhanced Chart Styles */
+.chart-container {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    height: 60px;
+    gap: var(--space-4);
+    margin: var(--space-16) 0;
+}
+
+.chart-bar {
+    flex: 1;
+    background: linear-gradient(to top, var(--color-primary-hover), var(--color-primary));
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    min-height: 2px;
+    transition: all var(--duration-fast) var(--ease-standard);
+    cursor: pointer;
+}
+
+.chart-bar:hover {
+    filter: brightness(1.2);
+    transform: scaleY(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .heatmap-panel {
+        grid-column: span 1;
+    }
+    
+    .heatmap-grid {
+        overflow-x: scroll;
+    }
+    
+    .heatmap-cell {
+        width: 9px;
+        height: 9px;
+    }
+    
+    .heatmap-weekdays {
+        height: 70px;
+    }
+}

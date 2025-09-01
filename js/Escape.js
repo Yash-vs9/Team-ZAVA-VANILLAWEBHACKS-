@@ -125,6 +125,27 @@ const gameData = {
     const currentRoomData = gameData.rooms[gameState.currentRoom - 1];
     titleElement.textContent = currentRoomData.name;
   }
+
+  function updateScore(points) {
+    gameState.score += points;
+    
+    // ENHANCED LOCALSTORAGE INTEGRATION - Save current progress
+    try {
+        const currentProgress = {
+            score: gameState.score,
+            currentRoom: gameState.currentRoom,
+            completedRooms: gameState.completedRooms,
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('escape_room_progress', JSON.stringify(currentProgress));
+        console.log('💾 Escape room progress saved:', currentProgress);
+    } catch (error) {
+        console.warn('Could not save escape room progress:', error);
+    }
+    
+    updateProgress();
+}
   
   // Game Flow Functions
   function startGame() {
@@ -495,6 +516,22 @@ const gameData = {
     const minutes = Math.floor(totalTime / 60000);
     const seconds = Math.floor((totalTime % 60000) / 1000);
     
+    try {
+        const escapeStats = {
+            score: gameState.score,
+            completed: true,
+            completedRooms: gameState.completedRooms.length,
+            timestamp: new Date().toISOString(),
+            totalTime: totalTime,
+            finalRoom: gameState.currentRoom
+        };
+        
+        localStorage.setItem('escape_room_progress', JSON.stringify(escapeStats));
+        console.log('💾 Escape room completion saved:', escapeStats);
+    } catch (error) {
+        console.warn('Could not save escape room completion:', error);
+    }
+
     showScreen('victory-screen');
     
     document.getElementById('final-score').textContent = gameState.score;
@@ -505,6 +542,30 @@ const gameData = {
     
     displaySecurityTips();
   }
+
+  function showGameOver() {
+    try {
+        const escapeStats = {
+            score: gameState.score,
+            completed: false,
+            completedRooms: gameState.completedRooms.length,
+            timestamp: new Date().toISOString(),
+            totalTime: (Date.now() - gameState.startTime) / 1000,
+            failedRoom: gameState.currentRoom
+        };
+        
+        localStorage.setItem('escape_room_progress', JSON.stringify(escapeStats));
+        console.log('💾 Escape room game over saved:', escapeStats);
+    } catch (error) {
+        console.warn('Could not save game over data:', error);
+    }
+
+    document.getElementById('game-over-score').textContent = gameState.score;
+    document.getElementById('rooms-completed').textContent = gameState.completedRooms.length;
+
+    showScreen('game-over-screen');
+}
+
   
   function displaySecurityTips() {
     const tipsList = document.getElementById('security-tips-list');

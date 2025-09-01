@@ -298,12 +298,17 @@ Type <span class="output-success">clear</span> to clear the terminal
     markCommandCompleted(command) {
         if (!this.completedCommands.has(command)) {
             this.completedCommands.add(command);
+            try {
+                const completedArray = Array.from(this.completedCommands);
+                localStorage.setItem('cyberguard_completed_commands', JSON.stringify(completedArray));
+                console.log('💾 Terminal progress saved:', completedArray.length, 'commands completed');
+            } catch (error) {
+                console.warn('Could not save terminal progress:', error);
+            }
             this.updateProgress();
             this.checkObjectiveCompletion(command);
             this.updateStats();
-            const completedArray = Array.from(this.completedCommands);
-            localStorage.setItem('cyberguard_completed_commands', JSON.stringify(completedArray));
-            console.log(`💻 Command completed: ${command}`);
+            
         }
     }
 
@@ -320,6 +325,19 @@ Type <span class="output-success">clear</span> to clear the terminal
             if (lesson.objectives.every(obj => obj.completed)) {
                 this.completedLesson(this.currentLesson);
             }
+        }
+    }
+
+    loadProgress() {
+        try {
+            const savedCommands = localStorage.getItem('cyberguard_completed_commands');
+            if (savedCommands) {
+                const commandsArray = JSON.parse(savedCommands);
+                this.completedCommands = new Set(commandsArray);
+                console.log('💻 Loaded terminal progress:', this.completedCommands.size, 'commands completed');
+            }
+        } catch (error) {
+            console.warn('Could not load terminal progress:', error);
         }
     }
 
