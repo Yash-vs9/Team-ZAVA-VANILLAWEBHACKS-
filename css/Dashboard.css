@@ -215,7 +215,7 @@
   --color-gray-200-rgb: 245, 245, 245;
 
   /* Colorful background palette - Dark Mode */
-  --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
+  --color-bg-1: blac; /* Dark blue */
   --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
   --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
   --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
@@ -298,15 +298,7 @@
   --color-info-rgb: var(--color-slate-500-rgb);
 }
 
-        /* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 28px 5vw 0 5vw;
-  position: relative;
-  z-index: 20; /* stays above stars */
-}
+
 
 .logo {
   display: flex;
@@ -321,27 +313,6 @@
   color: #fff;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 36px;
-  
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.nav-links li a {
-  opacity: 0.88;
-  color: white;
-  transition: opacity 0.2s, color 0.2s;
-  padding-bottom: 2px;
-}
-
-.nav-links li a:hover,
-.nav-links li a.active {
-  color: #4ed7d7; /* cyan */
-  opacity: 1;
-}
 
 /* Base styles */
 html {
@@ -793,7 +764,7 @@ select.form-control {
 
 /* Base Styling */
 body {
-    font-family: var(--font-family-base);
+font-family: 'Inter', 'Poppins', Arial, sans-serif;
     color: var(--color-text);
     background-color: var(--color-background);
     min-height: 100vh;
@@ -824,12 +795,38 @@ a {
     align-items: center;
 }
 
-/* Brand (Logo) */
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-10);
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  
+  font-weight: 500;
+  font-size: 1rem;
 }
+.nav-links a {
+  color: #f7f8f9;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  background: rgba(108, 230, 230, 0.1);
+  color: #f1f5f9;
+}
+
+.nav-links a.active {
+  background-color: #58d7e2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+/* Brand (Logo) */
+
 
 .brand-icon {
     font-size: var(--font-size-xl);
@@ -1227,7 +1224,7 @@ a {
 
 .heatmap-container {
     display: grid;
-    grid-template-columns: repeat(26, 1fr);
+    grid-template-columns: repeat(53, 1fr);
     gap: var(--space-4);
     max-width: 100%;
     overflow-x: auto;
@@ -1584,14 +1581,6 @@ a {
     margin: 0;
 }
 
-.close-btn {
-    background: none;
-    border: none;
-    color: var(--color-primary);
-    font-size: var(--font-size-2xl);
-    cursor: pointer;
-    transition: color var(--duration-normal) var(--ease-standard);
-}
 
 .close-btn:hover {
     color: var(--color-text);
@@ -1870,6 +1859,7 @@ a {
     height: 8px;
     background: var(--color-success);
     border-radius: 50%;
+ 
     animation: pulse 2s infinite;
 }
 

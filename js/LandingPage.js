@@ -21,9 +21,9 @@ window.addEventListener("load", () => {
     });
 
     // --- Step 2: Code + Panels run for 5s, then glitch ---
-    setTimeout(() => startGlitchTransition(), 5000);
+    setTimeout(() => startGlitchTransition(), 2000);
 
-  }, 1000);
+  }, 500);
 
   // --- Code Rain ---
   const linesCount = 60;
@@ -123,8 +123,8 @@ window.addEventListener("load", () => {
       // --- Step 4: Redirect ---
       setTimeout(() => {
         window.location.href = "../html/home.html";
-      }, 1500);
-    }, 2000); // glitch duration
+      }, 500);
+    }, 1000); // glitch duration
   }
 
   // --- Random Glitch Block ---
