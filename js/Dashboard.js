@@ -144,7 +144,7 @@ class CompleteCyberSecurityDashboard {
             this.activityData = this.loadActivityData();
             
             // Load game history
-            this.loadGameHistory();
+            // this.loadGameHistory();
             
             // Load streak data
             this.loadStreakData();
@@ -171,17 +171,17 @@ class CompleteCyberSecurityDashboard {
     }
 
     // Load game history (maintaining original structure)
-    loadGameHistory() {
-        try {
-            const historyData = localStorage.getItem(this.STORAGE_KEYS.GAME_HISTORY);
-            if (historyData) {
-                this.userData.gameHistory = JSON.parse(historyData);
-            }
-        } catch (error) {
-            console.error('❌ Error loading game history:', error);
-            this.userData.gameHistory = [];
-        }
-    }
+    // loadGameHistory() {
+    //     try {
+    //         const historyData = localStorage.getItem(this.STORAGE_KEYS.GAME_HISTORY);
+    //         if (historyData) {
+    //             this.userData.gameHistory = JSON.parse(historyData);
+    //         }
+    //     } catch (error) {
+    //         console.error('❌ Error loading game history:', error);
+    //         this.userData.gameHistory = [];
+    //     }
+    // }
 
     // Load streak data (maintaining original structure)
     loadStreakData() {
