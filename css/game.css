@@ -142,8 +142,8 @@ background-image:
 /* Grid Layout */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cards in a row */
-  gap: 40px;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 4 cards in a row */
+  gap: 10px;
   justify-items: center;
   align-items: start; /* baseline alignment */
 }
