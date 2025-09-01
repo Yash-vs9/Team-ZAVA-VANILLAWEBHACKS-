@@ -205,6 +205,7 @@
   }
 }
 
+
 /* Data attribute for manual theme switching */
 [data-color-scheme="dark"] {
   /* RGB versions for opacity control (dark mode) */
@@ -295,6 +296,51 @@
   --color-error-rgb: var(--color-red-500-rgb);
   --color-warning-rgb: var(--color-orange-500-rgb);
   --color-info-rgb: var(--color-slate-500-rgb);
+}
+
+        /* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 5vw 0 5vw;
+  position: relative;
+  z-index: 20; /* stays above stars */
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 36px;
+  
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.nav-links li a {
+  opacity: 0.88;
+  color: white;
+  transition: opacity 0.2s, color 0.2s;
+  padding-bottom: 2px;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #4ed7d7; /* cyan */
+  opacity: 1;
 }
 
 /* Base styles */
