@@ -1,7 +1,7 @@
 // -- Cyberpunk Cybersecurity Training JS (FIXED VERSION) --
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Global Game State Variables ---
+
   let phishingIndex = 0;
   let phishingScore = 0;
   let selectedPhishingEmails = [];

@@ -59,6 +59,17 @@
                         <div class="btn-glow"></div>
                     </button>
                 </div>
+                <div class="game-card cyber-panel" data-game="network">
+                    <div class="notch"></div>
+                    <div class="blob"></div>
+                   <div class="game-icon">🛡️</div>
+                 <h3>Escape Challenge</h3>
+                    <p>Escape the rooms</p>
+                    <button class="btn btn-primary cyber-btn game-launch-btn" onclick="window.location.href='./Escape.html'">
+                        <span>LAUNCH TRAINING</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -226,6 +237,43 @@
     
                 <div class="captcha-input">
                     <input type="text" id="captchaInput" placeholder="Enter Captcha" />
+                    <button class="btn btn-primary cyber-btn" id="submitCaptcha">
+                        <span>SUBMIT</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+    
+                <div class="feedback-panel hidden" id="captchaFeedback">
+                    <div class="feedback-content"></div>
+                    <button class="btn btn-primary cyber-btn" id="nextCaptcha">
+                        <span>NEXT CHALLENGE</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="EscapeGame" class="game-modal hidden">
+        <div class="game-container">
+            <div class="game-header">
+                <h2>Escape Challenge</h2>
+                <div class="game-stats">
+                    <span>Score: <span id="EscapeGameScore">0</span></span>
+                    <span>Attempt: <span id="EscapeAttempt">1</span>/5</span>
+                </div>
+                <button class="close-btn" data-close="EscapeGame">×</button>
+            </div>
+    
+            <div class="game-content">
+                <div class="escape-section">
+                    <canvas id="escapeCanvas" width="200" height="70"></canvas>
+                    <button class="btn btn-secondary cyber-btn" id="refreshEscape">
+                        <span>↻ REFRESH</span>
+                    </button>
+                </div>
+    
+                <div class="escape-input">
+                    <input type="text" id="escapeInput" placeholder="Enter Captcha" />
                     <button class="btn btn-primary cyber-btn" id="submitCaptcha">
                         <span>SUBMIT</span>
                         <div class="btn-glow"></div>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Breach Escape Room</title>
+    <link rel="stylesheet" href="../css/Escape.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <div class="container">
+            <div class="welcome-content">
+                <h1>🔒 Data Breach Escape Room</h1>
+                <p class="subtitle">Test your cybersecurity skills and escape the virtual office!</p>
+                
+                <div class="card game-instructions">
+                    <div class="card__body">
+                        <h3>🎯 Your Mission</h3>
+                        <p>A security breach is imminent! You must secure the office by completing three critical tasks:</p>
+                        
+                        <div class="mission-list">
+                            <div class="mission-item">
+                                <span class="mission-icon">📁</span>
+                                <div>
+                                    <strong>Room 1: File Encryption</strong>
+                                    <p>Identify and encrypt all confidential documents</p>
+                                </div>
+                            </div>
+                            <div class="mission-item">
+                                <span class="mission-icon">💾</span>
+                                <div>
+                                    <strong>Room 2: USB Threat Detection</strong>
+                                    <p>Scan and identify malicious USB devices</p>
+                                </div>
+                            </div>
+                            <div class="mission-item">
+                                <span class="mission-icon">💻</span>
+                                <div>
+                                    <strong>Room 3: Laptop Security</strong>
+                                    <p>Lock all unattended laptops before they're compromised</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn--primary btn--lg" onclick="startGame()">🚀 Start Mission</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <div class="container">
+                <div class="header-content">
+                    <h2 id="current-room-title">File Encryption Challenge</h2>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">Room 1 of 3</span>
+                    </div>
+                    <div class="score-display">
+                        Score: <span id="current-score">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room 1: File Encryption -->
+        <div id="room1" class="room active-room">
+            <div class="container">
+                <div class="room-description card">
+                    <div class="card__body">
+                        <p>🔒 <strong>Secure sensitive documents:</strong> Drag confidential files to the encryption container. Be careful - only confidential files should be encrypted!</p>
+                    </div>
+                </div>
+                
+                <div class="encryption-workspace">
+                    <div class="files-area">
+                        <h3>📂 Documents on Desk</h3>
+                        <div id="files-container" class="files-grid"></div>
+                    </div>
+                    
+                    <div class="encryption-area">
+                        <div class="encryption-container" id="encryption-drop-zone">
+                            <div class="drop-zone-content">
+                                <span class="drop-icon">🔐</span>
+                                <p>Drop Confidential Files Here</p>
+                                <div class="encryption-progress">
+                                    <div id="encryption-progress-bar" class="progress-bar small">
+                                        <div id="encryption-progress-fill" class="progress-fill"></div>
+                                    </div>
+                                    <span id="encryption-status">Ready to encrypt</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room 2: USB Detection -->
+        <div id="room2" class="room">
+            <div class="container">
+                <div class="room-description card">
+                    <div class="card__body">
+                        <p>🔍 <strong>Identify malicious USB devices:</strong> Scan each USB and determine which ones are safe to use. Look for suspicious files and unusual behavior!</p>
+                    </div>
+                </div>
+                
+                <div class="usb-workspace">
+                    <div id="usb-devices-container" class="usb-grid"></div>
+                    
+                    <div class="scan-results">
+                        <h3>🛡️ Threat Analysis</h3>
+                        <div id="scan-results-list" class="scan-results-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Room 3: Laptop Security -->
+        <div id="room3" class="room">
+            <div class="container">
+                <div class="room-description card">
+                    <div class="card__body">
+                        <p>⏰ <strong>Secure unattended laptops:</strong> Lock all unlocked laptops before attackers gain access. Time is running out!</p>
+                        <div class="timer-display">
+                            Time remaining: <span id="security-timer">60</span> seconds
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="office-layout">
+                    <div id="laptops-container" class="laptops-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="screen">
+        <div class="container">
+            <div class="victory-content">
+                <h1>🎉 Mission Accomplished!</h1>
+                <p class="subtitle">You've successfully secured the office and prevented the data breach!</p>
+                
+                <div class="card score-card">
+                    <div class="card__body">
+                        <h3>📊 Final Score</h3>
+                        <div class="final-score">
+                            <span id="final-score">0</span> / 1000
+                        </div>
+                        <div class="performance-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Time Taken:</span>
+                                <span id="total-time">0:00</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Accuracy:</span>
+                                <span id="accuracy-rate">100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card security-tips-card">
+                    <div class="card__body">
+                        <h3>🛡️ Security Lessons Learned</h3>
+                        <div id="security-tips-list" class="tips-list"></div>
+                    </div>
+                </div>
+                
+                <div class="victory-actions">
+                    <button class="btn btn--primary btn--lg" onclick="restartGame()">🔄 Play Again</button>
+                    <button class="btn btn--secondary btn--lg" onclick="showWelcome()">📚 Learn More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification hidden"></div>
+
+    <!-- Hint System -->
+    <div id="hint-panel" class="hint-panel hidden">
+        <div class="hint-content">
+            <h4>💡 Hint</h4>
+            <p id="hint-text"></p>
+            <button class="btn btn--sm btn--secondary" onclick="closeHint()">Got it!</button>
+        </div>
+    </div>
+
+    <script src="../js/Escape.js"></script>
+</body>
+</html>
