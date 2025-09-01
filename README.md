@@ -51,6 +51,11 @@ This project successfully addresses three challenging hackathon tracks:
 - **Frontend**: Pure HTML, CSS, JavaScript 
 - **Storage**: LocalStorage for offline data persistence
 
+## Setup and Installation
+
+-**Clone the repository
+-**Run index.html
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
