@@ -144,7 +144,7 @@ class CompleteCyberSecurityDashboard {
             this.activityData = this.loadActivityData();
             
             // Load game history
-            this.loadGameHistory();
+            // this.loadGameHistory();
             
             // Load streak data
             this.loadStreakData();
@@ -171,17 +171,17 @@ class CompleteCyberSecurityDashboard {
     }
 
     // Load game history (maintaining original structure)
-    loadGameHistory() {
-        try {
-            const historyData = localStorage.getItem(this.STORAGE_KEYS.GAME_HISTORY);
-            if (historyData) {
-                this.userData.gameHistory = JSON.parse(historyData);
-            }
-        } catch (error) {
-            console.error('❌ Error loading game history:', error);
-            this.userData.gameHistory = [];
-        }
-    }
+    // loadGameHistory() {
+    //     try {
+    //         const historyData = localStorage.getItem(this.STORAGE_KEYS.GAME_HISTORY);
+    //         if (historyData) {
+    //             this.userData.gameHistory = JSON.parse(historyData);
+    //         }
+    //     } catch (error) {
+    //         console.error('❌ Error loading game history:', error);
+    //         this.userData.gameHistory = [];
+    //     }
+    // }
 
     // Load streak data (maintaining original structure)
     loadStreakData() {
@@ -429,25 +429,25 @@ class CompleteCyberSecurityDashboard {
 
     generateMonthLabels(container, startDate) {
         if (!container) return;
-
+    
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        
+    
         let currentDate = new Date(startDate);
         let currentMonth = -1;
-        
+    
         // Generate labels for visible months
-        for (let week = 0; week < 52; week++) {
+        for (let week = 0; week < 53; week++) { // 53 weeks in some years
             const weekDate = new Date(currentDate);
             weekDate.setDate(weekDate.getDate() + (week * 7));
-            
-            if (weekDate.getMonth() !== currentMonth && week % 4 === 0) {
+    
+            if (weekDate.getMonth() !== currentMonth) {
                 currentMonth = weekDate.getMonth();
-                
+    
                 const monthLabel = document.createElement('div');
                 monthLabel.className = 'month-label';
                 monthLabel.textContent = months[currentMonth];
-                monthLabel.style.left = `${week * 13}px`;
+                monthLabel.style.left = `${week * 13}px`; // 12px box + 1px gap
                 container.appendChild(monthLabel);
             }
         }
