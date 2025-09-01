@@ -309,20 +309,23 @@ background-image:
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  overflow: hidden; 
 }
 
  .game-container {
             background: var(--bg-panel);
             border: 2px solid var(--primary-color);
-            border-radius: 20px;
+            border-radius:0px;
             width: 47%;
-            height:500px;
             max-width: 900px;
-            max-height: 98vh;
+            max-height: 100vh;
           
             position: relative;
             box-shadow: var(--shadow-intense);
             animation: modalSlideIn 0.4s ease-out;
+                /* Add scrollbar */
+    overflow-y: auto;  /* vertical scrollbar */
+    overflow-x: hidden; /* hide horizontal scroll */
         }
 @keyframes modalSlideIn {
             0% {
