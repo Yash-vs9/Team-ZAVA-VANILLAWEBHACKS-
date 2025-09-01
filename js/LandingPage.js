@@ -1,53 +1,40 @@
-
-  window.addEventListener("load", () => {
-    // --- Loader and Main Content Logic ---
-    setTimeout(() => {
-      document.getElementById("loader").style.display = "none";
-      document.getElementById("main-content").style.display = "block";
-
-      // Show panels one by one
-      const panels = document.querySelectorAll(".panel");
-      panels.forEach((panel, index) => {
-        setTimeout(() => {
-          panel.classList.add("show");
-        }, index * 500); // stagger effect
-      });
-    }, 1000); // Loader stays for 2s
-
-    // Redirect after 7s
-    setTimeout(() => {
-      window.location.href = "../html/glitch.html"; // check path
-    }, 4000);
-  });
-
-  // --- Landing Page Code Animation ---
+window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+  const mainContent = document.getElementById("main-content");
+  const panels = document.querySelectorAll(".panel");
   const container = document.getElementById("code-container");
+  const blank = document.getElementById("blank-screen");
+
+  const overlay = document.querySelector(".glitch-overlay");
+  const noise = document.querySelector(".noise");
+  const scan = document.querySelector(".scan-lines");
+  const rgb = document.querySelector(".rgb-split");
+
+  // --- Step 1: Loader (1s) ---
+  setTimeout(() => {
+    loader.style.display = "none";
+    mainContent.style.display = "block";
+
+    // Panels appear staggered
+    panels.forEach((panel, index) => {
+      setTimeout(() => panel.classList.add("show"), index * 400);
+    });
+
+    // --- Step 2: Code + Panels run for 5s, then glitch ---
+    setTimeout(() => startGlitchTransition(), 5000);
+
+  }, 1000);
+
+  // --- Code Rain ---
   const linesCount = 60;
   const lineHeight = 22;
-  const scrollDurationSeconds = 2;
-  const totalScrollDistance = window.innerHeight + lineHeight;
-  const scrollSpeedPerSecond = totalScrollDistance / scrollDurationSeconds;
 
-  const keywords = [
-    "async","await","function","var","let","const","if","else","while","for","return",
+  const keywords = ["async","await","function","var","let","const","if","else","while","for","return",
     "try","catch","throw","import","export","from","class","constructor","super","extends",
     "console.log","Math.random","document.getElementById","setTimeout","setInterval",
     "clearTimeout","clearInterval","JSON.stringify","JSON.parse","window.addEventListener",
-    "eval","fetch","then","catch",
-  ];
-  const symbols = [
-    "{","}","(",")","[","]",";",".",",","=","+","-","*","/","<",">","%",";",":","'","\"",
-    "&&","||","!=","==","===","=>",
-  ];
-
-  // Popup logic
-  const popup = document.getElementById("popup-overlay");
-  setTimeout(() => {
-    popup.style.display = "flex";
-  }, 5000);
-  popup.addEventListener("click", () => {
-    popup.style.display = "none";
-  });
+    "eval","fetch","then","catch"];
+  const symbols = ["{","}","(",")","[","]",";",".",",","=","+","-","*","/","<",">","%",";",":","'","\"","&&","||","!=","==","===","=>"];
 
   function randomChar() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -73,34 +60,85 @@
     let line = "";
     while (line.length < approxChars) {
       let token = randomToken();
-      if (line.length + token.length + 1 > approxChars) break;
-      line += token + " ";
+      if (!token) token = randomChar();
+      if (line.length + token.length + 1 <= approxChars) line += token + " ";
+      else break;
     }
-    return line.trim();
+    return line.trim().padEnd(approxChars, " ");
   }
 
-  // Generate scrolling code lines
-  const lines = [];
-  for (let i = 0; i < linesCount; i++) {
+  let currentLine = 0;
+  function addLine() {
+    if (currentLine >= linesCount) return;
     const lineDiv = document.createElement("div");
     lineDiv.classList.add("code-line");
-    if (i % 3 === 0) lineDiv.classList.add("green-glow");
+    if (currentLine % 3 === 0) lineDiv.classList.add("green-glow");
+
     lineDiv.textContent = generateLine();
-    lineDiv.style.top = -(i * lineHeight) + "px";
+    lineDiv.style.position = "absolute";
+    lineDiv.style.top = currentLine * lineHeight + "px";
+    lineDiv.style.left = "0";
+    lineDiv.style.width = "100%";
+
     container.appendChild(lineDiv);
-    lines.push({ el: lineDiv, y: -(i * lineHeight), speed: scrollSpeedPerSecond });
+    currentLine++;
   }
 
-  // Animate lines
-  function animate() {
-    lines.forEach((lineObj) => {
-      lineObj.y += lineObj.speed / 60;
-      if (lineObj.y > window.innerHeight) {
-        lineObj.y = -lineHeight;
-        lineObj.el.textContent = generateLine();
-      }
-      lineObj.el.style.top = lineObj.y + "px";
-    });
-    requestAnimationFrame(animate);
+  const lineInterval = setInterval(() => {
+    addLine();
+    if (currentLine >= linesCount) clearInterval(lineInterval);
+  }, 120);
+
+  // --- Step 3: Smooth transition to glitch ---
+  function startGlitchTransition() {
+    // Fade out panels + code
+    mainContent.style.transition = "opacity 1s";
+    mainContent.style.opacity = "0";
+
+    setTimeout(() => {
+      mainContent.style.display = "none";
+      triggerGlitchSequence();
+    }, 1000); // wait for fade out
   }
-  requestAnimationFrame(animate);
+
+  // --- Glitch Sequence ---
+  function triggerGlitchSequence() {
+    overlay.style.display = "block";
+    noise.style.display = "block";
+    scan.style.display = "block";
+    rgb.style.display = "block";
+
+    let glitchInterval = setInterval(createGlitchBlock, 200);
+
+    setTimeout(() => {
+      clearInterval(glitchInterval);
+
+      overlay.style.display = "none";
+      noise.style.display = "none";
+      scan.style.display = "none";
+      rgb.style.display = "none";
+
+      blank.style.display = "block";
+
+      // --- Step 4: Redirect ---
+      setTimeout(() => {
+        window.location.href = "../html/home.html";
+      }, 1500);
+    }, 2000); // glitch duration
+  }
+
+  // --- Random Glitch Block ---
+  function createGlitchBlock() {
+    const block = document.createElement("div");
+    block.className = "glitch-block";
+    block.style.height = Math.random() * 50 + 10 + "px";
+    block.style.width = Math.random() * 200 + 50 + "px";
+    block.style.top = Math.random() * window.innerHeight + "px";
+    block.style.left = Math.random() * window.innerWidth + "px";
+    block.style.background = "rgba(255,255,255,0.1)";
+    block.style.position = "absolute";
+
+    overlay.appendChild(block);
+    setTimeout(() => block.remove(), 500);
+  }
+});
