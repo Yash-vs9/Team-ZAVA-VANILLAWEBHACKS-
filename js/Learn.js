@@ -699,7 +699,8 @@ Type any command to learn more!
         if(commandsLearned<this.completedCommands.size){
             localStorage.setItem("commands-learned",this.completedCommands.size)
         }
-        document.getElementById('commands-learned').textContent = this.completedCommands.size;
+
+        document.getElementById('commands-learned').textContent = localStorage.getItem("commands-learned") || commandsLearned;
         document.getElementById('missions-completed').textContent = this.achievements.size;
     }
 
