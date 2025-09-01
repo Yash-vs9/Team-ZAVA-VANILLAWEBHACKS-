@@ -17,29 +17,41 @@
             <div class="loading-progress"></div>
         </div>
     </div>
+<div id="main-interface" class="hidden">
+  <!-- Header -->
+  <header class="control-header">
 
-    <div id="main-interface" class="hidden">
-        <!-- Header -->
-        <header class="control-header">
-            <div class="header-left">
-                <h1>🛡️ DDoS Defense Command Center</h1>
-                <div class="system-status" style="display: flex; gap: 20px; align-items: center;">
-                    <span class="status-indicator" id="system-status">READY</span>
-                    <span class="uptime">Uptime: <span id="uptime">00:00:00</span></span>
-                    <span id="control-timer" style="color: red;">
-                        Attack Duration : <span id="attack-timer">0</span>
-                    </span>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="alert-level">
-                    <span>Threat Level:</span>
-                    <div class="threat-indicator" id="threat-level">LOW</div>
-                </div>
-                <button class="emergency-btn" id="emergency-mode">🚨 EMERGENCY MODE</button>
-            </div>
-        </header>
+    <!-- Row 1: Navbar only -->
+    <nav class="navbar">
+      <h1>🛡️ DDoS Defense Command Center</h1>
+      <ul class="nav-links">
+        <li><a href="./home.html">Home</a></li>
+        <li><a href="./Dashboard.html">DashBoard</a></li>
+        <li><a href="#" class="active">Games</a></li>
+        <li><a href="./Learn.html">Learn</a></li>
+        <li><a href="./ddos-defence.html">DDOS</a></li>
+      </ul>
+    </nav>
 
+    <!-- Row 2: System Status -->
+<div class="system-status-row">
+  <div class="left-info">
+    <span class="status-indicator" id="system-status">SECURE</span>
+    <span class="uptime">Uptime: <span id="uptime">00:00:56</span></span>
+    <span id="control-timer" style="color: red;">
+      Attack Duration : <span id="attack-timer">0</span>
+    </span>
+  </div>
+
+  <div class="right-info">
+    <span>Threat Level: <span class="threat-indicator" id="threat-level">LOW</span></span>
+    <button class="emergency-btn" id="emergency-mode">🚨 EMERGENCY MODE</button>
+  </div>
+</div>
+
+
+  </header>
+</div>
         <!-- Main Dashboard -->
         <div class="dashboard">
             <!-- Left Panel - Attack Monitoring -->

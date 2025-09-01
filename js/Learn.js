@@ -265,7 +265,7 @@ Type <span class="output-success">help</span> to see available commands
 Type <span class="output-success">hint</span> to get guidance for your current mission
 Type <span class="output-success">clear</span> to clear the terminal
 
-<span class="output-warning">Ready for cyber operations. Begin when ready, agent.</span>
+<span class="output-warning">Ready for cyber operations.Click the terminal to Begin when ready, agent.</span>
         `.trim(), 'info');
     }
 

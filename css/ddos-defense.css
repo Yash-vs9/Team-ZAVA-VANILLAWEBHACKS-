@@ -28,6 +28,112 @@ body {
     font-family: var(--font-primary);
     overflow-x: hidden;
 }
+/* Header container (two rows) */
+.control-header {
+    background: black;
+    
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column; /* stack navbar and system-status vertically */
+    gap: 1rem; /* space between rows */
+}
+
+/* Navbar (first row) */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* System status row (second row) */
+/* System status row (second row) */
+.system-status-row {
+    display: flex;
+    justify-content: space-between; /* left group vs right group */
+    align-items: center;
+    margin-top: 10px;
+    gap: 2rem;
+    font-size: 0.9rem;
+}
+
+.left-info,
+.right-info {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* spacing between items */
+}
+
+/* Individual system status items */
+.status-indicator {
+    color: var(--accent-green);
+    font-weight: 700;
+}
+
+.threat-indicator {
+    background: var(--accent-green);
+    color: var(--bg-primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.threat-indicator.medium {
+    background: var(--accent-yellow);
+}
+
+.threat-indicator.high {
+    background: var(--accent-red);
+}
+
+/* Emergency button */
+.emergency-btn {
+    background: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.emergency-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--accent-red);
+}
+
+.emergency-btn.active {
+    background: var(--accent-green);
+    animation: pulse 2s infinite;
+}
+
+/* Navbar links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 36px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.nav-links li a {
+    opacity: 0.88;
+    color: white;
+    transition: opacity 0.2s, color 0.2s;
+    padding-bottom: 2px;
+    text-decoration: none; /* removes underline */
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+    color: #4ed7d7; /* cyan */
+    opacity: 1;
+    text-decoration: none; /* keep underline disabled */
+}
+
 
 .hidden {
     display: none !important;
@@ -82,77 +188,6 @@ body {
     animation: loading 1.5s ease-out forwards;
 }
 
-/* Header */
-.control-header {
-    background: var(--bg-secondary);
-    border-bottom: 2px solid var(--border-color);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.control-header h1 {
-    font-size: 1.8rem;
-    color: var(--accent-green);
-    margin-bottom: 0.5rem;
-}
-
-.system-status {
-    display: flex;
-    gap: 2rem;
-    font-size: 0.9rem;
-}
-
-.status-indicator {
-    color: var(--accent-green);
-    font-weight: 700;
-}
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.threat-indicator {
-    background: var(--accent-green);
-    color: var(--bg-primary);
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    font-weight: 700;
-    font-size: 0.8rem;
-}
-
-.threat-indicator.medium {
-    background: var(--accent-yellow);
-}
-
-.threat-indicator.high {
-    background: var(--accent-red);
-}
-
-.emergency-btn {
-    background: var(--accent-red);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 6px;
-    font-family: var(--font-primary);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.emergency-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px var(--accent-red);
-}
-
-.emergency-btn.active {
-    background: var(--accent-green);
-    animation: pulse 2s infinite;
-}
 
 /* Dashboard Layout */
 .dashboard {
