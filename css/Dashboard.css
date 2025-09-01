@@ -783,9 +783,10 @@ a {
 /* ========================= */
 .cyber-nav {
   width: 100%;
-  padding: var(--space-20) 5vw;
+  padding: 16px 5vw;
   position: relative;
   z-index: 10;
+  background: #0a0a0a; /* dark background */
 }
 
 .nav-container {
@@ -794,13 +795,25 @@ a {
   align-items: center;
 }
 
-/* Base nav links (desktop) */
+/* ========================= */
+/* Brand (Logo / Title) */
+/* ========================= */
+.nav-brand .section-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #f7f8f9;
+  white-space: nowrap;
+}
+
+/* ========================= */
+/* Nav Links (Desktop) */
+/* ========================= */
 .nav-links {
   list-style: none;
   display: flex;
-  gap: var(--space-32);  /* keep consistent spacing */
-  font-weight: var(--font-weight-medium);
-  font-size: var(--font-size-base);
+  gap: 24px;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .nav-links a {
@@ -809,32 +822,31 @@ a {
   padding: 10px 20px;
   border-radius: 999px;
   opacity: 0.85;
-  transition: background 0.3s ease, color 0.3s ease, opacity var(--duration-fast) var(--ease-standard);
+  transition: background 0.3s ease, color 0.3s ease, opacity 0.3s ease;
   white-space: nowrap;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--color-primary);
+.nav-links a:hover {
   opacity: 1;
-  background: rgba(108, 230, 230, 0.1);
+  background: rgba(88, 215, 226, 0.15);
+  color: #58d7e2;
 }
 
-/* Active style */
 .nav-links a.active {
   background-color: #58d7e2;
   color: #fff;
   font-weight: bold;
   border-radius: 20px;
+  opacity: 1;
 }
 
 /* ========================= */
-/* Hamburger */
+/* Hamburger (Mobile Only) */
 /* ========================= */
 .hamburger {
-  display: none; /* shown only on mobile */
+  display: none; /* hidden on desktop */
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 28px;
   height: 22px;
   cursor: pointer;
@@ -844,30 +856,30 @@ a {
 .hamburger span {
   display: block;
   height: 3px;
-  background-color: #00ffff;
+  background-color: cyan;
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
+/* X icon when active */
 .hamburger.active span {
   display: none;
 }
-
 .hamburger.active::before {
   content: "✖";
   color: cyan;
-  font-size: 2rem;
+  font-size: 1.6rem;
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -4px;
+  right: -4px;
 }
 
 /* ========================= */
-/* Mobile styles */
+/* Mobile Menu */
 /* ========================= */
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* hidden by default */
+    display: flex;
     flex-direction: column;
     position: absolute;
     top: 70px;
@@ -876,10 +888,15 @@ a {
     background: rgba(0, 0, 0, 0.95);
     padding: 16px;
     gap: 12px;
+
+    /* animation */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
   }
 
   .nav-links.show {
-    display: flex;
+    max-height: 500px; /* adjust based on link count */
   }
 
   .nav-links a {
@@ -887,50 +904,12 @@ a {
     width: 100%;
     padding: 12px 20px;
     text-align: left;
-    white-space: nowrap;
   }
 
   .hamburger {
-    display: flex;
+    display: flex; /* show hamburger */
     margin-left: auto;
-    order: 2;
   }
-}
-
-.brand-icon {
-    font-size: var(--font-size-xl);
-}
-
-.brand-text {
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-xl);
-    letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-text);
-}
-
-.brand-accent {
-    color: var(--color-primary);
-}
-
-/* Nav Links */
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: var(--space-32);
-    font-weight: var(--font-weight-medium);
-    font-size: var(--font-size-base);
-}
-
-.nav-links li a {
-    opacity: 0.85;
-    padding-bottom: var(--space-2);
-    transition: opacity var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
-}
-
-.nav-links li a:hover,
-.nav-links li a.active {
-    color: var(--color-primary);
-    opacity: 1;
 }
 
 /* Optional Button (if you want later) */
