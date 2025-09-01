@@ -381,6 +381,7 @@ background-image:
   opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow: auto;
 }
 
 .game-modal.hidden {
@@ -389,7 +390,11 @@ background-image:
   pointer-events: none;
   overflow: hidden; 
 }
-
+#passwordGame .game-container {
+    border: none;           /* removes static border */
+    border-image: none;     /* removes animated border */
+    box-shadow: var(--shadow-intense); /* keep shadow if you like */
+}
  .game-container {
             background: var(--bg-panel);
             border: 2px solid var(--primary-color);
