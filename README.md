@@ -20,10 +20,10 @@ This project successfully addresses three challenging hackathon tracks:
 - **CPU-friendly animations**: CSS-based animations with hardware acceleration
 - **Optimized rendering**: Minimal reflows and repaints
 
-### Track 9: Lightning Bolt Engineer 
-- **Ultra-fast performance focus**: Design applications that achieve sub-1 second full page load on mobile 3G conditions
-- **Aggressive optimization**: Minimize bundle size, defer non-critical scripts, optimize images, leverage CDNs, preloading, and critical CSS.
-- **Efficient architecture**: Static generation, caching, and lazy loading to eliminate bottlenecks.
+### Track 12: Memory Monk
+- **Extreme memory discipline**: A fully functional application that consumes <10MB of RAM total, no matter the complexity.
+- **Lean architecture**: Manual DOM management, streaming data, and efficient data structures.
+- **Garbage-aware design**: Prevent leaks by releasing references, reusing objects, and keeping allocations minimal.
 
 ##  Features
 
