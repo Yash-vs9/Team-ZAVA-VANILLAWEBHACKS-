@@ -20,11 +20,10 @@ This project successfully addresses three challenging hackathon tracks:
 - **CPU-friendly animations**: CSS-based animations with hardware acceleration
 - **Optimized rendering**: Minimal reflows and repaints
 
-### Track 7: Offline Survivalist 
-- **Service Worker implementation**: Full offline functionality
-- **Local storage**: Progress and achievements saved locally
-- **Cached resources**: All assets available offline after first visit
-- **No external dependencies**: Self-contained with no CDN requirements
+### Track 9: Lightning Bolt Engineer 
+- **Ultra-fast performance focus**: Design applications that achieve sub-1 second full page load on mobile 3G conditions
+- **Aggressive optimization**: Minimize bundle size, defer non-critical scripts, optimize images, leverage CDNs, preloading, and critical CSS.
+- **Efficient architecture**: Static generation, caching, and lazy loading to eliminate bottlenecks.
 
 ##  Features
 
