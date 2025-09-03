@@ -20,10 +20,10 @@ This project successfully addresses three challenging hackathon tracks:
 - **CPU-friendly animations**: CSS-based animations with hardware acceleration
 - **Optimized rendering**: Minimal reflows and repaints
 
-### Track 12: Memory Monk
-- **Extreme memory discipline**: A fully functional application that consumes <10MB of RAM total, no matter the complexity.
-- **Lean architecture**: Manual DOM management, streaming data, and efficient data structures.
-- **Garbage-aware design**: Prevent leaks by releasing references, reusing objects, and keeping allocations minimal.
+### Track 4: Grandma's Digital Sage
+- **Radical simplicity**: A clear interface and uncluttered that it requires zero onboarding or documentation.
+- **Guided flow**: Minimal choices, and forgiving error handling so mistakes feel safe.
+- **Delightful wisdom**: An experience that empowers users to feel like experts instantly, with no manuals, just intuition.
 
 ##  Features
 
