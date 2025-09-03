@@ -56,6 +56,8 @@ This project successfully addresses three challenging hackathon tracks:
 -**Clone the repository
 -**Run index.html
 
+**Note**: If you’d like to use this website offline, you can download it from my GitHub and access it anytime without internet. Otherwise, you can use it online here: https://yash-vs9.github.io/Team-ZAVA-VANILLAWEBHACKS-/html/LandingPage.html.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
