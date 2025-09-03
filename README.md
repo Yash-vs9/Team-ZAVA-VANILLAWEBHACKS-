@@ -20,10 +20,11 @@ This project successfully addresses three challenging hackathon tracks:
 - **CPU-friendly animations**: CSS-based animations with hardware acceleration
 - **Optimized rendering**: Minimal reflows and repaints
 
-### Track 4: Grandma's Digital Sage
-- **Radical simplicity**: A clear interface and uncluttered that it requires zero onboarding or documentation.
-- **Guided flow**: Minimal choices, and forgiving error handling so mistakes feel safe.
-- **Delightful wisdom**: An experience that empowers users to feel like experts instantly, with no manuals, just intuition.
+### Track 7: Offline Survivalist 
+- **Service Worker implementation**: Full offline functionality
+- **Local storage**: Progress and achievements saved locally
+- **Cached resources**: All assets available offline after first visit
+- **No external dependencies**: Self-contained with no CDN requirements
 
 ##  Features
 
